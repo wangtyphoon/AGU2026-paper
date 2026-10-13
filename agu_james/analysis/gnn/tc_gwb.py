@@ -9,6 +9,40 @@ import pandas as pd
 from agu_james.analysis.gnn.tc_base import get_channel_map, load_forecast_and_target, normalize_to_CHW, to_1d_lat_lon
 '\nGradient Wind Balance (GWB) height difference:\nΔZ = Z(R) − Z(0) = (1 / g) * ∫_0^R (Vθ^2 / r + f * Vθ) dr\n'
 
+
+G = 9.80665
+
+def integrate_gwb(r_m, vtheta, f: float, radius_m: float) -> tuple[float, str]:
+    r = np.asarray(r_m, dtype=float)
+    v = np.asarray(vtheta, dtype=float)
+    if r.ndim != 1 or v.shape != r.shape or not len(r):
+        raise ValueError('Expected matching nonempty one-dimensional profiles')
+    if not np.isfinite(r).all() or np.any(r <= 0) or np.any(np.diff(r) <= 0):
+        raise ValueError('Ring centers must be finite, positive and increasing')
+    if not np.isfinite(f) or not np.isfinite(radius_m) or radius_m <= 0:
+        return float('nan'), 'invalid_center_or_radius'
+    upper = int(np.searchsorted(r, radius_m, side='left'))
+    if upper == len(r):
+        return float('nan'), 'missing_endpoint_support'
+    needed = v[:upper + 1]
+    if not np.isfinite(needed[0]):
+        return float('nan'), 'missing_first_ring'
+    if not np.isfinite(needed).all():
+        return float('nan'), 'missing_required_ring'
+    with np.errstate(over='ignore', invalid='ignore'):
+        q = needed ** 2 / r[:upper + 1] + f * needed
+    if not np.isfinite(q).all():
+        return float('nan'), 'nonfinite_integrand'
+    support_r = np.r_[0., r[:upper + 1]]
+    support_q = np.r_[0., q]
+    inner = r < radius_m
+    nodes = np.r_[0., r[inner], radius_m]
+    values = np.interp(nodes, support_r, support_q)
+    # The trapezoid sum also supports NumPy versions predating np.trapezoid.
+    integral = np.sum((values[1:] + values[:-1]) * np.diff(nodes) * 0.5)
+    return float(integral / G), 'ok'
+
+
 def find_npz(npz_root: Path, filename: str) -> Path:
     matches = sorted(npz_root.rglob(glob_escape(filename)))
     if not matches:
@@ -91,9 +125,6 @@ def compute_delta_z(u700: np.ndarray, v700: np.ndarray, z700: np.ndarray, lat1d:
     r_bins_m = r_bins * 1000.0
     omega = 7.2921159e-05
     f = 2.0 * omega * np.sin(np.radians(center_lat))
-    r_safe = np.where(r_bins_m > 0.0, r_bins_m, np.nan)
-    integrand = vtheta_mean ** 2 / r_safe + f * vtheta_mean
-    valid_int = np.isfinite(integrand) & np.isfinite(r_bins_m)
     delta_z_sim_list: list[float] = []
     delta_z_gwb_list: list[float] = []
     for radius_km in radii_km:
@@ -104,12 +135,7 @@ def compute_delta_z(u700: np.ndarray, v700: np.ndarray, z700: np.ndarray, lat1d:
             z_valid = z_mean[valid_z]
             z_r = float(np.interp(radius_km, r_valid, z_valid))
             delta_z_sim_list.append(z_r - z0)
-        max_center_km = radius_km + bin_km / 2.0
-        mask = valid_int & (r_bins <= max_center_km)
-        if np.count_nonzero(mask) >= 2:
-            delta_z_gwb = 1.0 / g * np.trapz(integrand[mask], r_bins_m[mask])
-        else:
-            delta_z_gwb = float('nan')
+        delta_z_gwb, _ = integrate_gwb(r_bins_m, vtheta_mean, f, radius_km * 1000.0)
         delta_z_gwb_list.append(float(delta_z_gwb))
     return (delta_z_sim_list, delta_z_gwb_list)
 

@@ -27,9 +27,9 @@ class RelationshipVariable:
         return f'{self.label} ({unit})'
 RELATIONSHIP_VARIABLES = {'s10': RelationshipVariable('S10', 'm/s', 'forecast_s10_max', 'target_s10_max'), 'msl': RelationshipVariable('MSL', 'hPa', 'forecast_msl_min_hPa', 'target_msl_min_hPa', 0.05), 'vmax': RelationshipVariable('Vmax', 'm/s', 'forecast_vmax', 'target_vmax'), 'sim100': RelationshipVariable('$\\Delta Z_{\\mathrm{SIM}}$', 'm', 'delta_z_sim_100km', 'target_delta_z_sim_100km'), 'gwb100': RelationshipVariable('$\\Delta Z_{\\mathrm{GWB}}$', 'm', 'delta_z_gwb_100km', 'target_delta_z_gwb_100km')}
 RELATIONSHIPS = (('Vmax-MSL distribution', 'vmax', 'msl', False), ('100 km SIM-GWB distribution', 'sim100', 'gwb100', True))
-STRUCTURE_VARIABLES = {'rmax': RelationshipVariable('Rmax', 'km', 'forecast_rmax_km', 'target_rmax_km', 0.05, True), 'b': RelationshipVariable('B', 'm', 'forecast_b_param', 'target_b_param', 0.05), 'vtl': RelationshipVariable('VTL', 'm', 'forecast_vtl', 'target_vtl'), 'vtu': RelationshipVariable('VTU', 'm', 'forecast_vtu', 'target_vtu')}
-STRUCTURE_RELATIONSHIPS = (('Rmax-B distribution', 'rmax', 'b', False), ('VTU-VTL distribution', 'vtu', 'vtl', False))
-STRUCTURE_FIELDS = (('Rmax', 'km', 'forecast_rmax_km', 'target_rmax_km'), ('B', 'm', 'forecast_b_param', 'target_b_param'), ('VTL', 'm', 'forecast_vtl', 'target_vtl'), ('VTU', 'm', 'forecast_vtu', 'target_vtu'))
+STRUCTURE_VARIABLES = {'rmax': RelationshipVariable('Rmax', 'km', 'forecast_rmax_km', 'target_rmax_km', 0.05, True), 'b': RelationshipVariable('B', 'm', 'forecast_b_param', 'target_b_param', 0.05), 'vtl': RelationshipVariable('$\\!-V_T^L$', 'm', 'forecast_vtl', 'target_vtl'), 'vtu': RelationshipVariable('$\\!-V_T^U$', 'm', 'forecast_vtu', 'target_vtu')}
+STRUCTURE_RELATIONSHIPS = (('Rmax-B distribution', 'rmax', 'b', False), ('$-V_T^U$–$-V_T^L$ distribution', 'vtu', 'vtl', False))
+STRUCTURE_FIELDS = (('Rmax', 'km', 'forecast_rmax_km', 'target_rmax_km'), ('B', 'm', 'forecast_b_param', 'target_b_param'), ('$\\!-V_T^L$', 'm', 'forecast_vtl', 'target_vtl'), ('$\\!-V_T^U$', 'm', 'forecast_vtu', 'target_vtu'))
 
 def handles(era5=True):
     result = [Patch(facecolor=s.color, edgecolor='none', alpha=0.5, label=s.label) for s in MODEL_SPECS]

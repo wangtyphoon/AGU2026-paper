@@ -1,5 +1,4 @@
-# Derived from gnn/ver_autoregressive/output/spectrum_all_stat.py
-# See provenance/sources.json for original hash and modifications.
+from agu_james.analysis.spectral import modal_weights, spectrum_metadata, safe_ratio
 from agu_james import runtime
 import os
 import glob
@@ -24,6 +23,8 @@ def radial_power_spectrum(field2d, area2d=None, detrend_mean=True, amplitude=Tru
     回傳: k (0..kmax-1), spec
     """
     H, W = field2d.shape
+    if not np.isfinite(field2d).all():
+        raise ValueError('Nonfinite field cannot be Fourier transformed')
     if area2d is not None:
         if area2d.shape != (H, W):
             raise ValueError(f'area2d 形狀需為 {(H, W)}，目前是 {area2d.shape}')
@@ -234,9 +235,9 @@ def _cumfrac(spec_ck: np.ndarray, eps: float=1e-12) -> np.ndarray:
     """
     csum = np.cumsum(np.clip(spec_ck, 0.0, None), axis=-1)
     total = csum[:, [-1]]
-    return csum / (total + eps)
+    return safe_ratio(csum, total)
 
-def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, source='all', amplitude=True, detrend_mean=True, apply_lat_weight=False, lat_path='lat.npy', save_npz='per_channel_spectra.npz', save_csv_per_channel=False, max_workers=None, save_npz_per_step_prefix=None):
+def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, source='all', amplitude=False, detrend_mean=True, apply_lat_weight=False, lat_path='lat.npy', save_npz='per_channel_spectra.npz', save_csv_per_channel=False, max_workers=None, save_npz_per_step_prefix=None):
     """
     產出：
       - save_npz：包含 k 及各通道的 mean/std（依 source）
@@ -245,6 +246,8 @@ def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, 
       - 可選：每通道 CSV
     並行：以「檔案」為粒度做多製程。
     """
+    if amplitude:
+        raise ValueError('Power diagnostics require amplitude=False')
     device = device or (torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu'))
     npz_files = sorted(glob.glob(os.path.join(folder, '*.npz')))
     if not npz_files:
@@ -288,8 +291,7 @@ def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, 
             try:
                 res = fut.result()
             except Exception as e:
-                print(f'[ERROR] {path}: {e}')
-                continue
+                raise RuntimeError(f'Failed spectrum input {path}') from e
             step_idx = parse_step_from_filename(path)
             k_ref, global_acc, klen = _merge_acc(k_ref, global_acc, res, names, C)
             for info in per_step_acc.values():
@@ -300,13 +302,17 @@ def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, 
                 entry = per_step_acc.setdefault(step_idx, {'k': None, 'acc': _make_empty_acc(names)})
                 entry['k'], entry['acc'], _ = _merge_acc(entry['k'], entry['acc'], res, names, C, target_klen=klen)
             print(f'完成：{os.path.basename(path)}')
-    out = {'k': k_ref}
+    if k_ref is None:
+        raise RuntimeError('No spectra were successfully computed')
+    metadata = spectrum_metadata((Hc, Wc), amplitude, False, detrend_mean, apply_lat_weight)
+    out = {'k': k_ref, **metadata}
+    weights = modal_weights(k_ref, (Hc, Wc))
     stats_overall = _compute_mean_std(global_acc, names)
     for nm in names:
         mean = stats_overall[nm]['mean']
         out[f'{nm}_mean'] = mean
         out[f'{nm}_std'] = stats_overall[nm]['std']
-        out[f'{nm}_cumfrac'] = _cumfrac(mean)
+        out[f'{nm}_cumfrac'] = _cumfrac(mean * weights)
     eps = 1e-12
     if 'target' in names and 'error' in names:
         signal = out['target_mean']
@@ -316,9 +322,9 @@ def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, 
     if 'forecast' in names and 'target' in names:
         f_spec = np.clip(out['forecast_mean'], 0.0, None)
         t_spec = np.clip(out['target_mean'], 0.0, None)
-        f_cum = np.cumsum(f_spec, axis=-1)
-        t_cum = np.cumsum(t_spec, axis=-1)
-        cum_energy_ratio = f_cum / (t_cum + eps)
+        f_cum = np.cumsum(f_spec * weights, axis=-1)
+        t_cum = np.cumsum(t_spec * weights, axis=-1)
+        cum_energy_ratio = safe_ratio(f_cum, t_cum)
         out['cum_energy_ratio'] = cum_energy_ratio
     step_outputs = {}
     for step_idx in sorted(per_step_acc.keys()):
@@ -335,7 +341,7 @@ def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, 
             mean = step_stats[nm]['mean']
             out[f'{nm}_mean{suffix}'] = mean
             out[f'{nm}_std{suffix}'] = step_stats[nm]['std']
-            out[f'{nm}_cumfrac{suffix}'] = _cumfrac(mean)
+            out[f'{nm}_cumfrac{suffix}'] = _cumfrac(mean * weights)
         if 'target' in names and 'error' in names:
             signal_s = step_stats['target']['mean']
             noise_s = step_stats['error']['mean']
@@ -343,22 +349,22 @@ def main(folder='.', target_folder=None, H=192, W=192, boundary=8, device=None, 
         if 'forecast' in names and 'target' in names:
             f_spec_s = np.clip(step_stats['forecast']['mean'], 0.0, None)
             t_spec_s = np.clip(step_stats['target']['mean'], 0.0, None)
-            f_cum = np.cumsum(f_spec_s, axis=-1)
-            t_cum = np.cumsum(t_spec_s, axis=-1)
-            out[f'cum_energy_ratio{suffix}'] = f_cum / (t_cum + eps)
-        step_out = {'k': info['k']}
+            f_cum = np.cumsum(f_spec_s * weights, axis=-1)
+            t_cum = np.cumsum(t_spec_s * weights, axis=-1)
+            out[f'cum_energy_ratio{suffix}'] = safe_ratio(f_cum, t_cum)
+        step_out = {'k': info['k'], **metadata}
         for nm in names:
             step_out[f'{nm}_mean'] = step_stats[nm]['mean']
             step_out[f'{nm}_std'] = step_stats[nm]['std']
-            step_out[f'{nm}_cumfrac'] = _cumfrac(step_stats[nm]['mean'])
+            step_out[f'{nm}_cumfrac'] = _cumfrac(step_stats[nm]['mean'] * weights)
         if 'target' in names and 'error' in names:
             step_out['snr'] = step_out['target_mean'] / (step_out['error_mean'] + eps)
         if 'forecast' in names and 'target' in names:
             f_spec_s = np.clip(step_out['forecast_mean'], 0.0, None)
             t_spec_s = np.clip(step_out['target_mean'], 0.0, None)
-            f_cum = np.cumsum(f_spec_s, axis=-1)
-            t_cum = np.cumsum(t_spec_s, axis=-1)
-            step_out['cum_energy_ratio'] = f_cum / (t_cum + eps)
+            f_cum = np.cumsum(f_spec_s * weights, axis=-1)
+            t_cum = np.cumsum(t_spec_s * weights, axis=-1)
+            step_out['cum_energy_ratio'] = safe_ratio(f_cum, t_cum)
         step_outputs[step_idx] = step_out
     np.savez_compressed(save_npz, **out)
     print(f'已輸出：{save_npz}（包含 k、各通道 mean/std、cumfrac；source={source}；裁切 boundary={boundary}）')

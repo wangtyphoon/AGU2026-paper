@@ -1,5 +1,4 @@
-# Derived from validation/spectrum_multistep_prs.py
-# See provenance/sources.json for original hash and modifications.
+from agu_james.analysis.spectral import modal_weights, spectrum_metadata, safe_ratio
 """
 多 step 預報的徑向頻譜分析。
 流程參考目前的 spectrum.py，並加入依 lead_hours 分組的統計，
@@ -64,6 +63,8 @@ def radial_power_spectrum(field2d: np.ndarray, area2d: np.ndarray | None=None, d
       3) 以像素半徑做徑向平均
     """
     H, W = field2d.shape
+    if not np.isfinite(field2d).all():
+        raise ValueError('Nonfinite field cannot be Fourier transformed')
     if area2d is not None:
         if area2d.shape != (H, W):
             raise ValueError(f'area2d 形狀需為 {(H, W)}，目前是 {area2d.shape}')
@@ -171,6 +172,8 @@ def process_run(run_folder: Path, run_start: datetime) -> Dict[int | None, Dict]
         lead_hours = int((parse_stamp(dt_str) - run_start).total_seconds() // 3600)
         for var in channel_level_map:
             fc_field = fc_sub[var]
+            if fc_field.shape != (174, 174) or er_sub[var].shape != (174, 174):
+                raise ValueError('Expected matching cropped 174x174 fields')
             er_field = er_sub[var]
             k_fc, spec_fc = radial_power_spectrum(fc_field, area2d=AREA_SUB, detrend_mean=DETREND_MEAN, amplitude=AMPLITUDE_SPECTRUM, density_norm=DENSITY_NORM)
             k_er, spec_er = radial_power_spectrum(er_field, area2d=AREA_SUB, detrend_mean=DETREND_MEAN, amplitude=AMPLITUDE_SPECTRUM, density_norm=DENSITY_NORM)
@@ -219,7 +222,7 @@ def main() -> None:
     if not all_specs:
         print('未找到任何頻譜資料。')
         return
-    npz_payload: Dict[str, np.ndarray] = {}
+    npz_payload: Dict[str, np.ndarray] = spectrum_metadata((174, 174), AMPLITUDE_SPECTRUM, DENSITY_NORM, DETREND_MEAN, APPLY_LAT_WEIGHT)
     k_ref: np.ndarray | None = None
 
     def dump_group(lead_key: int | None, specs: Dict) -> None:

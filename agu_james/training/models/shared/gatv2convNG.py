@@ -68,10 +68,8 @@ class GATv2ConvN(MessagePassing):
             A tuple corresponds to the sizes of source and target
             dimensionalities in case of a bipartite graph.
         out_channels (int): Size of each output sample.
-        heads (int, optional): Number of multi-head-attentions.
-            (default: :obj:`1`)
-        concat (bool, optional): If set to :obj:`False`, the multi-head
-            attentions are averaged instead of concatenated.
+        concat (bool, optional): Retained for compatibility; concatenation
+            and averaging have identical values with the fixed single head.
             (default: :obj:`True`)
         negative_slope (float, optional): LeakyReLU angle of the negative
             slope. (default: :obj:`0.2`)
@@ -109,20 +107,19 @@ class GATv2ConvN(MessagePassing):
           if bipartite,
           edge indices :math:`(2, |\\mathcal{E}|)`,
           edge features :math:`(|\\mathcal{E}|, D)` *(optional)*
-        - **output:** node features :math:`(|\\mathcal{V}|, H * F_{out})` or
-          :math:`((|\\mathcal{V}_t|, H * F_{out})` if bipartite.
+        - **output:** node features :math:`(|\\mathcal{V}|, F_{out})` or
+          :math:`((|\\mathcal{V}_t|, F_{out})` if bipartite.
           If :obj:`return_attention_weights=True`, then
-          :math:`((|\\mathcal{V}|, H * F_{out}),
-          ((2, |\\mathcal{E}|), (|\\mathcal{E}|, H)))`
-          or :math:`((|\\mathcal{V_t}|, H * F_{out}), ((2, |\\mathcal{E}|),
-          (|\\mathcal{E}|, H)))` if bipartite
+          :math:`((|\\mathcal{V}|, F_{out}),
+          ((2, |\\mathcal{E}|), (|\\mathcal{E}|, 1)))`
+          or :math:`((|\\mathcal{V_t}|, F_{out}), ((2, |\\mathcal{E}|),
+          (|\\mathcal{E}|, 1)))` if bipartite
     """
 
-    def __init__(self, in_channels: Union[int, Tuple[int, int]], out_channels: int, heads: int=1, concat: bool=True, negative_slope: float=0.2, dropout: float=0.0, add_self_loops: bool=True, edge_dim: Optional[int]=None, fill_value: Union[float, Tensor, str]='mean', bias: bool=True, share_weights: bool=False, residual: bool=False, ffn_ratio: float=1.0, **kwargs):
+    def __init__(self, in_channels: Union[int, Tuple[int, int]], out_channels: int, concat: bool=True, negative_slope: float=0.2, dropout: float=0.0, add_self_loops: bool=True, edge_dim: Optional[int]=None, fill_value: Union[float, Tensor, str]='mean', bias: bool=True, share_weights: bool=False, residual: bool=False, ffn_ratio: float=1.0, **kwargs):
         super().__init__(node_dim=0, **kwargs)
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.heads = heads
         self.concat = concat
         self.negative_slope = negative_slope
         self.dropout = dropout
@@ -133,23 +130,23 @@ class GATv2ConvN(MessagePassing):
         self.share_weights = share_weights
         self.ffn_ratio = ffn_ratio
         if isinstance(in_channels, int):
-            self.lin_l = Linear(in_channels, heads * out_channels, bias=bias, weight_initializer='glorot')
+            self.lin_l = Linear(in_channels, out_channels, bias=bias, weight_initializer='glorot')
             if share_weights:
                 self.lin_r = self.lin_l
             else:
-                self.lin_r = Linear(in_channels, heads * out_channels, bias=bias, weight_initializer='glorot')
+                self.lin_r = Linear(in_channels, out_channels, bias=bias, weight_initializer='glorot')
         else:
-            self.lin_l = Linear(in_channels[0], heads * out_channels, bias=bias, weight_initializer='glorot')
+            self.lin_l = Linear(in_channels[0], out_channels, bias=bias, weight_initializer='glorot')
             if share_weights:
                 self.lin_r = self.lin_l
             else:
-                self.lin_r = Linear(in_channels[1], heads * out_channels, bias=bias, weight_initializer='glorot')
-        self.att = Parameter(torch.empty(1, heads, out_channels))
+                self.lin_r = Linear(in_channels[1], out_channels, bias=bias, weight_initializer='glorot')
+        self.att = Parameter(torch.empty(1, 1, out_channels))
         if edge_dim is not None:
-            self.lin_edge = Linear(edge_dim, heads * out_channels, bias=False, weight_initializer='glorot')
+            self.lin_edge = Linear(edge_dim, out_channels, bias=False, weight_initializer='glorot')
         else:
             self.lin_edge = None
-        total_out_channels = out_channels * (heads if concat else 1)
+        total_out_channels = out_channels
         self.ffn = torch.nn.Sequential(Linear(total_out_channels * 2, int(total_out_channels * 2 * ffn_ratio), bias=True), torch.nn.GLU(), torch.nn.Dropout(0.1), Linear(int(total_out_channels * 2 * ffn_ratio / 2), total_out_channels, bias=True))
         if residual:
             self.res = Linear(in_channels if isinstance(in_channels, int) else in_channels[1], total_out_channels, bias=False, weight_initializer='glorot')
@@ -198,7 +195,7 @@ class GATv2ConvN(MessagePassing):
                 :obj:`(edge_index, attention_weights)`, holding the computed
                 attention weights for each edge. (default: :obj:`None`)
         """
-        H, C = (self.heads, self.out_channels)
+        H, C = (1, self.out_channels)
         res: Optional[Tensor] = None
         x_l: OptTensor = None
         x_r: OptTensor = None
@@ -239,7 +236,7 @@ class GATv2ConvN(MessagePassing):
         if self.ffn is not None:
             out = self.ffn(out)
         if self.concat:
-            out = out.view(-1, self.heads * self.out_channels)
+            out = out.view(-1, self.out_channels)
         else:
             out = out.mean(dim=1)
         if res is not None:
@@ -265,7 +262,7 @@ class GATv2ConvN(MessagePassing):
                 edge_attr = edge_attr.view(-1, 1)
             assert self.lin_edge is not None
             edge_attr = self.lin_edge(edge_attr)
-            edge_attr = edge_attr.view(-1, self.heads, self.out_channels)
+            edge_attr = edge_attr.view(-1, 1, self.out_channels)
             x = x + edge_attr
         x = F.leaky_relu(x, self.negative_slope)
         alpha = (x * self.att).sum(dim=-1)
@@ -277,4 +274,4 @@ class GATv2ConvN(MessagePassing):
         return x_j * alpha.unsqueeze(-1)
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}({self.in_channels}, {self.out_channels}, heads={self.heads})'
+        return f'{self.__class__.__name__}({self.in_channels}, {self.out_channels})'

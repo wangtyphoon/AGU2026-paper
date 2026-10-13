@@ -138,6 +138,42 @@ def regression_slope_ln_p(p_grid: np.ndarray, deltas: np.ndarray) -> float:
     slope, _ = np.polyfit(ln_p, deltas[mask], 1)
     return float(slope)
 
+
+LOWER_PRESSURES = (925, 850, 700, 600)
+UPPER_PRESSURES = (600, 500, 400, 300)
+
+def native_delta_z(levels, deltas, requested):
+    """Select measured height ranges only: never interpolate missing layers."""
+    lookup = dict(zip(levels, deltas))
+    return np.asarray([lookup.get(p, np.nan) for p in requested], dtype=float)
+
+def compute_native_vt(levels, deltas):
+    """Signed -V_T: equal-weight OLS of 500-km height range against ln(p/1 hPa)."""
+    lower = native_delta_z(levels, deltas, LOWER_PRESSURES)
+    upper = native_delta_z(levels, deltas, UPPER_PRESSURES)
+    return {
+        'vt_lower': regression_slope_ln_p(np.asarray(LOWER_PRESSURES), lower),
+        'vt_upper': regression_slope_ln_p(np.asarray(UPPER_PRESSURES), upper),
+        'lower_valid_levels': int(np.isfinite(lower).sum()),
+        'upper_valid_levels': int(np.isfinite(upper).sum()),
+    }
+
+def write_thermal_metadata(output_path, counts):
+    """Keep legacy CSV columns intact; save valid-layer counts and method beside it."""
+    import json
+    path = Path(output_path)
+    pd.DataFrame(counts, columns=[
+        'forecast_lower_valid_levels', 'forecast_upper_valid_levels',
+        'target_lower_valid_levels', 'target_upper_valid_levels',
+    ]).to_csv(path.with_suffix('.thermal_wind_counts.csv'), index_label='row')
+    path.with_suffix('.thermal_wind_method.json').write_text(json.dumps({
+        'method': 'signed-native-pressure-levels-v1', 'radius_km': 500,
+        'lower_pressures_hpa': LOWER_PRESSURES, 'upper_pressures_hpa': UPPER_PRESSURES,
+        'regression': 'equal-weight OLS of Delta Z_core against ln(p/1 hPa)',
+        'interpolation': False, 'minimum_finite_layers': 2, 'units': 'm',
+        'positive': 'warm core', 'negative': 'cold core',
+    }, indent=2), encoding='utf-8')
+
 def main() -> None:
     base_dir = runtime.setting('agu_james.analysis.gnn.tc_phase.base_dir', lambda: runtime.artifact_root() / 'jobs/agu_james.analysis.gnn.tc_phase')
     csv_name = 'tc_aurora_intensity35_step12_spectrum.csv'
@@ -151,7 +187,6 @@ def main() -> None:
     radius_km = 500.0
     group_cols = ['CYCLONE_NUM', 'forecast_init_time']
     sort_col = 'step'
-    layers = {'lower': np.arange(900, 550, -50, dtype=float), 'upper': np.arange(600, 250, -50, dtype=float)}
     available_levels = [925, 850, 700, 600, 500, 400, 300]
     wanted = {f'z{lvl}': [f'{lvl}z'] for lvl in available_levels}
     df = pd.read_csv(csv_path)
@@ -168,6 +203,7 @@ def main() -> None:
     forecast_vtl = []
     target_vtu = []
     target_vtl = []
+    thermal_counts = []
     for idx, row in df.iterrows():
         source_file = str(row['source_file'])
         try:
@@ -180,6 +216,7 @@ def main() -> None:
             forecast_vtl.append(np.nan)
             target_vtu.append(np.nan)
             target_vtl.append(np.nan)
+            thermal_counts.append((0, 0, 0, 0))
             continue
         try:
             forecast_raw, target_raw = load_forecast_and_target(npz_path, target_root)
@@ -191,6 +228,7 @@ def main() -> None:
             forecast_vtl.append(np.nan)
             target_vtu.append(np.nan)
             target_vtl.append(np.nan)
+            thermal_counts.append((0, 0, 0, 0))
             continue
         H, W = (lat1d.size, lon1d.size)
         forecast = normalize_to_CHW(forecast_raw, H, W)
@@ -213,14 +251,14 @@ def main() -> None:
         mask_target = radius_mask(lat1d, lon1d, t_lat, t_lon, radius_km)
         lvl_f_all, delta_f_all = z_range_by_levels(forecast, ch_map, available_levels, mask_forecast, g)
         lvl_t_all, delta_t_all = z_range_by_levels(target, ch_map, available_levels, mask_target, g)
-        interp_f_lower = interpolate_delta_z(lvl_f_all, delta_f_all, layers['lower'])
-        interp_f_upper = interpolate_delta_z(lvl_f_all, delta_f_all, layers['upper'])
-        interp_t_lower = interpolate_delta_z(lvl_t_all, delta_t_all, layers['lower'])
-        interp_t_upper = interpolate_delta_z(lvl_t_all, delta_t_all, layers['upper'])
-        forecast_vtl.append(regression_slope_ln_p(layers['lower'], interp_f_lower))
-        forecast_vtu.append(regression_slope_ln_p(layers['upper'], interp_f_upper))
-        target_vtl.append(regression_slope_ln_p(layers['lower'], interp_t_lower))
-        target_vtu.append(regression_slope_ln_p(layers['upper'], interp_t_upper))
+        vt_f = compute_native_vt(lvl_f_all, delta_f_all)
+        vt_t = compute_native_vt(lvl_t_all, delta_t_all)
+        forecast_vtl.append(vt_f['vt_lower'])
+        forecast_vtu.append(vt_f['vt_upper'])
+        target_vtl.append(vt_t['vt_lower'])
+        target_vtu.append(vt_t['vt_upper'])
+        thermal_counts.append((vt_f['lower_valid_levels'], vt_f['upper_valid_levels'],
+                               vt_t['lower_valid_levels'], vt_t['upper_valid_levels']))
         forecast_b_param.append(f_b)
         target_b_param.append(t_b)
         if (idx + 1) % 200 == 0:
@@ -233,4 +271,5 @@ def main() -> None:
     df['target_vtu'] = target_vtu
     df['target_vtl'] = target_vtl
     df.to_csv(output_csv, index=False)
+    write_thermal_metadata(output_csv, thermal_counts)
     print(f'Saved updated CSV to {output_csv}')

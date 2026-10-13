@@ -1,13 +1,10 @@
-# Derived from spectrum analysis/plot_spectral_energy_summary.py
-# See provenance/sources.json for original hash and modifications.
-"""Export paper figures comparing spectral and total energy ratios.
-
-Run without arguments for both periods, or use --period 7d / 30d.
-Energy means the stored sample-mean spectral power of each scalar field.
-All ratios use each model's own ERA5 target and exclude the DC bin (k=0).
-The right panels sum only wavelengths <1000 km, never over forecast time.
-Wavelength uses the existing spectrum_multi convention: lambda = 192*28/k km.
+"""Annular ratios and mode-count-weighted band mean-square ratios.
+Nominal scale = 174*28/k km; not an exact geographic wavelength.
+Retained disk k=1..87; nominal <1000 km selects complete bins k=5..87.
+No kinetic-energy interpretation for humidity or individual wind components.
+Legacy raw annular means are preserved; only band totals are normalized.
 """
+from agu_james.analysis.spectral import modal_weights, NOMINAL_LENGTH_KM, FFT_SHAPE
 from agu_james import runtime
 import argparse
 import csv
@@ -25,7 +22,7 @@ CHANNELS = (('700q', 'q700'), ('850u', 'u850'), ('850v', 'v850'))
 MODEL_STYLES = {'MSE': ('auto', '#1f77b4'), 'Spectrum MAE': ('spectrum', '#ff7f0e'), 'Spectrum MSE': ('spectrum_ver2', '#2ca02c'), 'Pangu': (None, '#d62728')}
 PERIODS = {'7d': {'steps': 28, 'stride': 1, 'days': (1, 3, 7), 'models': ('MSE', 'Spectrum MAE', 'Spectrum MSE', 'Pangu')}, '30d': {'steps': 120, 'stride': 2, 'days': (7, 14, 21, 28), 'models': ('Spectrum MAE', 'Spectrum MSE')}}
 LEAD_STYLES = ('-', '--', '-.', ':')
-EFFECTIVE_LENGTH_KM = 192 * 28.0
+EFFECTIVE_LENGTH_KM = NOMINAL_LENGTH_KM
 TOTAL_WAVELENGTH_MAX_KM = 1000.0
 
 @dataclass
@@ -68,8 +65,8 @@ def compute_energy_ratios(k, forecast, target):
     total_mask = total_energy_mask(k[mask])
     if not total_mask.any():
         raise ValueError('No wavenumbers with wavelength <1000 km available.')
-    forecast_total = forecast[:, total_mask].sum(axis=1, dtype=np.float64)
-    target_total = target[:, total_mask].sum(axis=1, dtype=np.float64)
+    forecast_total = (forecast[:, total_mask] * modal_weights(k[mask][total_mask])).sum(axis=1, dtype=np.float64)
+    target_total = (target[:, total_mask] * modal_weights(k[mask][total_mask])).sum(axis=1, dtype=np.float64)
     if np.any(target_total <= 0) or not np.all(np.isfinite(target_total)) or (not np.all(np.isfinite(forecast_total))):
         raise ValueError('Total energies must be finite and target totals positive.')
     ratio = np.full(target.shape, np.nan, dtype=np.float64)
@@ -97,6 +94,12 @@ def load_period(period):
         path = DATA_DIR / 'Pangu' / 'all_energy_multistep_prs168.npz' if model == 'Pangu' else DATA_DIR / 'ours' / f"per_channel_energy_2024_fix_attention_step{config['steps']}_{suffix}.npz"
         with np.load(path, allow_pickle=False) as source:
             k = np.asarray(source['k']).copy()
+            if 'fft_shape' in source and not np.array_equal(source['fft_shape'], FFT_SHAPE):
+                raise ValueError(f'{path}: incompatible FFT geometry')
+            if 'spectral_quantity' in source and str(source['spectral_quantity']) != 'power':
+                raise ValueError(f'{path}: power spectra required')
+            if 'density_norm' in source and bool(source['density_norm']):
+                raise ValueError(f'{path}: expected unnormalized annular means')
             if reference_k is not None and (not np.array_equal(k, reference_k)):
                 raise ValueError(f'{path}: wavenumbers differ across models.')
             reference_k = k
@@ -162,19 +165,19 @@ def plot_period(period, datasets, output_dir):
                     ax.grid(True, alpha=0.23, linewidth=0.6)
                     ax.set_axisbelow(True)
                     ax.set_title(f'({chr(97 + row * 2 + column)}) {channel}', loc='left', fontsize=13)
-                    ax.set_ylabel('Spectral energy ratio' if column == 0 else 'Energy ratio (<1000 km)')
+                    ax.set_ylabel('Annular power ratio' if column == 0 else 'Band power ratio (nominal <1000 km)')
                     ax.set_ylim(*(spectral_limits if column == 0 else total_limits))
                 spectral.set_xscale('log')
                 spectral.set_xlim(EFFECTIVE_LENGTH_KM, EFFECTIVE_LENGTH_KM / 87)
-                spectral.xaxis.set_major_locator(FixedLocator([5000, 2000, 1000, 500, 200, 100]))
+                spectral.xaxis.set_major_locator(FixedLocator([4000, 2000, 1000, 500, 200, 100]))
                 spectral.xaxis.set_major_formatter(ScalarFormatter())
-                spectral.set_xlabel('Wavelength (km)')
+                spectral.set_xlabel('Nominal wavelength (km; 28 km grid)')
                 cumulative.set_xlabel('Forecast lead time (days)')
                 cumulative.set_xlim(0, config['steps'] / 4)
                 cumulative.set_xticks([0, 1, 2, 3, 4, 5, 6, 7] if period == '7d' else [0, 5, 10, 15, 20, 25, 30])
             model_handles = [Line2D([0], [0], color=MODEL_STYLES[m][1], linewidth=2, label=m) for m in config['models']]
             lead_handles = [Line2D([0], [0], color='#333333', linestyle=ls, linewidth=1.7, label=f'Day {day}') for day, ls in zip(config['days'], LEAD_STYLES)]
-            fig.suptitle(f"Spectral and total energy ratios | {config['steps'] // 4}-day forecasts", fontsize=17, y=0.98)
+            fig.suptitle(f"Annular and band power ratios | {config['steps'] // 4}-day forecasts", fontsize=17, y=0.98)
             fig.legend(handles=model_handles, loc='upper center', bbox_to_anchor=(0.5, 0.945), ncol=len(model_handles), frameon=False)
             fig.legend(handles=lead_handles, loc='upper center', bbox_to_anchor=(0.5, 0.902), ncol=len(lead_handles), frameon=False, title='Left panels: forecast lead')
             fig.subplots_adjust(left=0.085, right=0.98, bottom=0.085, top=0.83, wspace=0.28, hspace=0.4)
@@ -192,7 +195,7 @@ def write_csvs(period, datasets, output_dir):
     totals_path = output_dir / f'{stem}_totals.csv'
     with spectral_path.open('w', encoding='utf-8', newline='') as stream:
         writer = csv.writer(stream)
-        writer.writerow(('period', 'model', 'channel', 'lead_hours', 'lead_days', 'k', 'forecast_energy', 'target_energy', 'energy_ratio'))
+        writer.writerow(('period', 'model', 'channel', 'lead_hours', 'lead_days', 'k', 'forecast_annular_mean_power', 'target_annular_mean_power', 'power_ratio'))
         for s in datasets:
             for row, hours in enumerate(s.lead_hours):
                 for column, k in enumerate(s.k):
@@ -200,7 +203,7 @@ def write_csvs(period, datasets, output_dir):
                     writer.writerow((period, s.model, s.channel, int(hours), hours / 24, int(k), s.forecast[row, column], s.target[row, column], ratio if np.isfinite(ratio) else ''))
     with totals_path.open('w', encoding='utf-8', newline='') as stream:
         writer = csv.writer(stream)
-        writer.writerow(('period', 'model', 'channel', 'lead_hours', 'lead_days', 'k_min', 'k_max', 'forecast_total_energy', 'target_total_energy', 'total_energy_ratio', 'wavelength_cutoff_km', 'wavelength_comparison', 'effective_length_km'))
+        writer.writerow(('period', 'model', 'channel', 'lead_hours', 'lead_days', 'k_min', 'k_max', 'forecast_band_mean_square', 'target_band_mean_square', 'band_power_ratio', 'wavelength_cutoff_km', 'wavelength_comparison', 'effective_length_km'))
         for s in datasets:
             selected_k = s.k[total_energy_mask(s.k)]
             for row, hours in enumerate(s.lead_hours):

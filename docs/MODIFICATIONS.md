@@ -29,7 +29,7 @@ This is a **paper-setting implementation variant**. It preserves the source chec
 | Loss mask `distance <=8`; validation crop `distance <boundary` | Explicit width9; metric adapter retains8 for inclusive source mask and9 for crop | Actual training mask unchanged where <=8 already meant9 cells; inconsistent forcing/validation margins corrected |
 | Source forcing routines with different mask conventions | First call unchanged; replace only newest forecast boundary before call2+ | Approved plan; earlier state preserved; source first-call treatment retained |
 | Climatology URL1990–2019 | Official1990–2017 dataset | `output/download_clim.py`; manuscript reference period; ACC/Activity changes expected when recomputed |
-| Caption k5–87 | Calculation/caption correction k6–87 for λ<1000km | Effective length5376km; existing numerical selection retained; V1 figure caption needs editing |
+| Annular means summed without mode counts; 192-cell wavelength length | Mode-count-weighted Parseval band mean square; nominal 174×28/k km and k5–87 | Approved spectral correction; not exact geographic wavelength or kinetic energy |
 
 ## Required fixes and source preservation
 
@@ -59,4 +59,38 @@ The additional source is `C:\Users\王子祐\Documents\Pangu-Weather-ReadyToGo`.
 
 **Distributed batch bias:** original MSE-v2 distributed collectives are retained but untested on multiple GPUs. MAE distributed execution is rejected until its batch-mean spectral-bias semantics are established. Single-GPU accumulation computes the source spectral loss per microbatch, as original accumulation did; it does not turn the batch-bias term into a single full-effective-batch loss. Effective sample count and bias-statistic batch size are distinct and must be recorded for HPC comparison.
 
-**Results status:** existing aggregate-input regressions and representative plots remain source-equivalent. New split/hour/climatology/forcing/training settings can change newly generated results. No corrected paper numbers, full retraining, national HPC run, GitHub publication or archive DOI have been produced.
+**Results status:** spectral totals and cumulative products deliberately differ from the legacy implementation after the approved modal-power correction; individual annular ratios are preserved. Other aggregate-input regressions retain their stated scope. New split/hour/climatology/forcing/training settings can change newly generated results. No corrected paper numbers, full retraining, national HPC run, GitHub publication or archive DOI have been produced.
+
+**Fixed single-head API (2026-10-13):** model roots and shared layers no longer accept `heads` or `num_heads`. Widths use the former `heads=1` values; singleton attention axes and operation order are preserved. The factory specification omits the head count. Existing single-head state dictionaries load strictly; callers must omit the removed arguments.
+
+
+## GWB endpoint correction
+
+See [exact-radius recomputation](METRIC_DEFINITIONS.md#exact-radius-gwb) for the strict integral embedded in the original GNN/Pangu modules, analytic tests, completed four-model rerun and output verification policy. The two temporary standalone modules were removed; the external original scripts were also replaced after preserving backups. Full-run completion and counts are recorded in the generated manifest and completion report.
+
+
+## ACC/Activity formula correction
+
+ACC removes only the climatological mean. Forecast and ERA5 activity both use
+sqrt(mean case centered spatial variance). Explicit batch-case handling,
+finite-case counts, input fingerprints, case audit arrays, and direct summary
+reconstruction checks accompany the corrected calculations. The AGU analysis
+adapter also aligns Spectrum MSE CSV naming with the existing plotting loader
+(`spectrum_ver2`). Historical aggregate equality checks in VALIDATION.md refer
+to the previous metric definitions and must remain labeled historical.
+
+## Signed native-level thermal wind
+
+Thermal-wind regressions now use only native 925/850/700/600 and
+600/500/400/300 hPa height ranges, with signed -V_T^L / -V_T^U labels.
+Delta Z_core is explicitly distinguished from radial Delta Z_sim. CSV column
+names remain compatible; counts and method metadata are written beside phase
+entrypoint outputs. AGU and source-local analysis/plotting programs were
+replaced after complete four-model replay and QA. Recomputed CSVs and Figure 10
+are in `artifacts/thermal_wind_native_levels/`; source CSVs remain preserved.
+See METRIC_DEFINITIONS.md#signed-thermal-wind.
+
+
+## Workspace cleanup (2026-10-14)
+
+Four correction/definition documents are consolidated into METRIC_DEFINITIONS.md. Five completed one-time curation/staging/installation utilities are retired. Active workflows, numerical tests, replay/report tools, and research outputs are retained. Original documents, retired tools, and pre-cleanup metadata are recoverable from `artifacts/cleanup/before_cleanup.zip`. Build products and Python caches are regenerable.

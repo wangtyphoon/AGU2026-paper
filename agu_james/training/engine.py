@@ -28,7 +28,7 @@ def make_model(stage, sample, settings=None):
     cls=importlib.import_module(f'agu_james.training.models.{label}.{module}').HeteroGNN
     finest='mesh6' if label=='coarse' else 'mesh7'
     spec=dict(in_grid=sample['grid'].x.shape[1],in_mesh=sample[finest].x.shape[1],hidden_dim=settings.get('hidden_dim',512),
-              out_grid=116,heads=1,processor_layers=settings.get('processor_layers',[16,12,8,4] if label=='coarse' else [16,16,12,8,6]),
+              out_grid=116,processor_layers=settings.get('processor_layers',[16,12,8,4] if label=='coarse' else [16,16,12,8,6]),
               ffn_ratio=settings.get('ffn_ratio',1.0 if label=='coarse' else 2.0),use_checkpoint=settings.get('use_checkpoint',True))
     return cls(**spec),spec
 

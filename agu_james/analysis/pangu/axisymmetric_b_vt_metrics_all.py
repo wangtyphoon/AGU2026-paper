@@ -268,15 +268,44 @@ def regression_slope_ln_p(p_grid: np.ndarray, delta_grid: np.ndarray) -> float:
     return float(slope)
 
 def compute_vt_indicators(delta_z_profile: dict[int, float]) -> dict[str, float]:
-    pressures = np.array(sorted(delta_z_profile.keys()), dtype=float)
-    delta_vals = np.array([delta_z_profile[int(p)] for p in pressures], dtype=float)
-    lower_grid = build_pressure_grid(LOWER_LAYER[1], LOWER_LAYER[0], step=50.0)
-    upper_grid = build_pressure_grid(UPPER_LAYER[1], UPPER_LAYER[0], step=50.0)
-    lower_interp = interpolate_profile(pressures, delta_vals, lower_grid)
-    upper_interp = interpolate_profile(pressures, delta_vals, upper_grid)
-    lower_slope = regression_slope_ln_p(lower_grid, lower_interp)
-    upper_slope = regression_slope_ln_p(upper_grid, upper_interp)
-    return {'lower_slope': lower_slope, 'upper_slope': upper_slope, 'vt_lower': lower_slope if np.isfinite(lower_slope) else float('nan'), 'vt_upper': upper_slope if np.isfinite(upper_slope) else float('nan')}
+    result = compute_native_vt(list(delta_z_profile), list(delta_z_profile.values()))
+    return {**result, 'lower_slope': result['vt_lower'], 'upper_slope': result['vt_upper']}
+
+
+LOWER_PRESSURES = (925, 850, 700, 600)
+UPPER_PRESSURES = (600, 500, 400, 300)
+
+def native_delta_z(levels, deltas, requested):
+    """Select measured height ranges only: never interpolate missing layers."""
+    lookup = dict(zip(levels, deltas))
+    return np.asarray([lookup.get(p, np.nan) for p in requested], dtype=float)
+
+def compute_native_vt(levels, deltas):
+    """Signed -V_T: equal-weight OLS of 500-km height range against ln(p/1 hPa)."""
+    lower = native_delta_z(levels, deltas, LOWER_PRESSURES)
+    upper = native_delta_z(levels, deltas, UPPER_PRESSURES)
+    return {
+        'vt_lower': regression_slope_ln_p(np.asarray(LOWER_PRESSURES), lower),
+        'vt_upper': regression_slope_ln_p(np.asarray(UPPER_PRESSURES), upper),
+        'lower_valid_levels': int(np.isfinite(lower).sum()),
+        'upper_valid_levels': int(np.isfinite(upper).sum()),
+    }
+
+def write_thermal_metadata(output_path, counts):
+    """Keep legacy CSV columns intact; save valid-layer counts and method beside it."""
+    import json
+    path = Path(output_path)
+    pd.DataFrame(counts, columns=[
+        'forecast_lower_valid_levels', 'forecast_upper_valid_levels',
+        'target_lower_valid_levels', 'target_upper_valid_levels',
+    ]).to_csv(path.with_suffix('.thermal_wind_counts.csv'), index_label='row')
+    path.with_suffix('.thermal_wind_method.json').write_text(json.dumps({
+        'method': 'signed-native-pressure-levels-v1', 'radius_km': 500,
+        'lower_pressures_hpa': LOWER_PRESSURES, 'upper_pressures_hpa': UPPER_PRESSURES,
+        'regression': 'equal-weight OLS of Delta Z_core against ln(p/1 hPa)',
+        'interpolation': False, 'minimum_finite_layers': 2, 'units': 'm',
+        'positive': 'warm core', 'negative': 'cold core',
+    }, indent=2), encoding='utf-8')
 
 def main() -> None:
     cfg = Config(**runtime.setting('agu_james.analysis.pangu.axisymmetric_b_vt_metrics_all.config', lambda: {}))
@@ -293,7 +322,9 @@ def main() -> None:
     target_b_param = []
     target_vtu = []
     target_vtl = []
+    thermal_counts = []
     for _, row in df.iterrows():
+        f_counts = t_counts = (0, 0)
         f_b = float('nan')
         f_vtu = float('nan')
         f_vtl = float('nan')
@@ -334,6 +365,7 @@ def main() -> None:
                 vt_result = compute_vt_indicators(vt_profile)
                 f_vtu = vt_result['vt_upper']
                 f_vtl = vt_result['vt_lower']
+                f_counts = (vt_result['lower_valid_levels'], vt_result['upper_valid_levels'])
         bst_lat = row.get('bst_lat', np.nan)
         bst_lon = row.get('bst_lon', np.nan)
         if np.isfinite(bst_lat) and np.isfinite(bst_lon):
@@ -350,6 +382,8 @@ def main() -> None:
                 vt_result = compute_vt_indicators(vt_profile)
                 t_vtu = vt_result['vt_upper']
                 t_vtl = vt_result['vt_lower']
+                t_counts = (vt_result['lower_valid_levels'], vt_result['upper_valid_levels'])
+        thermal_counts.append((*f_counts, *t_counts))
         forecast_b_param.append(f_b)
         forecast_vtu.append(f_vtu)
         forecast_vtl.append(f_vtl)
@@ -363,4 +397,5 @@ def main() -> None:
     df['target_vtu'] = target_vtu
     df['target_vtl'] = target_vtl
     df.to_csv(cfg.output_path, index=False)
+    write_thermal_metadata(cfg.output_path, thermal_counts)
     print(f'Saved: {cfg.output_path}')

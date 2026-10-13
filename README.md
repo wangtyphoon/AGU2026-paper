@@ -22,6 +22,8 @@ All GNN stages use the same GAT/SG child-layer architecture. The corrected Stage
 
 ## Organization
 
+The coarse and AR models use fixed single-head attention. Model and shared-layer constructors no longer accept `heads` or `num_heads`; omit those arguments when using the public classes. Existing single-head checkpoint state dictionaries retain the same parameter names and shapes.
+
 | Package | Function |
 |---|---|
 | `agu_james.data` | JTWC selection, ERA5 requests/conversion, time features, training statistics |
@@ -32,7 +34,7 @@ All GNN stages use the same GAT/SG child-layer architecture. The corrected Stage
 | `agu_james.plotting` | compact manuscript figures and required plotting helpers |
 | `provenance` | original source paths/SHA-256 and change categories |
 
-The original research checkouts remain read-only. `tools/curate_sources.py` is a maintainer-only regeneration utility for the original author paths; it is not needed to install or run the curated package elsewhere. All ordinary workflows are independent of those checkout paths.
+Ordinary workflows are independent of the original research checkout paths. The four retained tools cover curriculum execution, release checks, and thermal-wind replay/reporting. Obsolete curation and installation utilities are backed up in `artifacts/cleanup/before_cleanup.zip`.
 
 ## Verification and remaining work
 
@@ -41,3 +43,11 @@ Local checks cover syntax/import safety, 116-channel order, calendar splits and 
 `docs/VALIDATION.md` distinguishes executed checks from full ERA5 downloads, full graph construction, four-stage retraining, distributed/HPC verification and real ONNX inference. In particular, consult the unresolved **MAE spectral-bias normalization** audit before claiming exact agreement with the national HPC run. The former coarse source/attention selection has been corrected.
 
 The source archive described by [AGU guidance](https://data.agu.org/resources/agu-data-software-sharing-guidance) is separate from a GitHub development repository. No public data/archive availability is asserted here.
+
+
+### ACC and Activity definition
+
+ACC correlates climatological anomalies without extra spatial demeaning;
+Activity is the square root of mean centered case variance. ERA5 target activity
+uses the same aggregation. See [metric definitions](docs/METRIC_DEFINITIONS.md#acc-and-activity)
+and the staged verification report in artifacts/acc_activity_corrected.

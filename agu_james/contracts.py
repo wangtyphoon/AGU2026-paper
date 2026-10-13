@@ -7,7 +7,7 @@ VALIDATION_YEARS = (1980, 1990, 2000, 2010, 2020)
 INIT_HOURS = (0, 6, 12, 18)
 LEVELS = (1000, 925, 850, 700, 600, 500, 400, 300, 250, 200, 150, 100, 50)
 BOUNDARY_WIDTH = 9
-EFFECTIVE_LENGTH_KM = 5376.0
+EFFECTIVE_LENGTH_KM = 174 * 28.0  # nominal isotropic grid scale, not geographic wavelength
 
 def split_for_year(year):
     year = int(year)

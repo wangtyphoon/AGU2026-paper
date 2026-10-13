@@ -21,11 +21,10 @@ else:
 
 class GATv2Conv(MessagePassing):
 
-    def __init__(self, in_channels: Union[int, Tuple[int, int]], out_channels: int, heads: int=1, concat: bool=True, negative_slope: float=0.2, dropout: float=0.0, add_self_loops: bool=True, edge_dim: Optional[int]=None, upd_hidden_dim: int=64, fill_value: Union[float, Tensor, str]='mean', bias: bool=True, share_weights: bool=False, residual: bool=True, ffn_ratio: float=1.0, **kwargs):
+    def __init__(self, in_channels: Union[int, Tuple[int, int]], out_channels: int, concat: bool=True, negative_slope: float=0.2, dropout: float=0.0, add_self_loops: bool=True, edge_dim: Optional[int]=None, upd_hidden_dim: int=64, fill_value: Union[float, Tensor, str]='mean', bias: bool=True, share_weights: bool=False, residual: bool=True, ffn_ratio: float=1.0, **kwargs):
         super().__init__(node_dim=0, **kwargs)
         self.in_channels = in_channels
         self.out_channels = out_channels
-        self.heads = heads
         self.concat = concat
         self.negative_slope = negative_slope
         self.dropout = dropout
@@ -35,17 +34,17 @@ class GATv2Conv(MessagePassing):
         self.residual = residual
         self.share_weights = share_weights
         self.ffn_ratio = ffn_ratio
-        self.att = Parameter(torch.empty(1, heads, out_channels))
+        self.att = Parameter(torch.empty(1, 1, out_channels))
         if isinstance(self.in_channels, int):
             node_dim_l = node_dim_r = self.in_channels
         else:
             node_dim_l, node_dim_r = self.in_channels
         if edge_dim is not None and upd_hidden_dim is not None:
-            self.edge_upd = nn.Sequential(nn.Linear(node_dim_l + node_dim_r + edge_dim, int((node_dim_l + node_dim_r + edge_dim) * self.ffn_ratio)), nn.GLU(dim=-1), nn.Dropout(p=0.1), nn.Linear(int((node_dim_l + node_dim_r + edge_dim) * self.ffn_ratio / 2), heads * out_channels))
-            self.edge_norm = nn.LayerNorm(heads * out_channels)
+            self.edge_upd = nn.Sequential(nn.Linear(node_dim_l + node_dim_r + edge_dim, int((node_dim_l + node_dim_r + edge_dim) * self.ffn_ratio)), nn.GLU(dim=-1), nn.Dropout(p=0.1), nn.Linear(int((node_dim_l + node_dim_r + edge_dim) * self.ffn_ratio / 2), out_channels))
+            self.edge_norm = nn.LayerNorm(out_channels)
         else:
             self.edge_upd = None
-        total_out = out_channels * (heads if concat else 1)
+        total_out = out_channels
         self.node_upd = nn.Sequential(nn.Linear(total_out * 2, int(total_out * 2 * self.ffn_ratio)), nn.GLU(dim=-1), nn.Dropout(p=0.1), nn.Linear(int(total_out * 2 * self.ffn_ratio / 2), total_out))
         if bias:
             self.bias = Parameter(torch.empty(total_out))
@@ -74,7 +73,7 @@ class GATv2Conv(MessagePassing):
         ...
 
     def forward(self, x: Union[Tensor, PairTensor], edge_index: Adj, edge_attr: OptTensor=None, return_attention_weights: Optional[bool]=None):
-        H, C = (self.heads, self.out_channels)
+        H, C = (1, self.out_channels)
         if isinstance(x, Tensor):
             x_src = x_dst = x
         else:
@@ -112,7 +111,7 @@ class GATv2Conv(MessagePassing):
             raise ValueError('edge_attr is required to compute attention coefficients.')
         if edge_attr.dim() == 1:
             edge_attr = edge_attr.view(-1, 1)
-        x = edge_attr.view(-1, self.heads, self.out_channels)
+        x = edge_attr.view(-1, 1, self.out_channels)
         x = F.leaky_relu(x, self.negative_slope)
         alpha = (x * self.att).sum(dim=-1)
         alpha = softmax(alpha, index, ptr, dim_size)
@@ -121,8 +120,8 @@ class GATv2Conv(MessagePassing):
 
     def message(self, alpha: Tensor, edge_attr: OptTensor) -> Tensor:
         if edge_attr is not None:
-            msg = edge_attr.view(-1, self.heads, self.out_channels) * alpha.unsqueeze(-1)
+            msg = edge_attr.view(-1, 1, self.out_channels) * alpha.unsqueeze(-1)
             return msg
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}({self.in_channels}, {self.out_channels}, heads={self.heads})'
+        return f'{self.__class__.__name__}({self.in_channels}, {self.out_channels})'

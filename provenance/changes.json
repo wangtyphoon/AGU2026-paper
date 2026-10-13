@@ -2,6 +2,22 @@
   "status": "local curation; not national HPC reproduction",
   "changes": [
     {
+      "category": "user_correction",
+      "setting": "fixed single-head model API",
+      "original": "configurable heads/num_heads with inconsistent multi-head dimensions",
+      "curated": "remove head-count constructor arguments; fix all model/child widths and singleton axes to original heads=1; factory spec omits heads",
+      "source": "user request; coarse/AR before-after and original-source regressions",
+      "reason": "preserve single-head state-dict names/shapes and exact controlled forward/loss/gradient results; no multi-head support"
+    },
+    {
+      "category": "numerical_correction",
+      "setting": "GWB exact-radius integration",
+      "original": "ring-center trapezoid from 12.5 to 112.5/512.5 km; finite-mask gap bridging",
+      "curated": "strict quadrature embedded directly in existing GNN/Pangu calculation scripts; regular origin q(0)=0 and linear q(R) interpolation over exactly [0,R]",
+      "source": "user request to replace external originals and AGU modules; code backups and hashes under artifacts/gwb_endpoint_corrected/code_replacement",
+      "reason": "align 100/500-km diagnostics with Eq. (16); remove the two temporary standalone programs; completed data outputs retained"
+    },
+    {
       "category": "path_organization",
       "setting": "imports/paths/import-time I/O",
       "original": "loose modules, absolute paths, implicit jobs",
@@ -338,12 +354,12 @@
       "reason": "consistent update budget; stochastic/precision historical equivalence not established"
     },
     {
-      "category": "paper_settings",
-      "setting": "spectral total-energy caption",
-      "original": "V1 k5..87",
-      "curated": "k6..87 (lambda<1000km, effective5376km)",
-      "source": "manuscript Figure5 caption; retained energy plot",
-      "reason": "calculation already uses requested wavelength criterion; caption correction needed"
+      "category": "numerical_correction",
+      "setting": "spectral modal-power aggregation and nominal wavelength",
+      "original": "sum of annular means; 5376/k km; k6..87",
+      "curated": "sum(N_k*Pbar_k)/(174*174)^2; nominal 4872/k km; k5..87",
+      "source": "approved spectral review artifacts/spectral_power_review",
+      "reason": "scalar band mean square, not kinetic energy; no geographic reprojection"
     },
     {
       "category": "necessary_fix",
@@ -525,6 +541,30 @@
       "curated": "necessary source closures/config/docs/tests only; generated artifacts ignored",
       "source": "all requested source trees",
       "reason": "code-only local release; source folders retained"
+    },
+    {
+      "category": "user_correction",
+      "setting": "ACC and forecast/ERA5 activity definition",
+      "original": "spatially centered ACC; mean case spatial standard deviations",
+      "curated": "mean uncentered climatological case ACC; square root of mean centered case variance",
+      "source": "user-approved calculation plan, manuscript Eqs. (10)-(12)",
+      "reason": "make Figure 3-4 diagnostics reproducible from the manuscript formulas; installed after explicit user confirmation on 2026-10-14"
+    },
+    {
+      "category": "numerical_correction",
+      "setting": "signed native-level thermal wind",
+      "original": "900–600 and 600–300 hPa interpolated regressions; ambiguous absolute-value manuscript notation",
+      "curated": "signed equal-weight OLS on native 925/850/700/600 and 600/500/400/300 hPa height ranges within 500 km",
+      "source": "approved user plan; backups and installed hashes under artifacts/thermal_wind_native_levels/code_replacement",
+      "reason": "distinguish Delta Z_core from radial Delta Z_sim; complete four-model replay and Figure 10 replacement"
+    },
+    {
+      "category": "path_organization",
+      "setting": "user-requested workspace cleanup",
+      "original": "four separate correction documents; five completed one-time source utilities; generated build/cache copies",
+      "curated": "one metric-definition document; active runtime/replay/release tools retained",
+      "source": "direct user cleanup request on 2026-10-14",
+      "reason": "reduce clutter; backup retired source/documents in artifacts/cleanup/before_cleanup.zip"
     }
   ]
 }

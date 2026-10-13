@@ -38,7 +38,7 @@ def gnn(job,forecast_dir,target_dir,model='mse',rollout=28):
         if job=='rmse':
             kwargs=dict(common,folder=str(forecast),save_csv=str(out/f'per_channel_rmse_summary_macro_2024_bias_fix_attention_step{rollout}_{suffix}.csv'))
         elif job in ['acc_activity','target_activity']:
-            name=f'per_channel_acc_activity_summary_step{rollout}_{"spectrumv2" if model=="spectral_mse" else suffix}.csv' if job=='acc_activity' else f'target_forecast_activity_summary_step{rollout}.csv'
+            name=f'per_channel_acc_activity_summary_step{rollout}_{suffix}.csv' if job=='acc_activity' else f'target_forecast_activity_summary_step{rollout}.csv'
             kwargs=dict(common,forecast_folder=str(forecast),clim_folder=str(runtime.path('climatology',runtime.artifact_root()/'climatology')),
                         feature_csv=str(feature),save_csv=str(out/name),per_file_csv=str(out/f'{job}_{suffix}_per_file.csv'))
         elif job=='energy':

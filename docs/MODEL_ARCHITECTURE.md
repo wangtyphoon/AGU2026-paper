@@ -1,5 +1,7 @@
 # Corrected model sources and child layers
 
+The curated models use a fixed single attention head. `heads` and `num_heads` are removed from the model and shared-layer constructors and from the training factory specification. Calls must omit these arguments. Tensor dimensions, parameter names and shapes, and operation order remain those of the original `heads=1` implementation; existing single-head state dictionaries remain compatible with strict loading. The singleton head axis is retained internally to preserve the original computations. Multi-head execution is not supported.
+
 The initial curation incorrectly chose `ver_unetG/model_unetT.py` for Stage1. The author's correction supersedes that choice. The old block/k-hop model closure and its separate dependency group were removed; original research checkouts were preserved.
 
 | Stage | Verified source | Curated entry | Levels |

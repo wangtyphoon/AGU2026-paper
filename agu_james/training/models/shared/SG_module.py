@@ -15,22 +15,18 @@ class SGFormerAttention(torch.nn.Module):
 
     Args:
         channels (int): Size of each input sample.
-        heads (int, optional): Number of parallel attention heads.
-            (default: :obj:`1.`)
         head_channels (int, optional): Size of each attention head.
             (default: :obj:`64.`)
         qkv_bias (bool, optional): If specified, add bias to query, key
             and value in the self attention. (default: :obj:`False`)
     """
 
-    def __init__(self, channels: int, heads: int=1, head_channels: int=64, qkv_bias: bool=False) -> None:
+    def __init__(self, channels: int, head_channels: int=64, qkv_bias: bool=False) -> None:
         super().__init__()
-        assert channels % heads == 0
         if head_channels is None:
-            head_channels = channels // heads
-        self.heads = heads
+            head_channels = channels
         self.head_channels = head_channels
-        inner_channels = head_channels * heads
+        inner_channels = head_channels
         self.q = torch.nn.Linear(channels, inner_channels, bias=qkv_bias)
         self.k = torch.nn.Linear(channels, inner_channels, bias=qkv_bias)
         self.v = torch.nn.Linear(channels, inner_channels, bias=qkv_bias)
@@ -49,7 +45,7 @@ class SGFormerAttention(torch.nn.Module):
         """
         B, N, *_ = x.shape
         qs, ks, vs = (self.q(x), self.k(x), self.v(x))
-        qs, ks, vs = map(lambda t: t.reshape(B, N, self.heads, self.head_channels), (qs, ks, vs))
+        qs, ks, vs = map(lambda t: t.reshape(B, N, 1, self.head_channels), (qs, ks, vs))
         if mask is not None:
             mask = mask[:, :, None, None]
             vs.masked_fill_(~mask, 0.0)
@@ -74,11 +70,11 @@ class SGFormerAttention(torch.nn.Module):
         self.v.reset_parameters()
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}(heads={self.heads}, head_channels={self.head_channels})'
+        return f'{self.__class__.__name__}(head_channels={self.head_channels})'
 
 class SGModule(torch.nn.Module):
 
-    def __init__(self, in_channels, hidden_channels, num_layers=2, num_heads=1, dropout=0.5):
+    def __init__(self, in_channels, hidden_channels, num_layers=2, dropout=0.5):
         super().__init__()
         self.attns = torch.nn.ModuleList()
         self.fcs = torch.nn.ModuleList()
@@ -86,7 +82,7 @@ class SGModule(torch.nn.Module):
         self.bns = torch.nn.ModuleList()
         self.bns.append(torch.nn.LayerNorm(hidden_channels))
         for _ in range(num_layers):
-            self.attns.append(SGFormerAttention(hidden_channels, num_heads, hidden_channels))
+            self.attns.append(SGFormerAttention(hidden_channels, head_channels=hidden_channels))
             self.bns.append(torch.nn.LayerNorm(hidden_channels))
         self.dropout = dropout
         self.activation = F.relu

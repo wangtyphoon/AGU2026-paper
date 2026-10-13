@@ -11,7 +11,7 @@
 | 7 | `plot tc` | Four tracking/scalar CSVs; jointly available cases and paired 24-hour windows |
 | 8 | `plot physics` | Three GNN axisymmetric w/divergence profile NPZs, tracking/structure CSVs; 72 h, ERA5 pressure groups |
 | 9 | `plot physics` | Wind–pressure and 100-km SIM/GWB columns from scalar tracking and GWB diagnostics |
-| 10 | `plot physics` | Rmax, B, VTL, VTU columns; paired distributions and marginal statistics |
+| 10 | `plot physics` | Rmax, B, signed -V_T^L / -V_T^U columns; native 925–600 / 600–300 hPa levels; see METRIC_DEFINITIONS.md#signed-thermal-wind |
 | 11 | `plot krathon-track` | Four-model Krathon tracking, 2024 best track, separately sourced IBTrACS USA/JTWC fields |
 | 12 | `plot krathon-fields` | 2024092912 map exports at 24/48/72 h; best-track centers and latitude/longitude |
 | 13 | `plot monthly` (700q output) | 2024102100 MAE/MSE channel_076 maps at steps 36/72/108, 120-step aggregate energy |
@@ -19,4 +19,4 @@
 
 The extra IKE–R8 / 500-km distribution plotting script, heatmap-only experiments, old single-variable plotting variants, interactive debugging and profiling are not needed for Figure 1–14 and were not selected as publication entry points. IKE calculation remains because it is described in the methodology.
 
-The V1 text `k=5–87` conflicts with λ<1000 km at effective length 5376 km. The retained calculation uses k>5376/1000, hence **k=6–87**. Correct the caption rather than relabel the calculation.
+The corrected 174×174 FFT domain uses nominal wavelength 4872/k km (28 km isotropic approximation). Nominal λ<1000 km selects **k=5–87**. Totals now sum mode-count-weighted power with Parseval normalization; they are scalar band mean-square diagnostics, not domain-integrated kinetic energy. Latitude-dependent zonal spacing is not resolved by this nominal mapping. See METRIC_DEFINITIONS.md#spectral-power.

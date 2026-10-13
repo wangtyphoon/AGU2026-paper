@@ -127,6 +127,31 @@ class NumericalContracts(unittest.TestCase):
         from agu_james.training.models.shared.processor__blockG import ProcessorBlock
         from agu_james.training.engine import make_model
         root=Path(os.environ['AGU_RDL_REFERENCE'])/'gnn'
+        # Execute the original child classes independently, preserving their heads=1 API.
+        import importlib
+        import types
+        reference_children = {}
+        child_sources = [
+            ('SG_module.py', 'SG_module'),
+            ('layer/gatv2convNG.py', 'gatv2convNG'),
+            ('layer/gat_edge_before_ffnG_fix.py', 'gat_edge_before_ffnG_fix'),
+            ('layer/gat_edge_ffn_upG_fix.py', 'gat_edge_ffn_upG_fix'),
+            ('layer/processor__blockG.py', 'processor__blockG'),
+        ]
+        for relative, module_name in child_sources:
+            source = root/'ver_unet_scale'/relative
+            parsed = ast.parse(source.read_text(encoding='utf-8-sig'))
+            classes = [node for node in parsed.body if isinstance(node, ast.ClassDef)]
+            namespace = dict(vars(importlib.import_module(f'agu_james.training.models.shared.{module_name}')))
+            namespace.update(reference_children)
+            name = f'_agu_original_single_head_{module_name}'
+            namespace['__name__'] = name
+            original_module = types.ModuleType(name)
+            original_module.__dict__.update(namespace)
+            sys.modules[name] = original_module
+            namespace = original_module.__dict__
+            exec(compile(ast.Module(body=classes, type_ignores=[]), str(source), 'exec'), namespace)
+            reference_children.update({node.name: namespace[node.name] for node in classes})
         for relative in ['SG_module.py','layer/gatv2convNG.py','layer/gat_edge_ffn_upG_fix.py','layer/gat_edge_before_ffnG_fix.py','layer/processor__blockG.py']:
             a=ast.parse((root/'ver_unet_scale'/relative).read_text(encoding='utf-8-sig'))
             b=ast.parse((root/'ver_autoregressive'/relative).read_text(encoding='utf-8-sig'))
@@ -135,12 +160,40 @@ class NumericalContracts(unittest.TestCase):
             parsed=ast.parse((root/version/'model_unet.py').read_text(encoding='utf-8-sig'))
             cls=next(n for n in parsed.body if isinstance(n,ast.ClassDef) and n.name=='HeteroGNN')
             ns=dict(torch=torch,nn=torch.nn,HeteroData=HeteroData,checkpoint=checkpoint,GATv2ConvN=GATv2ConvN,GATv2Conv_up=GATv2Conv_up,ProcessorBlock=ProcessorBlock)
+            ns.update(reference_children)
             exec(compile(ast.Module(body=[cls],type_ignores=[]),str(root/version/'model_unet.py'),'exec'),ns)
             graph=toy_graph(level)
             model,spec=make_model(stage,graph,dict(hidden_dim=8,processor_layers=[1]*(level-2),use_checkpoint=False))
             reference=ns['HeteroGNN'](**spec);reference.load_state_dict(model.state_dict(),strict=True)
             model.eval();reference.eval()
             with torch.no_grad():torch.testing.assert_close(model(graph),reference(graph),rtol=0,atol=0)
+            model.train();reference.train()
+            torch.manual_seed(911);actual=model(graph)
+            torch.manual_seed(911);expected=reference(graph)
+            torch.testing.assert_close(actual,expected,rtol=0,atol=0)
+            actual.square().mean().backward();expected.square().mean().backward()
+            for (name,p),(old_name,old_p) in zip(model.named_parameters(),reference.named_parameters()):
+                self.assertEqual(name,old_name)
+                if p.grad is None:self.assertIsNone(old_p.grad)
+                else:torch.testing.assert_close(p.grad,old_p.grad,rtol=0,atol=0)
+
+    def test_fixed_single_head_api(self):
+        import inspect
+        from agu_james.training.models.ar.model_unet import HeteroGNN as AR
+        from agu_james.training.models.coarse.model_unet import HeteroGNN as Coarse
+        from agu_james.training.models.shared.gatv2convNG import GATv2ConvN
+        from agu_james.training.models.shared.gat_edge_before_ffnG_fix import GATv2Conv
+        from agu_james.training.models.shared.gat_edge_ffn_upG_fix import GATv2Conv_up
+        from agu_james.training.models.shared.processor__blockG import ProcessorBlock
+        from agu_james.training.models.shared.SG_module import SGModule, SGFormerAttention
+        for cls,args in [(AR,(256,7,8,116)),(Coarse,(256,7,8,116)),
+                         (GATv2ConvN,(8,8)),(GATv2Conv,(8,8)),(GATv2Conv_up,(8,8)),
+                         (ProcessorBlock,(8,6,1)),(SGModule,(8,8)),(SGFormerAttention,(8,))]:
+            with self.subTest(cls=cls.__name__):
+                self.assertNotIn('heads',inspect.signature(cls).parameters)
+                self.assertNotIn('num_heads',inspect.signature(cls).parameters)
+                for parameter in ['heads','num_heads']:
+                    with self.assertRaises(TypeError):cls(*args,**{parameter:2})
 
     def test_optimizer_counter_counts_accumulated_updates(self):
         import tempfile
@@ -218,7 +271,14 @@ class NumericalContracts(unittest.TestCase):
         from agu_james.plotting import metrics,energy
         root=Path(os.environ['AGU_PAPER_REFERENCE'])
         for name,module,relative in [('original_metrics',metrics,'evaluation_metric/plot_james_metrics.py'),('original_energy',energy,'spectrum analysis/plot_spectral_energy_summary.py')]:
-            spec=importlib.util.spec_from_file_location(name,root/relative);old=importlib.util.module_from_spec(spec);sys.modules[name]=old;spec.loader.exec_module(old)
+            spec=importlib.util.spec_from_file_location(name,root/relative);old=importlib.util.module_from_spec(spec);sys.modules[name]=old
+            # Standalone research scripts import shared helpers beside their source.
+            previous_path=sys.path.copy()
+            try:
+                sys.path.insert(0,str((root/relative).parent))
+                spec.loader.exec_module(old)
+            finally:
+                sys.path[:]=previous_path
             if module is metrics:
                 a=module.load_data(root,28);b=old.load_data(root,28)
                 # Compare the complete normalized metric table.

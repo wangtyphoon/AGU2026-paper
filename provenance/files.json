@@ -63,7 +63,7 @@
     },
     {
       "file": "agu_james/analysis/gnn/acc_activity.py",
-      "sha256": "ccb3137cfd02ad455907dfc47e88c2cbd159cf21a788ea0352e25c66d5f11189",
+      "sha256": "ea37f18fcc7e549ca721982b4c4ca611b926a925ab2e5925a86106038c738751",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\acc_forecast_acitivity.py",
@@ -103,11 +103,11 @@
     },
     {
       "file": "agu_james/analysis/gnn/energy.py",
-      "sha256": "4db8b4521f6b53b8ac06b07353dd6760ebd2d6bb27edddb5cc1f875e186d0e70",
+      "sha256": "da457704769f7b20329cb188f737715f4bb1da5ad7274ecaa6c55905326aeb2d",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\spectrum_all_stat.py",
-          "source_sha256": "3a3855997b06f690085929fd520da6bce6cd55d040304720e08087fdb47987ef"
+          "source_sha256": "35f98ae284e3658fd5c2f04a33c6ed50744eee2133060cc59c6135f76094b03c"
         }
       ]
     },
@@ -123,7 +123,7 @@
     },
     {
       "file": "agu_james/analysis/gnn/target_activity.py",
-      "sha256": "127b65c88355f96847e289f089a1270690d1c1fc4cdbfdc2cf6cc61db12062fb",
+      "sha256": "54a0df3f2b3e0bca78e87335dcfd7e9e551992689e9fc9979624dc3e912468e1",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\forecast_activity_by_step.py",
@@ -143,7 +143,7 @@
     },
     {
       "file": "agu_james/analysis/gnn/tc_gwb.py",
-      "sha256": "5cbc6cab18cc75c74f2a765fd031185ba9fb4ee202258040606aad00d1742403",
+      "sha256": "df05618489a1a2ca6e07c774f7c21be8beb369c0663789d8c0892162f5c7dbb3",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_gwb_700z_to_csv.py",
@@ -163,7 +163,7 @@
     },
     {
       "file": "agu_james/analysis/gnn/tc_phase.py",
-      "sha256": "0a344abb74e7907fddd04191d3b6fb51648de7b0422bc564276a0ad9e5ef9d71",
+      "sha256": "bf9221b643b339b627fa3c5c5f27913f3d729afd22ce3b02f2ce89d0ebe030bd",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_phase_core_to_csv.py",
@@ -203,7 +203,7 @@
     },
     {
       "file": "agu_james/analysis/jobs.py",
-      "sha256": "25b503893d4826b498824f9e17f00ab679f6ba2e04533fd0faea3d72f79d6ec0",
+      "sha256": "e0e0ea62f9e33dcf9da8b32989020c01c8204f10ffad4ac569d8306f70fee686",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -223,7 +223,7 @@
     },
     {
       "file": "agu_james/analysis/pangu/acc_metric_prs.py",
-      "sha256": "a100aecf0f0d42e56c9723cca578e7bcdcd576b710360626e199e36da5ccfe39",
+      "sha256": "207470a728a2b2f4ba5ed149ac81a30e3b8e361bd48f27334f5c1e5c620839fc",
       "sources": [
         {
           "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\acc_metric_prs.py",
@@ -233,7 +233,7 @@
     },
     {
       "file": "agu_james/analysis/pangu/acc_metric_sfc.py",
-      "sha256": "fd92e7f7e96995ba8c572660858dcb459723efae7d1f7be6443d35052d752056",
+      "sha256": "bb6345dd463844c3f67918829cad4c7c9200d35d7b4b3bcfa8606aa13163db44",
       "sources": [
         {
           "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\acc_metric_sfc.py",
@@ -243,7 +243,7 @@
     },
     {
       "file": "agu_james/analysis/pangu/axisymmetric_b_vt_metrics_all.py",
-      "sha256": "5f4593b058e7559481fb447ff5fc3e55ff42e6a6724cba304bbdc7039551c70b",
+      "sha256": "d9723266e8a5d57f766c83dc55693fc22df949f089b0f58fca0381228fed4a84",
       "sources": [
         {
           "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\axisymmetric_b_vt_metrics_all.py",
@@ -253,7 +253,7 @@
     },
     {
       "file": "agu_james/analysis/pangu/axisymmetric_gwb_metrics_all.py",
-      "sha256": "1b3e3c01269b44f2b88161c2fac7441789e5caf06e59d3c0e5566d40ff66e8df",
+      "sha256": "d368a3528543ad5e5a1ace1b001cdf0a7690ef81934fbc11a454be6bb1811abb",
       "sources": [
         {
           "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\axisymmetric_gwb_metrics_all.py",
@@ -293,7 +293,7 @@
     },
     {
       "file": "agu_james/analysis/pangu/spectrum_multistep_prs.py",
-      "sha256": "e5f24e4bf11dbdd7c6ef9859ac4ec34581e798aa8b3c301b1a39d3201c108828",
+      "sha256": "d07ae29255b187ed90e9996f303895bcb05260b62762759ab0df2df721cfd194",
       "sources": [
         {
           "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\spectrum_multistep_prs.py",
@@ -303,7 +303,7 @@
     },
     {
       "file": "agu_james/analysis/pangu/spectrum_multistep_sfc.py",
-      "sha256": "e85260174a5fe9c4987dbc2721b66e2866c181d954522cdb6427995588cd12d6",
+      "sha256": "7fc1dbd0dd7debc1c7743c5802da06ca01519fbb9aae4069534d174b5eb6c19c",
       "sources": [
         {
           "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\spectrum_multistep_sfc.py",
@@ -362,6 +362,16 @@
       ]
     },
     {
+      "file": "agu_james/analysis/spectral.py",
+      "sha256": "b45bb15a206ac3c3dc937846a1448b56e6ae431860bead534f2a2bb31fef05b7",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ]
+    },
+    {
       "file": "agu_james/config/channels_ar.json",
       "sha256": "3e60488b3bd1ada1a2056f473cb8fbfe111da29fae39e1d4d4503022105ff5f2",
       "sources": [
@@ -383,7 +393,7 @@
     },
     {
       "file": "agu_james/contracts.py",
-      "sha256": "ec03f1405a7699614c49b6a540b9e87bb337b2aeac4645b44c7f2dfb67142029",
+      "sha256": "afcdcb20fb5175f18be1a24c6a01a9242da53d17a51e166998c98ff6f9fc17a4",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -632,6 +642,16 @@
       ]
     },
     {
+      "file": "agu_james/plotting/.mplconfig/fontlist-v390.json",
+      "sha256": "ac04bc38c3fe305fd423375de7bf983143f02ecc4911b1538609ed6ab0e5b66d",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ]
+    },
+    {
       "file": "agu_james/plotting/__init__.py",
       "sha256": "5522022e1544d96b1866f606588b499856d686997aa4c5b42d55c4ba4920886f",
       "sources": [
@@ -653,11 +673,11 @@
     },
     {
       "file": "agu_james/plotting/energy.py",
-      "sha256": "1bf7fe656f42013af87a5d19b1c0cde9a86fb3bdf4ec628dca89bae4f6d912f9",
+      "sha256": "97520e587a02c00c7ea30330ab029326f4fbf9fda0e146acb9e61ffdbcafd3cf",
       "sources": [
         {
           "source": "D:\\paper\\paper_with_code\\spectrum analysis\\plot_spectral_energy_summary.py",
-          "source_sha256": "4abe528228ed83b8c722e170bc1095e7ac6b82ec0076e257a23df1af1f5c665d"
+          "source_sha256": "c97f517fb36dca3c1aacac39069620cc99bcfe3c896282af68361aa488200c0c"
         }
       ]
     },
@@ -713,11 +733,11 @@
     },
     {
       "file": "agu_james/plotting/monthly.py",
-      "sha256": "898052d43f4e6a104fe8a41f6529a16bcf375cf2b52ee83f093394d443b791bc",
+      "sha256": "83a845e356e99d759662beca83563dc026c5f86315fe78c89a854413e9e8be97",
       "sources": [
         {
           "source": "D:\\paper\\paper_with_code\\case_study and monthly simulation\\plot_monthly_spatial_spectrum.py",
-          "source_sha256": "e1048a133ca88e58a63f23cc8a1431ca37116fc3a4b164c632761d728253b8cd"
+          "source_sha256": "215a2f1851eb5686aef06c1c1aebfc7766ea12c6ff06f19967d7767a04853674"
         }
       ]
     },
@@ -743,7 +763,7 @@
     },
     {
       "file": "agu_james/plotting/tc_distributions.py",
-      "sha256": "335884699aa0cb9994b75b02791554427ca049dea6c85b13abc577f015f86f4e",
+      "sha256": "dbb2f51870eb287cde7668054119ab7fdbc344a4dcbd99edc8f2b5a0bff4e465",
       "sources": [
         {
           "source": "D:\\paper\\paper_with_code\\tc_verification\\tc_distribution_plots.py",
@@ -753,7 +773,7 @@
     },
     {
       "file": "agu_james/plotting/tc_physics.py",
-      "sha256": "113b09295777e6bcfa1130dae374d16b5b4f5f23cf90a7bbf5b51daab2c31ab1",
+      "sha256": "52a5cdc2a2fabdae5ceeb2998f88b69aa18e571af46c88bd99f48b2fa5fb07ac",
       "sources": [
         {
           "source": "D:\\paper\\paper_with_code\\tc_verification\\plot_tc_physics_structure.py",
@@ -803,7 +823,7 @@
     },
     {
       "file": "agu_james/training/engine.py",
-      "sha256": "0ef46b109bc8681f445b4ae57f868518b9dad4efc15569cfa95d0329c84326c2",
+      "sha256": "cfba6d01d35e6c00eaf6f0f4a4e85b909ccfc6b26cebbc3271deb2a77ac3edbe",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -853,7 +873,7 @@
     },
     {
       "file": "agu_james/training/models/ar/model_unet.py",
-      "sha256": "99788721eb22b9f16f0600d7a16210cf50f8e781f67d8637a29e0321e058c4f7",
+      "sha256": "9facf3d0e5971a0e09568eebad089113202cb74613dcb3e96fffa7fe81294e8a",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\model_unet.py",
@@ -883,7 +903,7 @@
     },
     {
       "file": "agu_james/training/models/coarse/model_unet.py",
-      "sha256": "10fda3f2ebdcbb6277a96fb13063aaa00baa31f24cbcb734ab78aefad0d02493",
+      "sha256": "54dffc9d374cf03ca1394163c5753f7ef3334f4d039307fd378993beb1695b72",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\model_unet.py",
@@ -903,7 +923,7 @@
     },
     {
       "file": "agu_james/training/models/shared/gat_edge_before_ffnG_fix.py",
-      "sha256": "91b799b9003067b89a36be6920553c85d4ba6b3942d6e13a3e59572c1a8965c9",
+      "sha256": "2a5a25d32d69d3ded549453f968f2a8e7032285f19e6387a0068982623210d35",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gat_edge_before_ffnG_fix.py",
@@ -917,7 +937,7 @@
     },
     {
       "file": "agu_james/training/models/shared/gat_edge_ffn_upG_fix.py",
-      "sha256": "2bd65306b34f82ec4358f564a80006e0438911c6b07b50672f29cc1a8db8ecc4",
+      "sha256": "aeb7a0c4b3a038c232032aec07d7572372f7da0dd33b923034b5826517dfa3b6",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gat_edge_ffn_upG_fix.py",
@@ -931,7 +951,7 @@
     },
     {
       "file": "agu_james/training/models/shared/gatv2convNG.py",
-      "sha256": "e7af449f485ff070d60245519b9717ebd468942e82b99268832f30755e2b5f7b",
+      "sha256": "635042bb5664cef8712a3e0dcf653f45b274daf8b5ef61c8318ad9beb8688de0",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gatv2convNG.py",
@@ -945,7 +965,7 @@
     },
     {
       "file": "agu_james/training/models/shared/processor__blockG.py",
-      "sha256": "1c972bf776b833ca09fe019644c4eae178974ca76a381067acf9ff156c1f9aef",
+      "sha256": "44a600c3eaefe09d35cc182bde8bc815f31b5446c605f50047afb69381263618",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\processor__blockG.py",
@@ -959,7 +979,7 @@
     },
     {
       "file": "agu_james/training/models/shared/SG_module.py",
-      "sha256": "8c556509f48b0cabdac15a7966ebdc72bc2d8ca9e70ebe04522ef20ec5e3d26b",
+      "sha256": "c7a9f2e7ff8b2f32610a3e5017228769adf5c38f915fc74da517ad77598399f2",
       "sources": [
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\SG_module.py",
@@ -1082,6 +1102,16 @@
       ]
     },
     {
+      "file": "configs/gwb.local.json",
+      "sha256": "8cd08b1c6510cae6cf600ea212780b6b80031db5afa4b0abc7778bf0d3fb2a43",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ]
+    },
+    {
       "file": "configs/paper.example.json",
       "sha256": "4b319e6f89ea055b73392e21d1a814da4c24080360521b4011210bab0357aba3",
       "sources": [
@@ -1113,7 +1143,7 @@
     },
     {
       "file": "docs/FIGURE_MAP.md",
-      "sha256": "148159de1c10333088908aacab385d024f06c1a13e2e40083d6ea236d399d585",
+      "sha256": "ed07041af6d94895711a21c1f02c7bc952d71c1c0e13237d4d2d2b551f03384f",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1122,8 +1152,18 @@
       ]
     },
     {
+      "file": "docs/METRIC_DEFINITIONS.md",
+      "sources": [
+        {
+          "source": "retained current source or consolidated documentation; see changes.json",
+          "source_sha256": null
+        }
+      ],
+      "sha256": "eb8254f9929aeb4005a652b5924843a713aa936f6883569c7a2bf4b48c12fca4"
+    },
+    {
       "file": "docs/MODEL_ARCHITECTURE.md",
-      "sha256": "dbee750d57f6bdf8cdae836bb029f6a22798682451b5622c9525092ec7f2087f",
+      "sha256": "286f35c2e22ab7f1cb007450298dc96bacf6970db4a0f8f73f903c6bf6ff34a7",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1133,7 +1173,7 @@
     },
     {
       "file": "docs/MODIFICATIONS.md",
-      "sha256": "a4939b91e02578e2618d0da965066e6ba138e630d4ed77624cf8cb2f9f7ae065",
+      "sha256": "5b6fa3367ffa96452be09bd5a30615f7fe7b3bba8198109861725cb6498842b7",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1153,7 +1193,7 @@
     },
     {
       "file": "docs/VALIDATION.md",
-      "sha256": "149e5e7c2e10a899701b27b2ec8f4145257f196cbe794a20f62056d56cf5b188",
+      "sha256": "b7ef88bb96e691dc20786ffe0ff1021f2054640000600314f23e7106f2a21266",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1183,7 +1223,7 @@
     },
     {
       "file": "provenance/changes.json",
-      "sha256": "680fe078d445a4c94391be6ef8d2b5f729cd6ff42e8fd5a48dd1d40504ef0289",
+      "sha256": "fd372ef4fabf7c11695e49cbd6314ded4f199fb09f4cea07df3b4045646a22bd",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1193,7 +1233,7 @@
     },
     {
       "file": "provenance/reference_sources.json",
-      "sha256": "0df30106d559005b7c91ec5664ec3f8e554cc065c98bf6cd641c11780523afc4",
+      "sha256": "89546d86f503df610824a4919bf727c987c623d877b783b3e63b0169f4cf099a",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1203,7 +1243,7 @@
     },
     {
       "file": "provenance/sources.json",
-      "sha256": "828ee940156a0c2e1e2d2147142d48ad6e9f6f6a08243dd9ee1d1393d7766e70",
+      "sha256": "3b43c94c5e3fb79f44e3d022612f1e71586f6815234ec76d2b74ed7356164c73",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1223,7 +1263,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "67700cf0d58196b5d6a21da333f3f9e8cc7b31d31a8bbe3b9873e73e682953f8",
+      "sha256": "735c22975abae84f5d850580374bc3c3c156de23cf3dcc2837f74a49a03d4d69",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1243,7 +1283,17 @@
     },
     {
       "file": "tests/test_contracts.py",
-      "sha256": "6ff06d3e5dc7dd840e808a19141d58a4c509f4a3ef0c35e4a7321c6ab9fe39c3",
+      "sha256": "ed504e756610cca5d14654bd5eda441cf134d60b419507154abb101295ff5f5a",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ]
+    },
+    {
+      "file": "tests/test_gwb.py",
+      "sha256": "c12d8a11aafca162fd93ac60a4c6dc62c08b4a642067c8ea9c8ad7704189e005",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1253,7 +1303,7 @@
     },
     {
       "file": "tests/test_numerics.py",
-      "sha256": "06868ea6ee80e7911464fee55ea4bc456fbf1f978d8b9fe834412c03aafc2ffa",
+      "sha256": "4ce34f8cb9a2336564cd808676dad92471b98544399517a9ae2ba6c1f6596f88",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1272,6 +1322,26 @@
       ]
     },
     {
+      "file": "tests/test_spectral_power.py",
+      "sha256": "641cf7c7d0fe4ef88951575823f74a966da0de62375eb69dae38743f39c1cb68",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ]
+    },
+    {
+      "file": "tests/test_thermal_wind.py",
+      "sources": [
+        {
+          "source": "newly authored for approved thermal-wind correction",
+          "source_sha256": null
+        }
+      ],
+      "sha256": "0899fd992cb3da86cd255e67ba67bb7a13db73feed5bba802952e9bf33fc0b56"
+    },
+    {
       "file": "THIRD_PARTY_NOTICES.md",
       "sha256": "8d8a38bf7110e7c43caaab4b72915e4a03f196b0bc7022042b0d640c25140aed",
       "sources": [
@@ -1282,24 +1352,24 @@
       ]
     },
     {
-      "file": "tools/curate_sources.py",
-      "sha256": "3370cc1020174c4f6ce19d1df894f92d3addb3c32746708c787ea9f29630a43e",
+      "file": "tools/recompute_thermal_wind.py",
       "sources": [
         {
-          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source": "newly authored for approved thermal-wind correction",
           "source_sha256": null
         }
-      ]
+      ],
+      "sha256": "a0fa9720cf9ccce2e7d8cc126736147b084713421bec827d2e583d473e2181df"
     },
     {
-      "file": "tools/prepare_manifest.py",
-      "sha256": "e03e6c9cbb1b5b1e001808cec0c5d7ac84df2c6b9cb58f97a322a55a0b18ee46",
+      "file": "tools/report_thermal_wind.py",
       "sources": [
         {
-          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source": "newly authored for approved thermal-wind correction",
           "source_sha256": null
         }
-      ]
+      ],
+      "sha256": "1f9b13fa1336053ce1d9a899b49f49a09a8ae1c0d784fb56e6cf2e0af2aff159"
     },
     {
       "file": "tools/run_curriculum.py",

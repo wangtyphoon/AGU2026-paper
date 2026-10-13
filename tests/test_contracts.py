@@ -89,7 +89,7 @@ class PaperContracts(unittest.TestCase):
     def test_cutoff_uses_power_not_amplitude(self):
         self.assertEqual(cutoff_from_energy([0,1,2,3],[100,1,.89,.8],[1,1,1,1]),2)
         self.assertTrue(np.isnan(cutoff_from_energy([0,1],[0,2],[0,1])))
-        self.assertEqual(np.flatnonzero(short_wavelength_mask(np.arange(88)))[0],6)
+        self.assertEqual(np.flatnonzero(short_wavelength_mask(np.arange(88)))[0],5)
 
     def test_channels(self):
         channels=channel_config()

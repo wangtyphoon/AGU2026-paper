@@ -1,5 +1,3 @@
-# Derived from case_study and monthly simulation/plot_monthly_spatial_spectrum.py
-# See provenance/sources.json for original hash and modifications.
 """Combine monthly case maps with the existing 30-day aggregate spectra.
 
 Run from any directory. Map lead days must exist in both monthly exports.
@@ -104,21 +102,21 @@ def render(config, rows, series, context, extent, days, run_tag, output):
             ax.axhline(1, color='0.4', linestyle=(0, (2, 3)), linewidth=0.9)
             ax.grid(alpha=0.22)
             ax.set_axisbelow(True)
-        spectral.set_title(f'(b) {spectral_channel}: spectral energy ratio', loc='left', fontsize=11)
-        spectral.set_xlabel('Wavelength (km)')
+        spectral.set_title(f'(b) {spectral_channel}: annular power ratio', loc='left', fontsize=11)
+        spectral.set_xlabel('Nominal wavelength (km; 28 km grid)')
         spectral.set_ylabel('Forecast / ERA5')
         spectral.set_xscale('log')
-        spectral.set_xlim(5376, 5376 / 87)
-        spectral.xaxis.set_major_locator(FixedLocator([5000, 2000, 1000, 500, 200, 100]))
+        spectral.set_xlim(energy.EFFECTIVE_LENGTH_KM, energy.EFFECTIVE_LENGTH_KM / 87)
+        spectral.xaxis.set_major_locator(FixedLocator([4000, 2000, 1000, 500, 200, 100]))
         spectral.xaxis.set_major_formatter(ScalarFormatter())
         spectral.set_ylim(*energy.ratio_limits([s.ratio[np.isin(s.lead_hours, np.array(days) * 24)] for s in series], include_zero=True))
-        total.set_title(f'(c) {spectral_channel}: energy ratio (<1000 km)', loc='left', fontsize=11)
+        total.set_title(f'(c) {spectral_channel}: band power ratio (nominal <1000 km)', loc='left', fontsize=11)
         total.set_xlabel('Forecast lead time (days)')
-        total.set_ylabel('Energy ratio (<1000 km)')
+        total.set_ylabel('Band power ratio (nominal <1000 km)')
         total.set_xlim(0, 30)
         total.set_xticks(np.arange(0, 31, 5))
         total.set_ylim(*energy.ratio_limits([s.total_ratio for s in series]))
-        fig.suptitle(f'{map_title} and {spectral_channel} energy ratios', fontsize=16, y=0.965)
+        fig.suptitle(f'{map_title} and {spectral_channel} power ratios', fontsize=16, y=0.965)
         fig.text(0.055, 0.887, f'(a) {map_title} | Single case: {run_tag} UTC', fontsize=11)
         handles = [Line2D([], [], color=energy.MODEL_STYLES[s.model][1], label=s.model, linewidth=2) for s in series]
         handles += [Line2D([], [], color='0.3', linestyle=style, label=f'Day {day:g}') for day, style in zip(days, energy.LEAD_STYLES)]
@@ -132,10 +130,10 @@ def render(config, rows, series, context, extent, days, run_tag, output):
         for i, hours in enumerate(s.lead_hours):
             for j, k in enumerate(s.k):
                 ratio = s.ratio[i, j]
-                spectral_rows.append((s.model, s.channel, int(hours), hours / 24, int(k), 5376 / k, s.forecast[i, j], s.target[i, j], ratio if np.isfinite(ratio) else ''))
+                spectral_rows.append((s.model, s.channel, int(hours), hours / 24, int(k), energy.EFFECTIVE_LENGTH_KM / k, s.forecast[i, j], s.target[i, j], ratio if np.isfinite(ratio) else ''))
             total_rows.append((s.model, s.channel, int(hours), hours / 24, s.forecast_total[i], s.target_total[i], s.total_ratio[i], 1000, '<'))
-    write_csv(Path(f'{stem}_spectral.csv'), ('model', 'channel', 'lead_hours', 'lead_days', 'k', 'wavelength_km', 'forecast_energy', 'target_energy', 'energy_ratio'), spectral_rows)
-    write_csv(Path(f'{stem}_totals.csv'), ('model', 'channel', 'lead_hours', 'lead_days', 'forecast_total_energy', 'target_total_energy', 'total_energy_ratio', 'wavelength_cutoff_km', 'wavelength_comparison'), total_rows)
+    write_csv(Path(f'{stem}_spectral.csv'), ('model', 'channel', 'lead_hours', 'lead_days', 'k', 'wavelength_km', 'forecast_annular_mean_power', 'target_annular_mean_power', 'power_ratio'), spectral_rows)
+    write_csv(Path(f'{stem}_totals.csv'), ('model', 'channel', 'lead_hours', 'lead_days', 'forecast_band_mean_square', 'target_band_mean_square', 'band_power_ratio', 'wavelength_cutoff_km', 'wavelength_comparison'), total_rows)
     return stem
 
 def main():
@@ -166,7 +164,7 @@ def main():
                     raise ValueError(f'{s.model}/{s.channel}: missing day {day}')
         prepared.append((config, rows, paths, series))
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    manifest = {'created_utc': datetime.now(timezone.utc).isoformat(), 'run_tag': args.run_tag, 'days': args.days, 'steps': [int(d * 4) for d in args.days], 'extent': extent, 'spectrum_population': 'existing aggregate statistics (not the single map case)', 'spectral_sources': [str(energy.DATA_DIR / 'ours' / f'per_channel_energy_2024_fix_attention_step120_{suffix}.npz') for suffix in ('spectrum', 'spectrum_ver2')], 'feature_table': str(energy.DATA_DIR / 'next_feature_table_weight.csv'), 'coordinate_sources': [str(maps.LAT_PATH), str(maps.LON_PATH)], 'effective_length_km': 5376, 'exclude_dc': True, 'energy_wavelength_cutoff_km': 1000, 'energy_wavelength_comparison': '<', 'rmse_weights': 'cos(latitude), zero boundary at min distance <=8 pixels, normalized mean', 'model_styles': {s: energy.MODEL_STYLES[s][1] for s in MODEL_ROOTS}, 'figures': []}
+    manifest = {'created_utc': datetime.now(timezone.utc).isoformat(), 'run_tag': args.run_tag, 'days': args.days, 'steps': [int(d * 4) for d in args.days], 'extent': extent, 'spectrum_population': 'existing aggregate statistics (not the single map case)', 'spectral_sources': [str(energy.DATA_DIR / 'ours' / f'per_channel_energy_2024_fix_attention_step120_{suffix}.npz') for suffix in ('spectrum', 'spectrum_ver2')], 'feature_table': str(energy.DATA_DIR / 'next_feature_table_weight.csv'), 'coordinate_sources': [str(maps.LAT_PATH), str(maps.LON_PATH)], 'effective_length_km': energy.EFFECTIVE_LENGTH_KM, 'fft_shape': [174, 174], 'band_aggregation': 'sum(N_k * annular_mean)/(174*174)^2', 'scale_interpretation': 'nominal 28 km isotropic index grid; not projected wavelength', 'exclude_dc': True, 'energy_wavelength_cutoff_km': 1000, 'energy_wavelength_comparison': '<', 'rmse_weights': 'cos(latitude), zero boundary at min distance <=8 pixels, normalized mean', 'model_styles': {s: energy.MODEL_STYLES[s][1] for s in MODEL_ROOTS}, 'figures': []}
     for config, rows, paths, series in prepared:
         stem = render(config, rows, series, context, extent, args.days, args.run_tag, args.output_dir)
         manifest['figures'].append({'name': config[0], 'map_channel': config[1], 'spectral_channel': config[2], 'map_limits': [0, config[5]], 'map_sources': paths, 'outputs': [str(stem.with_suffix(f'.{ext}')) for ext in ('png', 'pdf')] + [f'{stem}_{kind}.csv' for kind in ('map_rmse', 'spectral', 'totals')]})
