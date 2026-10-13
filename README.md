@@ -18,7 +18,7 @@ python -m agu_james.workflow --config configs/paper.example.json --dry-run train
 python -m unittest discover -s tests -v
 ```
 
-Stage-1 graph attention also needs `torch-scatter` and `torch-sparse` matching the installed PyTorch/CUDA combination. Pangu needs ONNX Runtime; select **either** CPU `onnxruntime` or GPU `onnxruntime-gpu`. See [environment notes](docs/ENVIRONMENTS.md). Commands shown as `python` refer to the environment selected by the researcher.
+All GNN stages use the same GAT/SG child-layer architecture. The corrected Stage-1 source is `ver_unet_scale/model_unet.py` (levels3–6); Stages2–4 use `ver_autoregressive/model_unet.py` (levels3–7). See [model source comparison](docs/MODEL_ARCHITECTURE.md). These retained model closures have no direct torch-scatter/torch-sparse requirement. Pangu needs ONNX Runtime; select **either** CPU `onnxruntime` or GPU `onnxruntime-gpu`. See [environment notes](docs/ENVIRONMENTS.md). Commands shown as `python` refer to the environment selected by the researcher.
 
 ## Organization
 
@@ -38,6 +38,6 @@ The original research checkouts remain read-only. `tools/curate_sources.py` is a
 
 Local checks cover syntax/import safety, 116-channel order, calendar splits and complete sequences, nine-cell boundaries, effective batches, optimizer-update schedules, spectral cutoff semantics, retained loss/coherence numerical equivalence, model forward/backward, common-case TC tables, and existing metric/energy inputs. Representative figures were rendered and visually inspected; generated QA data/figures are ignored by Git.
 
-`docs/VALIDATION.md` distinguishes executed checks from full ERA5 downloads, full graph construction, four-stage retraining, distributed/HPC verification and real ONNX inference. In particular, consult the unresolved **MAE spectral-bias normalization and coarse attention** audit before claiming exact agreement with the national HPC run.
+`docs/VALIDATION.md` distinguishes executed checks from full ERA5 downloads, full graph construction, four-stage retraining, distributed/HPC verification and real ONNX inference. In particular, consult the unresolved **MAE spectral-bias normalization** audit before claiming exact agreement with the national HPC run. The former coarse source/attention selection has been corrected.
 
 The source archive described by [AGU guidance](https://data.agu.org/resources/agu-data-software-sharing-guidance) is separate from a GitHub development repository. No public data/archive availability is asserted here.

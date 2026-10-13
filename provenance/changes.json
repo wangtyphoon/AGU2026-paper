@@ -12,16 +12,16 @@
     {
       "category": "path_organization",
       "setting": "duplicate model layers",
-      "original": "multiple copies",
-      "curated": "shared only for identical original SHA-256",
+      "original": "multiple copies, some differing in comments/format",
+      "curated": "shared only for identical original AST; original byte and AST hashes retained",
       "source": "sources.json records marked merged",
-      "reason": "avoid merging different scientific implementations"
+      "reason": "confirm semantic equivalence before merging; corrected coarse/AR dependency closures have identical child ASTs"
     },
     {
       "category": "paper_settings",
       "setting": "training schedule and effective batch",
       "original": {
-        "ver_unetG": {
+        "ver_unet_scale": {
           "grid_size": [
             192,
             192
@@ -41,18 +41,6 @@
             12,
             8,
             4
-          ],
-          "k_hop": [
-            12,
-            10,
-            6,
-            6
-          ],
-          "trans_layer": [
-            2,
-            2,
-            1,
-            1
           ],
           "warmup_lr": 1e-08,
           "patience": 10,
@@ -334,12 +322,12 @@
       "reason": "match paper reference period; recomputed ACC changes expected"
     },
     {
-      "category": "paper_settings",
+      "category": "preserved_local_reference",
       "setting": "Stage1 objective",
-      "original": "weighted RMSE",
+      "original": "weighted MSE",
       "curated": "weighted MSE",
-      "source": "ver_unetG/train_script/training.py; approved MSE-stage specification",
-      "reason": "paper-setting synchronization; deliberately not source-equivalent training"
+      "source": "ver_unet_scale/train_script/training.py",
+      "reason": "corrected coarse source already implements paper MSE objective"
     },
     {
       "category": "paper_settings",
@@ -475,12 +463,52 @@
       "reason": "avoid silent new method; explicit discrepancy"
     },
     {
-      "category": "unresolved_scientific_audit",
-      "setting": "coarse attention",
-      "original": "train_auto imports model_unetT block/k-hop processor",
-      "curated": "same source closure retained; coarse dependencies absent",
-      "source": "ver_unetG/train_auto.py; manuscript model description",
-      "reason": "actual HPC Stage1 architecture needs confirmation"
+      "category": "user_correction",
+      "setting": "coarse and later model sources",
+      "original": "initial curation incorrectly selected ver_unetG/model_unetT and separate ver_unet7 model",
+      "curated": "coarse: ver_unet_scale/model_unet.py, levels3..6; stages2..4: ver_autoregressive/model_unet.py, levels3..7; same shared GAT/SG child modules",
+      "source": "user correction; original model/child AST comparisons and numerical tests",
+      "reason": "remove incorrect block-attention dependency closure and k_hop/trans_layer arguments; correct zero-decay bias/norm partition for Stage1; child AST identity and source prediction equivalence verified"
+    },
+    {
+      "category": "preserved_local_reference",
+      "setting": "stage model initialization controls",
+      "original": {
+        "coarse_processor_layers": [
+          16,
+          12,
+          8,
+          4
+        ],
+        "fine_processor_layers": [
+          16,
+          16,
+          12,
+          8,
+          6
+        ],
+        "coarse_ffn_ratio": 1,
+        "fine_ffn_ratio": 2
+      },
+      "curated": {
+        "coarse_processor_layers": [
+          16,
+          12,
+          8,
+          4
+        ],
+        "fine_processor_layers": [
+          16,
+          16,
+          12,
+          8,
+          6
+        ],
+        "coarse_ffn_ratio": 1,
+        "fine_ffn_ratio": 2
+      },
+      "source": "corrected ver_unet_scale and later local auto_config.py",
+      "reason": "architecture shares child modules; source trainer hyperparameter differences are explicit settings, not different model types"
     },
     {
       "category": "execution_limit",

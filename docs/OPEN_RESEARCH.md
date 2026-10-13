@@ -23,7 +23,7 @@ Pangu-Weather pretrained 6-hour and 24-hour ONNX models are obtained separately 
 | Supporting results | Figure numerical inputs, accepted-sample masks/counts, common-case keys, diagnostics, aggregate spectra/coherence, case/monthly fields; archive DOI |
 | Processing inputs | Exact source request/snapshot inventory, split/selection manifests, masks/statistics, coordinates, graphs and cutoff tables, or archived deterministic generation manifests plus retrievable inputs |
 | Third-party snapshots | JTWC/IBTrACS access dates/files/storm ID; Pangu 6/24-h file checksums and upstream versions |
-| Scientific audit | Reconcile MAE spectral-bias normalization, Stage-1 attention and implementation controls against the actual HPC experiment; label regenerated results separately |
+| Scientific audit | Reconcile MAE spectral-bias normalization and implementation controls; corrected model sources are documented against the actual HPC experiment; label regenerated results separately |
 | References | Add both dataset/software citations and relevant method papers to the manuscript bibliography; replace all PENDING fields |
 
 AGU's [official data/software sharing guidance](https://data.agu.org/resources/agu-data-software-sharing-guidance) is the basis for the separate statements and archive placeholders. A development repository alone does not establish that the supporting data and release have been durably archived. See [citation drafts](../CITATION_DRAFT.md) and [data contracts](DATA_SOURCES.md).

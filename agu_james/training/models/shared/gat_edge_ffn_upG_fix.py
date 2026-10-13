@@ -1,4 +1,4 @@
-# Derived from gnn/ver_unet7/layer/gat_edge_ffn_upG_fix.py
+# Derived from gnn/ver_unet_scale/layer/gat_edge_ffn_upG_fix.py
 # See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import typing

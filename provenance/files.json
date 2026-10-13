@@ -376,8 +376,8 @@
       "sha256": "d0e1c6fa01ceea5b64173ce66f840b2a0c721e5d5cd98b8beb2d095171f15e25",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\next_feature_table_weight.csv",
-          "source_sha256": "c77429940a05f1fc12cf54136e122848b0ca2fa966a14b4e36c2778bda9d4c00"
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\next_feature_table_weight.csv",
+          "source_sha256": "5ae0502e261bc7b0e85cc2923e10b18d60403fc1b01be63c4274394c06b7ec13"
         }
       ]
     },
@@ -803,7 +803,7 @@
     },
     {
       "file": "agu_james/training/engine.py",
-      "sha256": "6280cddfce4f2fd4e9960252fdeadb6b4c31fb478bdbc753bcc019ed05ed508a",
+      "sha256": "0ef46b109bc8681f445b4ae57f868518b9dad4efc15569cfa95d0329c84326c2",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -872,16 +872,6 @@
       ]
     },
     {
-      "file": "agu_james/training/models/coarse/assign_graph_data_npz_unet.py",
-      "sha256": "e1f4e4dec787699456d25fa9b0717f9fa775f4532b15245f8ab1f7ec9504cc49",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\assign_graph_data_npz_unet.py",
-          "source_sha256": "f1ff739c013d490c3f57288cba1f8b7946108cc149f825956d81af0655d642a2"
-        }
-      ]
-    },
-    {
       "file": "agu_james/training/models/coarse/layer/__init__.py",
       "sha256": "5522022e1544d96b1866f606588b499856d686997aa4c5b42d55c4ba4920886f",
       "sources": [
@@ -892,112 +882,12 @@
       ]
     },
     {
-      "file": "agu_james/training/models/coarse/layer/gat_edge_before_ffnG.py",
-      "sha256": "20a3b3b17b89901ea9baaf75ebf118e27c94ac29f3a81c5f85cf98b27cbf7e94",
+      "file": "agu_james/training/models/coarse/model_unet.py",
+      "sha256": "10fda3f2ebdcbb6277a96fb13063aaa00baa31f24cbcb734ab78aefad0d02493",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gat_edge_before_ffnG.py",
-          "source_sha256": "133c8cd494a271951751efaf991fcd4729e077a7a64908396f26cdaef788f815"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/coarse/layer/gat_edge_ffn_upG.py",
-      "sha256": "82470b94f1b42365523b11fa5ec361e635db14b2859915e5c9989dcab3025045",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gat_edge_ffn_upG.py",
-          "source_sha256": "cd3a9a5727624d15349b87f4ace6c84d34abc47c6efa5d14a06077e003145695"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/coarse/layer/processor__blockGT.py",
-      "sha256": "37f4f0e77b0c2f2076d6d31ce5f9ef4c787b3ae964ea8b2208916ddad735208e",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\processor__blockGT.py",
-          "source_sha256": "d9429603b08ec4aa9f05a48d36acf91cd687e05129a8830f7a630e28624933de"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/coarse/layer/tri_mha.py",
-      "sha256": "ded58ffe54c458ef907f08b52e9f6fe3c56025e169f0ccea3526d71a320a9c2a",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\tri_mha.py",
-          "source_sha256": "a6e71c1923c1f45c62c0791fdd0bdba12489ec5b221f559d20c6f75283a3b06f"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/coarse/model_unetT.py",
-      "sha256": "6fb68480091e661389b02e4b9f8a21f6c6571d3fb9d451f89c35b4f9c63c2886",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\model_unetT.py",
-          "source_sha256": "b1e1621e972731508902ba34c404693831eff078c9c576a0fa3f77c85835e6f0"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/fine/__init__.py",
-      "sha256": "5522022e1544d96b1866f606588b499856d686997aa4c5b42d55c4ba4920886f",
-      "sources": [
-        {
-          "source": "newly authored during approved curation; see user plan and changes.json",
-          "source_sha256": null
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/fine/assign_graph_data_npz_unet.py",
-      "sha256": "e23314e780ec4c5724094ad640c9e66104a5ee9f35643ff44a73091084deb831",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\assign_graph_data_npz_unet.py",
-          "source_sha256": "f2675a8a5a617785dc3228267abb25af5c7bb38e9654687424c8b708453ae1a9"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/fine/layer/__init__.py",
-      "sha256": "5522022e1544d96b1866f606588b499856d686997aa4c5b42d55c4ba4920886f",
-      "sources": [
-        {
-          "source": "newly authored during approved curation; see user plan and changes.json",
-          "source_sha256": null
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/fine/layer/gat_edge_ffn_dec.py",
-      "sha256": "394cd4a964e2b4250124d93eee0ea70b2d16d340b915057b5a45ad406ea49493",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_ffn_dec.py",
-          "source_sha256": "5cd6261fd396ee0da9b8e83992338acf67dbedea25d904f9962d8e411303feb4"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/fine/layer/gatv2conv.py",
-      "sha256": "ea32048bc32020ec308ccab05ba055c0ab08bd36db309b914b003e5127aed13c",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gatv2conv.py",
-          "source_sha256": "b4e29ec79bfbab754663d8637c8281c58ccc27dd269d1f3c6d973383f31cb216"
-        }
-      ]
-    },
-    {
-      "file": "agu_james/training/models/fine/model_unet.py",
-      "sha256": "2e0187e1f53049cbf1117cde12bd1e49e2205b9d708081df5ebb4ecffe978eab",
-      "sources": [
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\model_unet.py",
-          "source_sha256": "80bd20d5b767ae5764c78fd337d53319d4df3aa93d4be29cbef7e05073762743"
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\model_unet.py",
+          "source_sha256": "9eb704958184cd618dd0b1d201a76663e64fbad0cd8af96bfe8ef34c6549a39e"
         }
       ]
     },
@@ -1013,10 +903,10 @@
     },
     {
       "file": "agu_james/training/models/shared/gat_edge_before_ffnG_fix.py",
-      "sha256": "4265c1816877c1ebb7d6856d525db2a3cce3756d1ba50f54c3400e80cbd04ac0",
+      "sha256": "91b799b9003067b89a36be6920553c85d4ba6b3942d6e13a3e59572c1a8965c9",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_before_ffnG_fix.py",
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gat_edge_before_ffnG_fix.py",
           "source_sha256": "fac79b70e36b2f356341e5c7429e155f3fc9f5058655d7f00953aab6e60348db"
         },
         {
@@ -1027,11 +917,11 @@
     },
     {
       "file": "agu_james/training/models/shared/gat_edge_ffn_upG_fix.py",
-      "sha256": "d4cc41508dfb10fcb0f74dd137a0168302462fde12302b7db52356dd834bb275",
+      "sha256": "2bd65306b34f82ec4358f564a80006e0438911c6b07b50672f29cc1a8db8ecc4",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_ffn_upG_fix.py",
-          "source_sha256": "b2e91c90cde1c382ace246124490ae3ebefa12fb161e6cde5697ea7b0a54b829"
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gat_edge_ffn_upG_fix.py",
+          "source_sha256": "a417204256b0312e8ae1f6d488f9388e5edbb6a5a5261d11f7e1a60109ae7baf"
         },
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gat_edge_ffn_upG_fix.py",
@@ -1041,15 +931,11 @@
     },
     {
       "file": "agu_james/training/models/shared/gatv2convNG.py",
-      "sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
+      "sha256": "e7af449f485ff070d60245519b9717ebd468942e82b99268832f30755e2b5f7b",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gatv2convNG.py",
-          "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3"
-        },
-        {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gatv2convNG.py",
-          "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3"
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gatv2convNG.py",
+          "source_sha256": "1f285a7c9ab05d9133dfd192d21fc57e76ffba667161af36438044a89d15894f"
         },
         {
           "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gatv2convNG.py",
@@ -1059,10 +945,10 @@
     },
     {
       "file": "agu_james/training/models/shared/processor__blockG.py",
-      "sha256": "b5d745450f0eb30099c2c38c86c4ab23ae2cebce4bd7ec8c0e48c337527a99c9",
+      "sha256": "1c972bf776b833ca09fe019644c4eae178974ca76a381067acf9ff156c1f9aef",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\processor__blockG.py",
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\processor__blockG.py",
           "source_sha256": "2d68feab7b8be225ec01476d3f50adef0019129912f58b766c3fb80cbf5573ec"
         },
         {
@@ -1073,10 +959,10 @@
     },
     {
       "file": "agu_james/training/models/shared/SG_module.py",
-      "sha256": "25fcfca58daf5cf1b0be2ca50256b9fa40ae475e7fe858373499c894a484f4d1",
+      "sha256": "8c556509f48b0cabdac15a7966ebdc72bc2d8ca9e70ebe04522ef20ec5e3d26b",
       "sources": [
         {
-          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\SG_module.py",
+          "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\SG_module.py",
           "source_sha256": "1a14aa984d89ec4c27a04ae6e219b349515d0ef7adab0cad46e93db19579e891"
         },
         {
@@ -1217,7 +1103,7 @@
     },
     {
       "file": "docs/ENVIRONMENTS.md",
-      "sha256": "6b87af916bef25e979d62fbc78be50456b7edf8cee9d5f9f7fc97a99eb2a5162",
+      "sha256": "cbc4d47b3fec9cca738751fca59ab4b7baaf74cc6b6abf6145fd7560ada78201",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1236,8 +1122,18 @@
       ]
     },
     {
+      "file": "docs/MODEL_ARCHITECTURE.md",
+      "sha256": "dbee750d57f6bdf8cdae836bb029f6a22798682451b5622c9525092ec7f2087f",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ]
+    },
+    {
       "file": "docs/MODIFICATIONS.md",
-      "sha256": "1b57008e69142aef5d4d667ad5f9d470ca3660b0d9d7d4d095dac0eab5cd52de",
+      "sha256": "a4939b91e02578e2618d0da965066e6ba138e630d4ed77624cf8cb2f9f7ae065",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1247,7 +1143,7 @@
     },
     {
       "file": "docs/OPEN_RESEARCH.md",
-      "sha256": "ed494e5bd6632b31f44088cfa1e12a4eda39a78587c480048c7f483e4311e802",
+      "sha256": "7d59306a5aae184f1befbcc40331bc3fd33be0a9e261021415519ab2284209ea",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1257,7 +1153,7 @@
     },
     {
       "file": "docs/VALIDATION.md",
-      "sha256": "6719527ef66ade5ce1474e5927ff8c5eaf3e31add8520c347da3e5b8083abcf3",
+      "sha256": "149e5e7c2e10a899701b27b2ec8f4145257f196cbe794a20f62056d56cf5b188",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1267,7 +1163,7 @@
     },
     {
       "file": "docs/WORKFLOW.md",
-      "sha256": "906d63215081e266e9c6aac7ef0ba0624d1e5a5c274a466814438ce5cdb210c1",
+      "sha256": "725bdbb9a6eaa76464895cec28d933594233a9931d687d52c67e50d0cdf5d4dc",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1287,7 +1183,7 @@
     },
     {
       "file": "provenance/changes.json",
-      "sha256": "06b6100ece5060868f8eab10c2a384433fef14c7d42c96b15a80d2d8d344fb8d",
+      "sha256": "680fe078d445a4c94391be6ef8d2b5f729cd6ff42e8fd5a48dd1d40504ef0289",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1297,7 +1193,7 @@
     },
     {
       "file": "provenance/reference_sources.json",
-      "sha256": "e9eab80a835003bdfacb3d6baa1a3bf5af72ca74c0558d0c2fbc5903e60bc147",
+      "sha256": "0df30106d559005b7c91ec5664ec3f8e554cc065c98bf6cd641c11780523afc4",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1307,7 +1203,7 @@
     },
     {
       "file": "provenance/sources.json",
-      "sha256": "3924aa74db219b8bb9144dc2c0909bc40bdea1346a6640747914e9af27876c1b",
+      "sha256": "828ee940156a0c2e1e2d2147142d48ad6e9f6f6a08243dd9ee1d1393d7766e70",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1317,7 +1213,7 @@
     },
     {
       "file": "pyproject.toml",
-      "sha256": "ba73e5c1272c6a5445b46af148dfab1728fd733a7ce99c4f4d5f5ccf85c27652",
+      "sha256": "cd7eb0d7ec07a8975c50898d1c4bceeea0746b8178af8960d9cb3a0f61dba11c",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1327,7 +1223,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "c55430f914246e84b3bc688314fd30ebdce29a48f2c9bab609c5717ebd93aa4b",
+      "sha256": "67700cf0d58196b5d6a21da333f3f9e8cc7b31d31a8bbe3b9873e73e682953f8",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1357,7 +1253,7 @@
     },
     {
       "file": "tests/test_numerics.py",
-      "sha256": "1586e42aefb54e2aa13a8627c0fed8fabf6b67a73895b1b3f645128949a1986c",
+      "sha256": "06868ea6ee80e7911464fee55ea4bc456fbf1f978d8b9fe834412c03aafc2ffa",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1387,7 +1283,7 @@
     },
     {
       "file": "tools/curate_sources.py",
-      "sha256": "16f3b81363dfe5fa0da23741a3da30e1a4e50e55326412c04315a909f67b6037",
+      "sha256": "3370cc1020174c4f6ce19d1df894f92d3addb3c32746708c787ea9f29630a43e",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1397,7 +1293,7 @@
     },
     {
       "file": "tools/prepare_manifest.py",
-      "sha256": "8add0d5d0baec4346605fca12547f1eb9cc7fbe0887e7d0616e97e9641742fdb",
+      "sha256": "e03e6c9cbb1b5b1e001808cec0c5d7ac84df2c6b9cb58f97a322a55a0b18ee46",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",

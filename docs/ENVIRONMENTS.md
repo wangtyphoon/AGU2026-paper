@@ -12,14 +12,14 @@ python -m agu_james.workflow check
 |---|---|---|
 | Contracts / aggregate plots | NumPy, Pandas, SciPy, Matplotlib, tqdm | Available; comparisons/plots executed |
 | Fine/AR GNN | PyTorch ≥2.3, torch-geometric, scikit-learn | Available; synthetic forward/backward executed |
-| Coarse Stage 1 | Above + torch-scatter + torch-sparse | Both extensions absent locally; coarse model import/execution needs installation |
+| Coarse Stage 1 | PyTorch/PyG; shared GAT/SG child layers | Corrected ver_unet_scale model imports and synthetic forward/backward pass |
 | Maps | Cartopy / projection resources | Cartopy available; map plotting depends on supplied arrays and local Natural Earth cache |
 | ERA5 | cdsapi, xarray, cfgrib, eccodes, netCDF4 | Need CDS credentials/terms and real downloads; no full preparation executed |
 | Climatology | gcsfs, zarr, xarray | Imports available, official input path verified; download not executed |
 | Pangu CPU | ONNX Runtime CPU, NumPy, netCDF4, cdsapi | `pangu` environment imports ONNX inference; real weighted inference not executed |
 | Pangu GPU | Compatible ONNX Runtime GPU/CUDA/cuDNN | Not validated in this task |
 
-Install torch-scatter/torch-sparse for the **actual PyTorch and CUDA build**, using the appropriate [PyG installation instructions](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html). A generic source build via `[coarse]` may require compiler tooling. Coarse dependencies are required for Stage 1; they are not optional if running that stage.
+The former `[coarse]` dependency group was removed after correcting the Stage-1 source. The selected coarse and AR closures use the same GAT/SG sublayers and do not directly require torch-scatter or torch-sparse. The installed PyG environment passed imports and synthetic computations.
 
 For CPU Pangu, use `pip install -e ".[pangu]"`. For GPU, install the base package plus netCDF4/cdsapi and compatible `onnxruntime-gpu`, selecting **one** runtime package. Do not install CPU and GPU ONNX Runtime together. `onnx` is declared for upstream interchange support; the retained inference module directly imports `onnxruntime`. ONNX input/field/level ordering is checked by preparation, but real ONNX operators and providers require the external models.
 

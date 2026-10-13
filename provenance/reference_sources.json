@@ -5,8 +5,8 @@
     "role": "read-only scientific/control reference; not bundled"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\train_script\\auto_config.py",
-    "source_sha256": "6bb053f64f074c4c5f0d3fd68ccd3c1a94c6a85738ffd00eb4234e94b0244783",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\train_script\\auto_config.py",
+    "source_sha256": "5708f0dfc69a499d77a6a44b549ff815ba31093c4a429a79a5967893c2f34c3e",
     "role": "read-only scientific/control reference; not bundled"
   },
   {
@@ -25,8 +25,8 @@
     "role": "read-only scientific/control reference; not bundled"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\train_auto.py",
-    "source_sha256": "00230d9465506f69d2911f5d9e3eebd78150b73942a022f7f2d0667c21e97c78",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\train_auto.py",
+    "source_sha256": "a5b00e411f7730aa5d810b3b101211968f330f2fe2cfd8b9c287d3299c383dbb",
     "role": "read-only scientific/control reference; not bundled"
   },
   {

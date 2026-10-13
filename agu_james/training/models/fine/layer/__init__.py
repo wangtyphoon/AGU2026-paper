@@ -1,1 +1,0 @@
-"""Curated paper workflow modules."""

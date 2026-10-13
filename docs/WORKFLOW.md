@@ -38,7 +38,7 @@ python -m agu_james.workflow --config config.json train --stage 1 --rollout 1 --
 python -m agu_james.workflow --config config.json train --stage 2 --rollout 1 --micro-batch 1 --checkpoint artifacts/training/stage1_mse_step01/last_model.pth
 ```
 
-Stage 1: 150 epochs, effective batch 16, peak LR 1e−3. Stage 2: 30 epochs, effective batch 16, peak LR 1e−4. Both use MSE and one-epoch warm-up. The transfer copies same-name/same-shape tensors, then initializes level-7 counterparts from level-6 prefixes using the original transfer rules. Keys are recorded in the checkpoint manifest. Fine and AR model checkpoint key/shape compatibility was checked locally.
+Stage 1: 150 epochs, effective batch 16, peak LR 1e−3. Stage 2: 30 epochs, effective batch 16, peak LR 1e−4. Stage1 uses the corrected ver_unet_scale model at levels3–6; Stage2–4 use the AR model at levels3–7 with shared child layers. Both single-step stages use MSE and one-epoch warm-up. The transfer copies same-name/same-shape tensors, then initializes level-7 counterparts from level-6 prefixes using the original transfer rules. Keys are recorded in the checkpoint manifest. Stages2–4 select the same AR model class. Synthetic source/curated predictions match exactly for the two level variants.
 
 ## 4. Stage 3 curriculum
 
@@ -87,7 +87,7 @@ python -m agu_james.workflow --config config.json train --stage 4 --rollout 1 --
 python -m agu_james.workflow --config config.json train --stage 4 --rollout 1 --loss spectral_mse --checkpoint artifacts/training/stage3_mse_step28/last_model.pth
 ```
 
-Optimizer: AdamW, betas (0.9,0.95), decay 0.1. Stage 1 retains decay on all parameters; later stages retain the source zero-decay bias/normalization partition. Warm-up is 10% of update budget, followed by cosine decay. Source coefficients (filtered MSE, spectrum, bias) are MAE (1,1,2), MSE (1,8,1). Stage 4 uses uniform channel weights, as the source entry points pass `channel_weights=None`; Stage 1–3 use frozen channel-weight configurations. Alpha=1, order=12 and spectral bounds=87 follow the local spectral entry points, configurable in `training`; they are not independently established as national HPC settings. Helper-level validation defaults of 56 are not the effective entry-point bounds.
+Optimizer: AdamW, betas (0.9,0.95), decay 0.1. All stages retain the corrected coarse/AR zero-decay bias/normalization partition. Warm-up is 10% of update budget, followed by cosine decay. Source coefficients (filtered MSE, spectrum, bias) are MAE (1,1,2), MSE (1,8,1). Stage 4 uses uniform channel weights, as the source entry points pass `channel_weights=None`; Stage 1–3 use frozen channel-weight configurations. Alpha=1, order=12 and spectral bounds=87 follow the local spectral entry points, configurable in `training`; they are not independently established as national HPC settings. Helper-level validation defaults of 56 are not the effective entry-point bounds.
 
 Effective batch = micro-batch × world size × accumulation. Incomplete effective batches at epoch end are dropped. Optimizer updates, LR and checkpoint history share one counter. The MSE distributed collective loss is retained; real distributed execution is not validated. MAE uses one GPU with accumulation because exact global batch-bias behavior under DDP is not yet established; requesting MAE with `WORLD_SIZE>1` fails clearly.
 

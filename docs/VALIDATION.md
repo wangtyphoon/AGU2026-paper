@@ -6,16 +6,16 @@ Date: 2026-10-13. This report validates local curation, not a new reproduction o
 
 | Check | Result and scope |
 |---|---|
-| Retained-source integrity | 91 source/config records; all original SHA-256 match; all curated-output hashes match. Identical model layers are shared; records remain one per original file |
+| Retained-source integrity | 81 source/config records after correcting and reducing model closures; all original SHA-256 match; all curated-output hashes match. Identical model layers are shared; records remain one per original file |
 | Syntax | All package/tools/tests parse with the Python3.10 grammar. Curation was regenerated with Python3.11 to avoid Python3.12-only AST f-string output |
-| Imports | 89 package modules import in `atm312`, no unexpected exceptions. Three coarse-model closure modules cannot import because torch-scatter is missing; torch-sparse is also absent. Pangu ONNX module imports in the separate `pangu` environment |
+| Imports | All retained GNN model closures import in `atm312`, with no unexpected exceptions or missing coarse-model extensions. Pangu ONNX module imports in the separate `pangu` environment |
 | Command interface | Top-level and all nine subcommand help pages checked without input-data execution |
 | Relocation | Copied package/config to a new temporary directory, removed PYTHONPATH, ran CLI help and resolved relative config paths/Stage4 rollout28 update budget correctly |
 | Packaging | Built a pure-Python wheel locally with no dependency downloads/installation; data/weights/figures excluded |
-| Main test suite | 20 discovered: **19 passed, 1 ONNX test skipped** in `atm312`. Four tests use read-only original-code/paper-input paths; no reference tests skipped when those paths were configured |
+| Main test suite | 23 discovered: **22 passed, 1 ONNX test skipped** in `atm312`. Five tests use read-only original-code/paper-input paths; no reference tests skipped when those paths were configured |
 | Pangu control test | The skipped ONNX test **passed separately** in Python3.11/Pangu environment using fake model operators. Confirms output leads6..54, global-state retention, regional saves, and 24h anchors from states0/24h; not real pretrained inference |
 
-Tests cover JTWC conversion/deduplication/basin/region/±3-day selection, calendar-year splits, complete six-hour sequences, all four UTC initialization hours, frozen116-channel order, nine-cell masks, latest-state forcing with earlier-state preservation, effective batch arithmetic, Stage1–4 epoch/update budgets, LR tied to optimizer updates, positive-k90% power cutoff, λ<1000km k6 selection, training-only pre-fill ocean-mask selection, source-equivalent spectral losses and true radial cross-spectrum coherence, finite gradients, and a synthetic fine/AR GNN forward/backward.
+Tests cover JTWC conversion/deduplication/basin/region/±3-day selection, calendar-year splits, complete six-hour sequences, all four UTC initialization hours, frozen116-channel order, nine-cell masks, latest-state forcing with earlier-state preservation, effective batch arithmetic, Stage1–4 epoch/update budgets, LR tied to optimizer updates, positive-k90% power cutoff, λ<1000km k6 selection, training-only pre-fill ocean-mask selection, source-equivalent spectral losses and true radial cross-spectrum coherence, finite gradients, and synthetic coarse/AR GNN forward/backward, shared Stage2/3 factory class, corrected child-source AST identity and exact original/curated model predictions.
 
 The common trainer's update-count test actually runs a tiny parameterized model for three optimizer updates with four-way accumulation and checks the saved optimizer state/count. Its fake dataset/objective validates the controller only; it does not simulate the full192×192 atmospheric model.
 
@@ -61,4 +61,4 @@ Detailed local reports are under ignored `artifacts/verification/{check.json,rel
 
 ## Not executed / not established
 
-Full ERA5 archive downloads/conversion/statistics, full graph preparation, all-stage retraining and Stage3-train spectrum calibration, actual GNN forecasts from historical weights, real Pangu6/24h ONNX inference, full field-level TC recomputation, multi-GPU collective-loss equivalence, national HPC execution and manuscript-number reproduction remain pending. Coarse required dependencies are unavailable locally. MAE DDP is explicitly unsupported. Scientific mismatches and anticipated setting-induced changes are in `MODIFICATIONS.md`. GitHub publication, archive deposits, author-owned licenses and DOI assignment were not performed.
+Full ERA5 archive downloads/conversion/statistics, full graph preparation, all-stage retraining and Stage3-train spectrum calibration, actual GNN forecasts from historical weights, real Pangu6/24h ONNX inference, full field-level TC recomputation, multi-GPU collective-loss equivalence, national HPC execution and manuscript-number reproduction remain pending. The former coarse dependency limitation was resolved by selecting the correct GAT/SG model source. MAE DDP is explicitly unsupported. Scientific mismatches and anticipated setting-induced changes are in `MODIFICATIONS.md`. GitHub publication, archive deposits, author-owned licenses and DOI assignment were not performed.

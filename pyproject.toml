@@ -11,7 +11,6 @@ dependencies = ["numpy", "pandas", "scipy", "matplotlib", "tqdm"]
 
 [project.optional-dependencies]
 gnn = ["torch>=2.3", "torch-geometric", "scikit-learn"]
-coarse = ["torch-scatter", "torch-sparse"]
 maps = ["cartopy"]
 data = ["cdsapi", "xarray", "cfgrib", "eccodes", "netCDF4", "gcsfs", "zarr"]
 pangu = ["onnx", "onnxruntime", "netCDF4", "cdsapi"]

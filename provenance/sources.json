@@ -1,266 +1,156 @@
 [
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\assign_graph_data_npz_unet.py",
-    "source_sha256": "f1ff739c013d490c3f57288cba1f8b7946108cc149f825956d81af0655d642a2",
-    "destination": "agu_james/training/models/coarse/assign_graph_data_npz_unet.py",
-    "output_sha256": "e1f4e4dec787699456d25fa9b0717f9fa775f4532b15245f8ab1f7ec9504cc49",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gat_edge_before_ffnG.py",
-    "source_sha256": "133c8cd494a271951751efaf991fcd4729e077a7a64908396f26cdaef788f815",
-    "destination": "agu_james/training/models/coarse/layer/gat_edge_before_ffnG.py",
-    "output_sha256": "20a3b3b17b89901ea9baaf75ebf118e27c94ac29f3a81c5f85cf98b27cbf7e94",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gat_edge_ffn_upG.py",
-    "source_sha256": "cd3a9a5727624d15349b87f4ace6c84d34abc47c6efa5d14a06077e003145695",
-    "destination": "agu_james/training/models/coarse/layer/gat_edge_ffn_upG.py",
-    "output_sha256": "82470b94f1b42365523b11fa5ec361e635db14b2859915e5c9989dcab3025045",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gatv2convNG.py",
-    "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3",
-    "destination": "agu_james/training/models/shared/gatv2convNG.py",
-    "output_sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\processor__blockGT.py",
-    "source_sha256": "d9429603b08ec4aa9f05a48d36acf91cd687e05129a8830f7a630e28624933de",
-    "destination": "agu_james/training/models/coarse/layer/processor__blockGT.py",
-    "output_sha256": "37f4f0e77b0c2f2076d6d31ce5f9ef4c787b3ae964ea8b2208916ddad735208e",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\tri_mha.py",
-    "source_sha256": "a6e71c1923c1f45c62c0791fdd0bdba12489ec5b221f559d20c6f75283a3b06f",
-    "destination": "agu_james/training/models/coarse/layer/tri_mha.py",
-    "output_sha256": "ded58ffe54c458ef907f08b52e9f6fe3c56025e169f0ccea3526d71a320a9c2a",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\model_unetT.py",
-    "source_sha256": "b1e1621e972731508902ba34c404693831eff078c9c576a0fa3f77c85835e6f0",
-    "destination": "agu_james/training/models/coarse/model_unetT.py",
-    "output_sha256": "6fb68480091e661389b02e4b9f8a21f6c6571d3fb9d451f89c35b4f9c63c2886",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\SG_module.py",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\SG_module.py",
     "source_sha256": "1a14aa984d89ec4c27a04ae6e219b349515d0ef7adab0cad46e93db19579e891",
     "destination": "agu_james/training/models/shared/SG_module.py",
-    "output_sha256": "25fcfca58daf5cf1b0be2ca50256b9fa40ae475e7fe858373499c894a484f4d1",
+    "output_sha256": "8c556509f48b0cabdac15a7966ebdc72bc2d8ca9e70ebe04522ef20ec5e3d26b",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "8cfe6e268a366e96aa6971967ef523831b7b47b4ab2f0c3a5d002ebee845f047"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\assign_graph_data_npz_unet.py",
-    "source_sha256": "f2675a8a5a617785dc3228267abb25af5c7bb38e9654687424c8b708453ae1a9",
-    "destination": "agu_james/training/models/fine/assign_graph_data_npz_unet.py",
-    "output_sha256": "e23314e780ec4c5724094ad640c9e66104a5ee9f35643ff44a73091084deb831",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_before_ffnG_fix.py",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gat_edge_before_ffnG_fix.py",
     "source_sha256": "fac79b70e36b2f356341e5c7429e155f3fc9f5058655d7f00953aab6e60348db",
     "destination": "agu_james/training/models/shared/gat_edge_before_ffnG_fix.py",
-    "output_sha256": "4265c1816877c1ebb7d6856d525db2a3cce3756d1ba50f54c3400e80cbd04ac0",
+    "output_sha256": "91b799b9003067b89a36be6920553c85d4ba6b3942d6e13a3e59572c1a8965c9",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "6bd8f880eeda44218952802d435cd10b3fb2a1499e636a2b5a66a73ffe76409d"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_ffn_dec.py",
-    "source_sha256": "5cd6261fd396ee0da9b8e83992338acf67dbedea25d904f9962d8e411303feb4",
-    "destination": "agu_james/training/models/fine/layer/gat_edge_ffn_dec.py",
-    "output_sha256": "394cd4a964e2b4250124d93eee0ea70b2d16d340b915057b5a45ad406ea49493",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_ffn_upG_fix.py",
-    "source_sha256": "b2e91c90cde1c382ace246124490ae3ebefa12fb161e6cde5697ea7b0a54b829",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gat_edge_ffn_upG_fix.py",
+    "source_sha256": "a417204256b0312e8ae1f6d488f9388e5edbb6a5a5261d11f7e1a60109ae7baf",
     "destination": "agu_james/training/models/shared/gat_edge_ffn_upG_fix.py",
-    "output_sha256": "d4cc41508dfb10fcb0f74dd137a0168302462fde12302b7db52356dd834bb275",
+    "output_sha256": "2bd65306b34f82ec4358f564a80006e0438911c6b07b50672f29cc1a8db8ecc4",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "68e13b9e0d402ea3ee88369d0260cd8d7a5053a7df63697b73343fb33642a76e"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gatv2conv.py",
-    "source_sha256": "b4e29ec79bfbab754663d8637c8281c58ccc27dd269d1f3c6d973383f31cb216",
-    "destination": "agu_james/training/models/fine/layer/gatv2conv.py",
-    "output_sha256": "ea32048bc32020ec308ccab05ba055c0ab08bd36db309b914b003e5127aed13c",
-    "modifications": [
-      "package-qualified imports",
-      "removed debug/demo entry points",
-      "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
-    ]
-  },
-  {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gatv2convNG.py",
-    "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\gatv2convNG.py",
+    "source_sha256": "1f285a7c9ab05d9133dfd192d21fc57e76ffba667161af36438044a89d15894f",
     "destination": "agu_james/training/models/shared/gatv2convNG.py",
-    "output_sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
+    "output_sha256": "e7af449f485ff070d60245519b9717ebd468942e82b99268832f30755e2b5f7b",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "81452cda128baaa51c7083dde30c66f4c729fd2c238ff0c49dc320cc60f5d8aa"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\processor__blockG.py",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\layer\\processor__blockG.py",
     "source_sha256": "2d68feab7b8be225ec01476d3f50adef0019129912f58b766c3fb80cbf5573ec",
     "destination": "agu_james/training/models/shared/processor__blockG.py",
-    "output_sha256": "b5d745450f0eb30099c2c38c86c4ab23ae2cebce4bd7ec8c0e48c337527a99c9",
+    "output_sha256": "1c972bf776b833ca09fe019644c4eae178974ca76a381067acf9ff156c1f9aef",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "2808004eb8ac6849f69d779a067473a7b8a5ff45d0cac87b3e5e1ec949876e07"
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\model_unet.py",
-    "source_sha256": "80bd20d5b767ae5764c78fd337d53319d4df3aa93d4be29cbef7e05073762743",
-    "destination": "agu_james/training/models/fine/model_unet.py",
-    "output_sha256": "2e0187e1f53049cbf1117cde12bd1e49e2205b9d708081df5ebb4ecffe978eab",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\model_unet.py",
+    "source_sha256": "9eb704958184cd618dd0b1d201a76663e64fbad0cd8af96bfe8ef34c6549a39e",
+    "destination": "agu_james/training/models/coarse/model_unet.py",
+    "output_sha256": "10fda3f2ebdcbb6277a96fb13063aaa00baa31f24cbcb734ab78aefad0d02493",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O"
-    ]
+    ],
+    "source_ast_sha256": "5caf00f03da543ce0d61fecc4515e6e16219627c938007d298e86f605472a034"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\SG_module.py",
     "source_sha256": "1a14aa984d89ec4c27a04ae6e219b349515d0ef7adab0cad46e93db19579e891",
     "destination": "agu_james/training/models/shared/SG_module.py",
-    "output_sha256": "25fcfca58daf5cf1b0be2ca50256b9fa40ae475e7fe858373499c894a484f4d1",
+    "output_sha256": "8c556509f48b0cabdac15a7966ebdc72bc2d8ca9e70ebe04522ef20ec5e3d26b",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "8cfe6e268a366e96aa6971967ef523831b7b47b4ab2f0c3a5d002ebee845f047"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gat_edge_before_ffnG_fix.py",
     "source_sha256": "fac79b70e36b2f356341e5c7429e155f3fc9f5058655d7f00953aab6e60348db",
     "destination": "agu_james/training/models/shared/gat_edge_before_ffnG_fix.py",
-    "output_sha256": "4265c1816877c1ebb7d6856d525db2a3cce3756d1ba50f54c3400e80cbd04ac0",
+    "output_sha256": "91b799b9003067b89a36be6920553c85d4ba6b3942d6e13a3e59572c1a8965c9",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "6bd8f880eeda44218952802d435cd10b3fb2a1499e636a2b5a66a73ffe76409d"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gat_edge_ffn_upG_fix.py",
     "source_sha256": "b2e91c90cde1c382ace246124490ae3ebefa12fb161e6cde5697ea7b0a54b829",
     "destination": "agu_james/training/models/shared/gat_edge_ffn_upG_fix.py",
-    "output_sha256": "d4cc41508dfb10fcb0f74dd137a0168302462fde12302b7db52356dd834bb275",
+    "output_sha256": "2bd65306b34f82ec4358f564a80006e0438911c6b07b50672f29cc1a8db8ecc4",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "68e13b9e0d402ea3ee88369d0260cd8d7a5053a7df63697b73343fb33642a76e"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gatv2convNG.py",
     "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3",
     "destination": "agu_james/training/models/shared/gatv2convNG.py",
-    "output_sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
+    "output_sha256": "e7af449f485ff070d60245519b9717ebd468942e82b99268832f30755e2b5f7b",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "81452cda128baaa51c7083dde30c66f4c729fd2c238ff0c49dc320cc60f5d8aa"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\processor__blockG.py",
     "source_sha256": "2d68feab7b8be225ec01476d3f50adef0019129912f58b766c3fb80cbf5573ec",
     "destination": "agu_james/training/models/shared/processor__blockG.py",
-    "output_sha256": "b5d745450f0eb30099c2c38c86c4ab23ae2cebce4bd7ec8c0e48c337527a99c9",
+    "output_sha256": "1c972bf776b833ca09fe019644c4eae178974ca76a381067acf9ff156c1f9aef",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O",
-      "merged byte-identical original sources into shared model library"
-    ]
+      "merged AST-identical original sources into shared model library; original byte hashes remain recorded"
+    ],
+    "source_ast_sha256": "2808004eb8ac6849f69d779a067473a7b8a5ff45d0cac87b3e5e1ec949876e07"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\model_unet.py",
@@ -272,7 +162,8 @@
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
       "configurable artifact paths; deferred import-time I/O"
-    ]
+    ],
+    "source_ast_sha256": "bb190545d517d944c63f8bea5a386180cf1822c6281977e6d5a78b1d2e5be2f4"
   },
   {
     "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\train_script\\datasetM.py",
@@ -1119,8 +1010,8 @@
     ]
   },
   {
-    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\next_feature_table_weight.csv",
-    "source_sha256": "c77429940a05f1fc12cf54136e122848b0ca2fa966a14b4e36c2778bda9d4c00",
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet_scale\\next_feature_table_weight.csv",
+    "source_sha256": "5ae0502e261bc7b0e85cc2923e10b18d60403fc1b01be63c4274394c06b7ec13",
     "destination": "agu_james/config/channels_coarse.json",
     "output_sha256": "d0e1c6fa01ceea5b64173ce66f840b2a0c721e5d5cd98b8beb2d095171f15e25",
     "modifications": [

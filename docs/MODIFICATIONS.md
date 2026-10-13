@@ -9,7 +9,7 @@ This is a **paper-setting implementation variant**. It preserves the source chec
 | Loose `train_script`, `layer`, plotting sibling imports | Qualified `agu_james.*` modules, one CLI | Selected source closures in provenance; imports remain usable after relocation |
 | C:/D: paths, cwd-relative statistics/graphs | JSON `paths`, CLI inputs and ignored artifact root | Source assignments and common adapters; measured assets remain external |
 | Top-level downloads/graph jobs/NumPy loads | Explicit `main()` / `initialize()` | Importing modules must not download, train or mutate data |
-| Repeated layer files | Shared only where original SHA-256 is identical | Six duplicate source records redirected; distinct model/loss implementations retained |
+| Repeated layer files | Shared only where original parsed AST is identical | Original byte and AST hashes retained; distinct model roots/losses retained |
 | Full original trainers with history plotting/early stop/AMP setup | One paper curriculum controller around retained models, feature assembly and losses | Original entry/control scripts remain reference sources; controller is newly authored and requires HPC comparison |
 | Bulk in-place NPZ repair/demo helpers | Only pure nearest-fill / wave resize helper retained | `npz/fill_nan_nearest.py`, `resize_swh.py`; conversion writes new artifact inputs |
 
@@ -17,13 +17,13 @@ This is a **paper-setting implementation variant**. It preserves the source chec
 
 | Original local setting | Curated setting | Source / reason and expected effect |
 |---|---|---|
-| Coarse config 1 epoch, microbatch 4×accumulation 4, LR1e−3 | Stage 1 150 epochs, effective16, LR1e−3 | `ver_unetG/train_script/auto_config.py`; manuscript Table 3; materially different training history |
+| Coarse config 1 epoch, microbatch 4×accumulation 4, LR1e−3 | Stage 1 150 epochs, effective16, LR1e−3 | `ver_unet_scale/train_script/auto_config.py`; manuscript Table 3; materially different training history |
 | Fine config 31 epochs, microbatch1×accumulation4, LR1e−3 | Stage 2 30 epochs, effective16, LR1e−4 | `ver_unet7/train_script/auto_config.py`; Table 3 |
 | AR config 31 epochs, LR1e−3, one local rollout setup | Stage 3 curriculum 2/4/8/12/20/28 and paper LR/budgets | `ver_autoregressive` entry/config; approved plan; last two limits count optimizer updates |
 | Spectrum-v2 config 8 epochs, microbatch1×accumulation1, LR1e−5 | Stage 4 separate MAE/MSE curricula, effective16 through12 then8 | Local spectral entries; Table 3 plus user's Stage-4 rollout12 effective16 clarification |
-| Coarse source weighted RMSE objective | Stage 1 weighted MSE | `ver_unetG/train_script/training.py`; follows the approved paper MSE stage specification. **Expected numerical/training difference**, not a source-equivalent change |
+| Corrected coarse source weighted MSE objective | Stage1 weighted MSE retained | `ver_unet_scale/train_script/training.py`; source and paper use MSE |
 | Source warmup LR1e−8 with entry-specific schedulers | One-epoch warmup in Stages1/2; 10% updates in3/4; cosine to1% peak | Approved schedule; update counter drives LR and checkpoint. This is a new controller, not byte-equivalent scheduler behavior |
-| Stage1 global AdamW decay; later bias/norm exemptions | Preserved by stage, betas(.9,.95), decay.1 | Actual source optimizer grouping retained |
+| Corrected coarse and AR source bias/norm exemptions | Preserved for all stages, betas(.9,.95), decay.1 | Actual corrected source optimizer grouping retained |
 | Local dataset initialization filter 00/12 UTC | 00/06/12/18 UTC with complete same-split sequences | `datasetM.py`; paper population; counts can increase; no crossing of train/val/test |
 | Historical folder assignment / continuity only | Calendar1979–2023 excluding five val years, test2024 | Manuscript data section and approved plan; cross-set sequences removed |
 | Loss mask `distance <=8`; validation crop `distance <boundary` | Explicit width9; metric adapter retains8 for inclusive source mask and9 for crop | Actual training mask unchanged where <=8 already meant9 cells; inconsistent forcing/validation margins corrected |
@@ -53,7 +53,7 @@ The additional source is `C:\Users\王子祐\Documents\Pangu-Weather-ReadyToGo`.
 
 **MAE bias:** the source `spectrum_loss.py` uses the spectral energy of the batch-mean forecast error without target-power normalization; the manuscript Eq.7 and MSE-v2 branch use normalized bias. The MAE source formula is retained and regression-tested. Normalizing it now would silently create a different trained method. Establish the actual national HPC implementation and either correct the equation/text or introduce a separately labeled model variant before claiming reproduction.
 
-**Stage-1 attention:** the local `ver_unetG/train_auto.py` imports `model_unetT.py`, whose coarse processor uses block/k-hop attention and torch-scatter/torch-sparse. Later models use SG linear attention. That local coarse entry closure is retained; verify whether the manuscript's attention description refers to all stages or only the final model, and compare against the actual HPC Stage1 checkpoint/config.
+**Corrected model source:** the initial curation mistakenly selected ver_unetG/model_unetT.py. The author identified ver_unet_scale/model_unet.py as the correct coarse source. It now uses the same GAT/SG child modules as ver_autoregressive/model_unet.py; the model-root difference is the level lists and their associated default per-level depths. Stages2–4 select the AR root directly. Original child ASTs are identical and source/curated synthetic predictions match exactly. The old block-attention closure and its dependency requirement are removed. See MODEL_ARCHITECTURE.md for explicit trainer hyperparameter differences.
 
 **Execution controls:** the common trainer uses float32, successful optimizer-update limits, drops incomplete effective batches, and runs the prescribed full budget without source early stopping. Checkpoint compatibility is checked at the model key/shape level and same-segment resume validates loss/settings. This does not establish bitwise historical equivalence, matching stochastic order/AMP, or reproducibility of the historical HPC optimizer state.
 

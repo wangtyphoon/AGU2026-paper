@@ -23,14 +23,13 @@ def configure_graph(stage):
 
 def make_model(stage, sample, settings=None):
     settings=dict(settings or {})
-    label='coarse' if str(stage)=='1' else 'fine' if str(stage)=='2' else 'ar'
-    module='model_unetT' if label=='coarse' else 'model_unet'
+    label='coarse' if str(stage)=='1' else 'ar'
+    module='model_unet'
     cls=importlib.import_module(f'agu_james.training.models.{label}.{module}').HeteroGNN
     finest='mesh6' if label=='coarse' else 'mesh7'
     spec=dict(in_grid=sample['grid'].x.shape[1],in_mesh=sample[finest].x.shape[1],hidden_dim=settings.get('hidden_dim',512),
               out_grid=116,heads=1,processor_layers=settings.get('processor_layers',[16,12,8,4] if label=='coarse' else [16,16,12,8,6]),
               ffn_ratio=settings.get('ffn_ratio',1.0 if label=='coarse' else 2.0),use_checkpoint=settings.get('use_checkpoint',True))
-    if label=='coarse':spec.update(k_hop=[12,10,6,6],trans_layer=[2,2,1,1])
     return cls(**spec),spec
 
 def transfer_weights(model, old):
@@ -127,12 +126,12 @@ def run(stage,rollout=1,loss_kind='mse',micro_batch=1,checkpoint=None,resume=Non
     if not updates_per_epoch:raise ValueError('Not enough complete effective batches')
     total=spec['max_optimizer_updates'] or spec['epochs']*updates_per_epoch
     warmup=updates_per_epoch if str(stage) in {'1','2'} else max(1,int(total*.1))
-    # Stage 1 source decays all parameters; later source stages exempt bias/norm.
+    # Corrected coarse and AR sources both exempt bias/norm from weight decay.
     core=model.module if world>1 else model
     norm_ids={id(p) for m in core.modules() if isinstance(m,(torch.nn.LayerNorm,torch.nn.BatchNorm1d)) for p in m.parameters(recurse=False)}
     decay=[];no_decay=[]
     for name,p in core.named_parameters():
-        (no_decay if str(stage)!='1' and (name.endswith('.bias') or id(p) in norm_ids) else decay).append(p)
+        (no_decay if name.endswith('.bias') or id(p) in norm_ids else decay).append(p)
     optimizer=torch.optim.AdamW([{'params':decay,'weight_decay':.1},{'params':no_decay,'weight_decay':0.0}],lr=spec['peak_lr'],betas=(.9,.95))
     scales=pd.read_csv(runtime.legacy_path('target_mean_std.csv'))
     if scales.variable.tolist()!=expected:raise ValueError('Increment scale order mismatch')

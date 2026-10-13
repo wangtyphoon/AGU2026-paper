@@ -1,23 +1,20 @@
-# Derived from gnn/ver_unet7/model_unet.py
+# Derived from gnn/ver_unet_scale/model_unet.py
 # See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch_geometric.data import HeteroData
-from agu_james.training.models.fine.layer.gatv2conv import GATv2ConvO
 from agu_james.training.models.shared.gatv2convNG import GATv2ConvN
 from agu_james.training.models.shared.gat_edge_ffn_upG_fix import GATv2Conv_up
-from agu_james.training.models.fine.layer.gat_edge_ffn_dec import GATv2Conv_dec
 from torch.utils.checkpoint import checkpoint
 from agu_james.training.models.shared.processor__blockG import ProcessorBlock
 
 class HeteroGNN(nn.Module):
 
-    def __init__(self, in_grid, in_mesh, hidden_dim, out_grid, heads=1, processor_layers=[1, 16, 8, 4, 2], use_transconv=True, use_checkpoint=True, ffn_ratio=1.0):
+    def __init__(self, in_grid, in_mesh, hidden_dim, out_grid, heads=1, processor_layers=[16, 8, 4, 2], use_transconv=True, use_checkpoint=True, ffn_ratio=1.0):
         super().__init__()
         self.use_checkpoint = use_checkpoint
-        levels = [7, 6, 5, 4, 3]
+        levels = [6, 5, 4, 3]
         self.edge_dim = 6
         self.encoders = nn.ModuleDict()
         self.pools = nn.ModuleDict()
@@ -46,43 +43,29 @@ class HeteroGNN(nn.Module):
 
     def forward(self, data: HeteroData):
         grid_x = data['grid'].x
-        mesh_x = {lvl: data[f'mesh{lvl}'].x for lvl in [7, 6, 5, 4, 3]}
+        mesh_x = {lvl: data[f'mesh{lvl}'].x for lvl in [6, 5, 4, 3]}
         mesh_enc = {}
-        mesh_enc[7] = self.run_ckpt(self.encoders['enc7'], (grid_x, mesh_x[7]), data['grid', 'encoder7', 'mesh7'].edge_index, data['grid', 'encoder7', 'mesh7'].edge_attr)
-        mesh_enc[7] = self.encoder_norm(mesh_enc[7])
-        for lvl, next_lvl in zip([7, 6, 5, 4], [6, 5, 4, 3]):
+        mesh_enc[6] = self.run_ckpt(self.encoders['enc6'], (grid_x, mesh_x[6]), data['grid', 'encoder6', 'mesh6'].edge_index, data['grid', 'encoder6', 'mesh6'].edge_attr)
+        mesh_enc[6] = self.encoder_norm(mesh_enc[6])
+        for lvl, next_lvl in zip([6, 5, 4], [5, 4, 3]):
             pool = self.pools[f'pool{lvl}_{next_lvl}']
             mesh_enc[next_lvl] = self.run_ckpt(pool, (mesh_enc[lvl], mesh_x[next_lvl]), data[f'mesh{lvl}', f'pool{lvl}_to_{next_lvl}', f'mesh{next_lvl}'].edge_index, data[f'mesh{lvl}', f'pool{lvl}_to_{next_lvl}', f'mesh{next_lvl}'].edge_attr)
             norm = self.pool_norms[f'norm_pool{lvl}_{next_lvl}']
             mesh_enc[next_lvl] = norm(mesh_enc[next_lvl])
         mesh_proc = {}
-        for lvl in [7, 6, 5, 4, 3]:
+        for lvl in [6, 5, 4, 3]:
             proc = self.processors[f'proc{lvl}']
             mesh_proc[lvl] = proc(mesh_enc[lvl], data[f'mesh{lvl}', 'processor', f'mesh{lvl}'].edge_index, data[f'mesh{lvl}', 'processor', f'mesh{lvl}'].edge_attr, getattr(data[f'mesh{lvl}'], 'batch', None))
-        for lvl, next_lvl in zip([3, 4, 5, 6], [4, 5, 6, 7]):
+        for lvl, next_lvl in zip([3, 4, 5], [4, 5, 6]):
             up = self.upsamples[f'up{lvl}_{next_lvl}']
             mesh_proc[next_lvl] = self.run_ckpt(up, (mesh_proc[lvl], mesh_proc[next_lvl]), data[f'mesh{lvl}', f'upsample{lvl}_to_{next_lvl}', f'mesh{next_lvl}'].edge_index, data[f'mesh{lvl}', f'upsample{lvl}_to_{next_lvl}', f'mesh{next_lvl}'].edge_attr)
             norm = self.up_norms[f'norm_up{lvl}_{next_lvl}']
             mesh_proc[next_lvl] = norm(mesh_proc[next_lvl])
         grid_pred = None
-        for lvl in [3, 4, 5, 6, 7]:
+        for lvl in [3, 4, 5, 6]:
             dec = self.decoders[f'dec{lvl}']
             input_grid = grid_x if grid_pred is None else grid_pred
             grid_pred = self.run_ckpt(dec, (mesh_proc[lvl], input_grid), data[f'mesh{lvl}', f'decoder{lvl}', 'grid'].edge_index, data[f'mesh{lvl}', f'decoder{lvl}', 'grid'].edge_attr)
         return grid_pred
 import torch.optim as optim
-
-def peak_mem_trainlike(model, data, device):
-    model.train()
-    data = data.to(device)
-    with torch.no_grad():
-        out_shape = model(data).shape
-    targets = torch.zeros(out_shape, device=device)
-    torch.cuda.reset_peak_memory_stats()
-    with torch.amp.autocast(device_type='cuda', dtype=torch.float16):
-        outputs = model(data)
-        loss = F.mse_loss(outputs, targets)
-    loss.backward()
-    peak = torch.cuda.max_memory_allocated() / 1024 ** 3
-    print(f'Peak memory usage during train-like forward/backward: {peak:.2f} GB')
-    return peak
+from torch.nn import functional as F

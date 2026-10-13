@@ -33,7 +33,7 @@ def package(rel):
                 write(str(init.relative_to(ROOT)), '"""Curated paper workflow modules."""\n')
         p = p.parent
 
-DEMO = {"test_forward_backward", "visualize_feature_map", "test_model", "MemoryProfiler"}
+DEMO = {"test_forward_backward", "visualize_feature_map", "test_model", "MemoryProfiler", "peak_mem_trainlike", "analyze_no_decay_params"}
 
 class Clean(ast.NodeTransformer):
     def __init__(self, imports, scope):
@@ -118,8 +118,6 @@ def curate(source, target, imports=None, transform=None, top_job=False, drop_mai
                     if name in {'BASE_DIR','BASE','ROOT','HERE','base_dir','OUTPUT_DIR','output_dir','current_dir'}:
                         default = ast.parse(f"runtime.artifact_root() / {('jobs/' + scope)!r}").body[0].value
                     else:default=n.value
-                    if name=='graph_path' and target.startswith('agu_james/training/models/coarse'):
-                        default=ast.parse("runtime.path('graph', runtime.artifact_root() / 'graphs/mesh6/mesh_grid_data_unet/hetero_graph_normalized.pt')").body[0].value
                     n.value = ast.Call(func=ast.Attribute(value=ast.Name(id='runtime',ctx=ast.Load()),attr='setting',ctx=ast.Load()),args=[ast.Constant(scope+'.'+name),ast.Lambda(args=ast.arguments(posonlyargs=[],args=[],kwonlyargs=[],kw_defaults=[],defaults=[]),body=default)],keywords=[])
             return n
         def visit_Constant(self,n):
@@ -187,6 +185,7 @@ def model_closure(version, entry, label):
             continue
         found.add(rel)
         tree = ast.parse((base / rel).read_text(encoding="utf-8-sig"))
+        tree.body=[n for n in tree.body if not is_main(n) and not (isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in DEMO)]
         for node in ast.walk(tree):
             if isinstance(node, ast.ImportFrom) and node.module:
                 candidate = node.module.replace(".", "/") + ".py"
@@ -258,8 +257,7 @@ def pangu_functions_only(tree):
 def main():
     if sys.version_info >= (3,12):
         raise RuntimeError('Regenerate with Python 3.10/3.11: newer ast.unparse can emit f-strings incompatible with the declared minimum Python version')
-    model_closure('ver_unetG','model_unetT.py','coarse')
-    model_closure('ver_unet7','model_unet.py','fine')
+    model_closure('ver_unet_scale','model_unet.py','coarse')
     model_closure('ver_autoregressive','model_unet.py','ar')
     shared = {'train_script.datasetM':'agu_james.training.dataset', 'train_script.loss':'agu_james.training.loss', 'train_script.loggers':'agu_james.logging_utils'}
     base=RDL/'gnn/ver_autoregressive/train_script'
@@ -312,17 +310,21 @@ def main():
     curate(PAPER/'vis_multi_steps/vis_muliti_step_ours_save.py','agu_james/analysis/export_gnn_maps.py')
     curate(PANGU/'vis_multi_steps/vis_muliti_step_combined.py','agu_james/analysis/export_pangu_maps.py')
     # Fixed channel order and weights are configuration, not copied data/statistics.
-    for label,ver,name in [('ar','ver_autoregressive','next_feature_table_weight_ver3.csv'),('coarse','ver_unetG','next_feature_table_weight.csv')]:
+    for label,ver,name in [('ar','ver_autoregressive','next_feature_table_weight_ver3.csv'),('coarse','ver_unet_scale','next_feature_table_weight.csv')]:
         source=RDL/'gnn'/ver/name
         rows=list(csv.DictReader(source.open(encoding='utf-8-sig')))
         rows=[{'feature':r['feature'],'weight':float(r['weight'])} for r in rows][:116]
         p=write(f'agu_james/config/channels_{label}.json',json.dumps(rows,indent=2)+'\n')
         records.append(dict(source=str(source),source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(), destination=p.relative_to(ROOT).as_posix(),output_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),modifications=['extract fixed channel order/weights as configuration; exclude measured statistics']))
-    # Merge only byte-identical model sources, with identical transitive dependencies.
+    # Merge model dependencies whose parsed source is identical (comments/format ignored).
     groups=defaultdict(list)
     for record in records:
         if record['destination'].startswith('agu_james/training/models/'):
-            groups[record['source_sha256']].append(record)
+            parsed=ast.parse(Path(record['source']).read_text(encoding='utf-8-sig'))
+            parsed.body=[n for n in parsed.body if not is_main(n) and not (isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in DEMO)]
+            semantic=hashlib.sha256(ast.dump(parsed,include_attributes=False).encode()).hexdigest()
+            record['source_ast_sha256']=semantic
+            groups[semantic].append(record)
     redirects={}
     for group in groups.values():
         if len(group)<2:continue
@@ -333,7 +335,7 @@ def main():
         for record in group:
             redirects[record['destination'].removesuffix('.py').replace('/','.')]=canonical.removesuffix('.py').replace('/','.')
             record['destination']=canonical
-            record['modifications'].append('merged byte-identical original sources into shared model library')
+            record['modifications'].append('merged AST-identical original sources into shared model library; original byte hashes remain recorded')
         for old in old_paths:
             target=(ROOT/old).resolve()
             if not target.is_relative_to(ROOT.resolve()):raise ValueError('Unsafe deduplication target')

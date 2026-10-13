@@ -1,4 +1,4 @@
-# Derived from gnn/ver_unet7/SG_module.py
+# Derived from gnn/ver_unet_scale/SG_module.py
 # See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 from typing import Optional

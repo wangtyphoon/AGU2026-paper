@@ -21,6 +21,22 @@ def original_functions(source,names):
     exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),namespace)
     return namespace
 
+def toy_graph(max_level):
+    from torch_geometric.data import HeteroData,Batch
+    g=HeteroData();g['grid'].x=torch.randn(16,256)
+    for level in range(3,max_level+1):g[f'mesh{level}'].x=torch.randn(4,7)
+    def edge(a,rel,b,source_nodes,target_nodes):
+        index=torch.tensor([[i%source_nodes for i in range(max(source_nodes,target_nodes))],[i%target_nodes for i in range(max(source_nodes,target_nodes))]])
+        g[a,rel,b].edge_index=index;g[a,rel,b].edge_attr=torch.randn(index.shape[1],6)
+    edge('grid',f'encoder{max_level}',f'mesh{max_level}',16,4)
+    for level in range(3,max_level+1):
+        edge(f'mesh{level}','processor',f'mesh{level}',4,4)
+        edge(f'mesh{level}',f'decoder{level}','grid',4,16)
+    for level in range(4,max_level+1):
+        edge(f'mesh{level}',f'pool{level}_to_{level-1}',f'mesh{level-1}',4,4)
+        edge(f'mesh{level-1}',f'upsample{level-1}_to_{level}',f'mesh{level}',4,4)
+    return Batch.from_data_list([g])
+
 class NumericalContracts(unittest.TestCase):
     def setUp(self):runtime.configure({})
 
@@ -76,6 +92,55 @@ class NumericalContracts(unittest.TestCase):
         self.assertEqual(tuple(out.shape),(16,116));self.assertTrue(torch.isfinite(out).all())
         out.square().mean().backward()
         self.assertTrue(all(torch.isfinite(p.grad).all() for p in model.parameters() if p.grad is not None))
+
+    def test_coarse_model_forward_backward(self):
+        from agu_james.training.engine import make_model
+        graph=toy_graph(6)
+        model,spec=make_model(1,graph,dict(hidden_dim=8,processor_layers=[1]*4,use_checkpoint=False))
+        self.assertNotIn('k_hop',spec)
+        self.assertEqual(set(model.processors),{'proc3','proc4','proc5','proc6'})
+        out=model(graph);self.assertEqual(tuple(out.shape),(16,116))
+        self.assertTrue(torch.isfinite(out).all());out.square().mean().backward()
+        self.assertTrue(all(torch.isfinite(p.grad).all() for p in model.parameters() if p.grad is not None))
+        stage2,_=make_model(2,toy_graph(7),dict(hidden_dim=8,processor_layers=[1]*5,use_checkpoint=False))
+        stage3,_=make_model(3,toy_graph(7),dict(hidden_dim=8,processor_layers=[1]*5,use_checkpoint=False))
+        self.assertIs(type(stage2),type(stage3))
+
+    def test_corrected_coarse_to_fine_transfer(self):
+        from agu_james.training.engine import make_model,transfer_weights
+        coarse,_=make_model(1,toy_graph(6),dict(hidden_dim=8,processor_layers=[1]*4,use_checkpoint=False,ffn_ratio=2))
+        fine,_=make_model(2,toy_graph(7),dict(hidden_dim=8,processor_layers=[1]*5,use_checkpoint=False,ffn_ratio=2))
+        old=coarse.state_dict();copied=transfer_weights(fine,old);new=fine.state_dict()
+        self.assertTrue(any(k.startswith('encoders.enc7.') for k in copied))
+        self.assertTrue(any(k.startswith('processors.proc7.') for k in copied))
+        for key in copied:
+            if key.startswith('encoders.enc7.'):
+                torch.testing.assert_close(new[key],old[key.replace('encoders.enc7.','encoders.enc6.',1)],rtol=0,atol=0)
+        self.assertTrue(torch.isfinite(fine(toy_graph(7))).all())
+
+    @unittest.skipUnless(os.environ.get('AGU_RDL_REFERENCE'),'read-only research source path not configured')
+    def test_corrected_model_source_equivalence(self):
+        from torch.utils.checkpoint import checkpoint
+        from torch_geometric.data import HeteroData
+        from agu_james.training.models.shared.gatv2convNG import GATv2ConvN
+        from agu_james.training.models.shared.gat_edge_ffn_upG_fix import GATv2Conv_up
+        from agu_james.training.models.shared.processor__blockG import ProcessorBlock
+        from agu_james.training.engine import make_model
+        root=Path(os.environ['AGU_RDL_REFERENCE'])/'gnn'
+        for relative in ['SG_module.py','layer/gatv2convNG.py','layer/gat_edge_ffn_upG_fix.py','layer/gat_edge_before_ffnG_fix.py','layer/processor__blockG.py']:
+            a=ast.parse((root/'ver_unet_scale'/relative).read_text(encoding='utf-8-sig'))
+            b=ast.parse((root/'ver_autoregressive'/relative).read_text(encoding='utf-8-sig'))
+            self.assertEqual(ast.dump(a),ast.dump(b),relative)
+        for stage,version,level in [(1,'ver_unet_scale',6),(2,'ver_autoregressive',7),(3,'ver_autoregressive',7)]:
+            parsed=ast.parse((root/version/'model_unet.py').read_text(encoding='utf-8-sig'))
+            cls=next(n for n in parsed.body if isinstance(n,ast.ClassDef) and n.name=='HeteroGNN')
+            ns=dict(torch=torch,nn=torch.nn,HeteroData=HeteroData,checkpoint=checkpoint,GATv2ConvN=GATv2ConvN,GATv2Conv_up=GATv2Conv_up,ProcessorBlock=ProcessorBlock)
+            exec(compile(ast.Module(body=[cls],type_ignores=[]),str(root/version/'model_unet.py'),'exec'),ns)
+            graph=toy_graph(level)
+            model,spec=make_model(stage,graph,dict(hidden_dim=8,processor_layers=[1]*(level-2),use_checkpoint=False))
+            reference=ns['HeteroGNN'](**spec);reference.load_state_dict(model.state_dict(),strict=True)
+            model.eval();reference.eval()
+            with torch.no_grad():torch.testing.assert_close(model(graph),reference(graph),rtol=0,atol=0)
 
     def test_optimizer_counter_counts_accumulated_updates(self):
         import tempfile
