@@ -1,0 +1,1130 @@
+[
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\assign_graph_data_npz_unet.py",
+    "source_sha256": "f1ff739c013d490c3f57288cba1f8b7946108cc149f825956d81af0655d642a2",
+    "destination": "agu_james/training/models/coarse/assign_graph_data_npz_unet.py",
+    "output_sha256": "e1f4e4dec787699456d25fa9b0717f9fa775f4532b15245f8ab1f7ec9504cc49",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gat_edge_before_ffnG.py",
+    "source_sha256": "133c8cd494a271951751efaf991fcd4729e077a7a64908396f26cdaef788f815",
+    "destination": "agu_james/training/models/coarse/layer/gat_edge_before_ffnG.py",
+    "output_sha256": "20a3b3b17b89901ea9baaf75ebf118e27c94ac29f3a81c5f85cf98b27cbf7e94",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gat_edge_ffn_upG.py",
+    "source_sha256": "cd3a9a5727624d15349b87f4ace6c84d34abc47c6efa5d14a06077e003145695",
+    "destination": "agu_james/training/models/coarse/layer/gat_edge_ffn_upG.py",
+    "output_sha256": "82470b94f1b42365523b11fa5ec361e635db14b2859915e5c9989dcab3025045",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\gatv2convNG.py",
+    "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3",
+    "destination": "agu_james/training/models/shared/gatv2convNG.py",
+    "output_sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\processor__blockGT.py",
+    "source_sha256": "d9429603b08ec4aa9f05a48d36acf91cd687e05129a8830f7a630e28624933de",
+    "destination": "agu_james/training/models/coarse/layer/processor__blockGT.py",
+    "output_sha256": "37f4f0e77b0c2f2076d6d31ce5f9ef4c787b3ae964ea8b2208916ddad735208e",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\layer\\tri_mha.py",
+    "source_sha256": "a6e71c1923c1f45c62c0791fdd0bdba12489ec5b221f559d20c6f75283a3b06f",
+    "destination": "agu_james/training/models/coarse/layer/tri_mha.py",
+    "output_sha256": "ded58ffe54c458ef907f08b52e9f6fe3c56025e169f0ccea3526d71a320a9c2a",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\model_unetT.py",
+    "source_sha256": "b1e1621e972731508902ba34c404693831eff078c9c576a0fa3f77c85835e6f0",
+    "destination": "agu_james/training/models/coarse/model_unetT.py",
+    "output_sha256": "6fb68480091e661389b02e4b9f8a21f6c6571d3fb9d451f89c35b4f9c63c2886",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\SG_module.py",
+    "source_sha256": "1a14aa984d89ec4c27a04ae6e219b349515d0ef7adab0cad46e93db19579e891",
+    "destination": "agu_james/training/models/shared/SG_module.py",
+    "output_sha256": "25fcfca58daf5cf1b0be2ca50256b9fa40ae475e7fe858373499c894a484f4d1",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\assign_graph_data_npz_unet.py",
+    "source_sha256": "f2675a8a5a617785dc3228267abb25af5c7bb38e9654687424c8b708453ae1a9",
+    "destination": "agu_james/training/models/fine/assign_graph_data_npz_unet.py",
+    "output_sha256": "e23314e780ec4c5724094ad640c9e66104a5ee9f35643ff44a73091084deb831",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_before_ffnG_fix.py",
+    "source_sha256": "fac79b70e36b2f356341e5c7429e155f3fc9f5058655d7f00953aab6e60348db",
+    "destination": "agu_james/training/models/shared/gat_edge_before_ffnG_fix.py",
+    "output_sha256": "4265c1816877c1ebb7d6856d525db2a3cce3756d1ba50f54c3400e80cbd04ac0",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_ffn_dec.py",
+    "source_sha256": "5cd6261fd396ee0da9b8e83992338acf67dbedea25d904f9962d8e411303feb4",
+    "destination": "agu_james/training/models/fine/layer/gat_edge_ffn_dec.py",
+    "output_sha256": "394cd4a964e2b4250124d93eee0ea70b2d16d340b915057b5a45ad406ea49493",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gat_edge_ffn_upG_fix.py",
+    "source_sha256": "b2e91c90cde1c382ace246124490ae3ebefa12fb161e6cde5697ea7b0a54b829",
+    "destination": "agu_james/training/models/shared/gat_edge_ffn_upG_fix.py",
+    "output_sha256": "d4cc41508dfb10fcb0f74dd137a0168302462fde12302b7db52356dd834bb275",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gatv2conv.py",
+    "source_sha256": "b4e29ec79bfbab754663d8637c8281c58ccc27dd269d1f3c6d973383f31cb216",
+    "destination": "agu_james/training/models/fine/layer/gatv2conv.py",
+    "output_sha256": "ea32048bc32020ec308ccab05ba055c0ab08bd36db309b914b003e5127aed13c",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\gatv2convNG.py",
+    "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3",
+    "destination": "agu_james/training/models/shared/gatv2convNG.py",
+    "output_sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\layer\\processor__blockG.py",
+    "source_sha256": "2d68feab7b8be225ec01476d3f50adef0019129912f58b766c3fb80cbf5573ec",
+    "destination": "agu_james/training/models/shared/processor__blockG.py",
+    "output_sha256": "b5d745450f0eb30099c2c38c86c4ab23ae2cebce4bd7ec8c0e48c337527a99c9",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\model_unet.py",
+    "source_sha256": "80bd20d5b767ae5764c78fd337d53319d4df3aa93d4be29cbef7e05073762743",
+    "destination": "agu_james/training/models/fine/model_unet.py",
+    "output_sha256": "2e0187e1f53049cbf1117cde12bd1e49e2205b9d708081df5ebb4ecffe978eab",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\SG_module.py",
+    "source_sha256": "1a14aa984d89ec4c27a04ae6e219b349515d0ef7adab0cad46e93db19579e891",
+    "destination": "agu_james/training/models/shared/SG_module.py",
+    "output_sha256": "25fcfca58daf5cf1b0be2ca50256b9fa40ae475e7fe858373499c894a484f4d1",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gat_edge_before_ffnG_fix.py",
+    "source_sha256": "fac79b70e36b2f356341e5c7429e155f3fc9f5058655d7f00953aab6e60348db",
+    "destination": "agu_james/training/models/shared/gat_edge_before_ffnG_fix.py",
+    "output_sha256": "4265c1816877c1ebb7d6856d525db2a3cce3756d1ba50f54c3400e80cbd04ac0",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gat_edge_ffn_upG_fix.py",
+    "source_sha256": "b2e91c90cde1c382ace246124490ae3ebefa12fb161e6cde5697ea7b0a54b829",
+    "destination": "agu_james/training/models/shared/gat_edge_ffn_upG_fix.py",
+    "output_sha256": "d4cc41508dfb10fcb0f74dd137a0168302462fde12302b7db52356dd834bb275",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\gatv2convNG.py",
+    "source_sha256": "e6b3d652de40edc5eff6c9bd01f71286113a52754a788ccde7468c48ba4f34b3",
+    "destination": "agu_james/training/models/shared/gatv2convNG.py",
+    "output_sha256": "a0f718fa88685886cefd13d2b4a51e817ce26ba362d980df688bdfc2f5da6695",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\layer\\processor__blockG.py",
+    "source_sha256": "2d68feab7b8be225ec01476d3f50adef0019129912f58b766c3fb80cbf5573ec",
+    "destination": "agu_james/training/models/shared/processor__blockG.py",
+    "output_sha256": "b5d745450f0eb30099c2c38c86c4ab23ae2cebce4bd7ec8c0e48c337527a99c9",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O",
+      "merged byte-identical original sources into shared model library"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\model_unet.py",
+    "source_sha256": "04fb0094a24f53615c61d79046f61f8c2e5a67ad459ca818f039349c646c4d7f",
+    "destination": "agu_james/training/models/ar/model_unet.py",
+    "output_sha256": "99788721eb22b9f16f0600d7a16210cf50f8e781f67d8637a29e0321e058c4f7",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\train_script\\datasetM.py",
+    "source_sha256": "213844c595b368a5dc8a2de8a37f3b0e30de7303c884785e59c96eecad6064c2",
+    "destination": "agu_james/training/dataset.py",
+    "output_sha256": "483ed5c26906ec2d64c6571e4f640e0ba0ac14e3c427af501ca7e15cbe2f4138",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "dataset_paths",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\train_script\\loss.py",
+    "source_sha256": "8be51978996c7c97f22d72b26d9159c73df3a4adbc57d4a86fc5fad441de061d",
+    "destination": "agu_james/training/loss.py",
+    "output_sha256": "e93a608d2c1572e7027b094910cf56f165954096854019b774677ba31c273a1c",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "torch_spatial_width",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\train_script\\spectrum_loss.py",
+    "source_sha256": "1280790480b8be766c379457c7324264c8ba4382c462cd4270119c11ce7799d2",
+    "destination": "agu_james/training/spectral_mae.py",
+    "output_sha256": "6340620532d2c2cc9a1eec23655fe5b952cda11cd2446e3e6623897fd802a9f2",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "training_asset_paths",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_spectrum_v2\\train_script\\spectrum_loss_v2.py",
+    "source_sha256": "01e5beaf2ad1025058e12b6b6fad8693c047c4983dae20929084a10fea0fb0e1",
+    "destination": "agu_james/training/spectral_mse.py",
+    "output_sha256": "566ace2ebbc5b73fdc27d65d6d69b37eafb74bac7ab2f933a8d5f7c81595c510",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "training_asset_paths",
+      "public spectral_composite_loss alias; same v2 function",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_spectrum_v2\\train_script\\spectrum_loss_v2_ddp.py",
+    "source_sha256": "59e93af87fb4f340b2fb92ba2d8402dbbf30b365b3d17461ba3766e5dc7a7ebb",
+    "destination": "agu_james/training/spectral_mse_ddp.py",
+    "output_sha256": "71606e41b4ee2235d40cd4cf3cd4b5e6f74dd3d4c14883b9157ecac573613604",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "training_asset_paths",
+      "public spectral_composite_loss alias; same v2 function",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\train_script\\val_autoregressive.py",
+    "source_sha256": "d089bc124eace12aca3b11206412bd826ab03a8bc359a4dfba030e0d457f060a",
+    "destination": "agu_james/validation/rollout.py",
+    "output_sha256": "421e2c242eef3c25d7c70a258ed23a2820e266f830b4d070ba6cfba1380fd2ce",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "validation_width",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\train_script\\val_autoregressive_with_spectrum.py",
+    "source_sha256": "2c192d9dafe5fa25e2eee21c5b194487f56f809383f5be708ea570db882d124f",
+    "destination": "agu_james/validation/coherence.py",
+    "output_sha256": "d2b3059ca9bdbc368a3168445d1a20565303523a21e70bae5d8caa22c094add4",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "validation_width",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\create_hetero_mesh_poolk.py",
+    "source_sha256": "ff99088638fa05ff67854d6d88b626152921a9643b0723e1ae02cea562fb5935",
+    "destination": "agu_james/graphs/mesh6/step1.py",
+    "output_sha256": "13f0a79cc5fc05b0b410af4ad6ad28a01b3cda85974220a6313e8e7d88db8325",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\edge_feature4_unet.py",
+    "source_sha256": "540e6700b5e419516cfef66713f523d9849ca796e083dd74ad11e6b61fe29a20",
+    "destination": "agu_james/graphs/mesh6/step2.py",
+    "output_sha256": "60308f6e66692599712ccd131e4a69d9adc7c98e19348017f58c9dceded3c028",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\node_feature2_unet.py",
+    "source_sha256": "a64bbb007c1276fbf28c65709c8e19ab503804903ea7e2160e4523d110c23290",
+    "destination": "agu_james/graphs/mesh6/step3.py",
+    "output_sha256": "ddb3aed38046c1012f438bdd8a86b8a6cd4a2a5db20b71894f2379684f353aa5",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\PE+SE3_unet.py",
+    "source_sha256": "44457223dfbd9232a0a372932c8754cb6647741f8edf8f539aed434772963c23",
+    "destination": "agu_james/graphs/mesh6/step4.py",
+    "output_sha256": "efbcfc51345c6994f40a1ab0f15fcc786a530d13c0dc22550519231e2b7c0bb4",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\self_loop5_unet.py",
+    "source_sha256": "d4835b1d3eb8b04ae023e395cd8d3531770d0b1dd8c9567d4ec1e76bc2955671",
+    "destination": "agu_james/graphs/mesh6/step5.py",
+    "output_sha256": "bea4b8b6af286f1bb64ac7df3d3c1d34758ec36c0bda75921d1a883653a13e51",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\pre_norm6_unet.py",
+    "source_sha256": "b008dcf6a94f14b1dfd67995cce56a61089a508f9e1cd454c3b4aa96e8057700",
+    "destination": "agu_james/graphs/mesh6/step6.py",
+    "output_sha256": "7cb7d39fbca13d0e011b1c8745b8ad5e8d571a885d074878ccab63d49f88b294",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\create_hetero_mesh_poolk7.py",
+    "source_sha256": "7ea68360cffa0bdd8264f225b8f89e0dcb3c810c9393793f4400fa10b866b1a0",
+    "destination": "agu_james/graphs/mesh7/step1.py",
+    "output_sha256": "7f4a4d734e7224850d2685d53b015cc785b50af1590a57f0c6c4168f5e25d647",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\edge_feature4_unet7.py",
+    "source_sha256": "09c09b34e9293fce8994c80962de3d7452160c4112d967ce7d60c5570d0ee03d",
+    "destination": "agu_james/graphs/mesh7/step2.py",
+    "output_sha256": "355b7647d3828a61619dc745aa9f486db43b2fb6c8a522dc6aa69e1ff163b007",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\node_feature2_unet7.py",
+    "source_sha256": "e447cbd58c1acdc90693c832ee58b87e36f843da49d900e95e82d31035e68ca2",
+    "destination": "agu_james/graphs/mesh7/step3.py",
+    "output_sha256": "1ed7f071c649bf44d5960f5aad9f811291e4898f66b1523c02e92b2f56c1d5b9",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\PE+SE3_unet7.py",
+    "source_sha256": "82fa901a9b525c577284a064ebd0e6efedd6c13254552794a7240df18ad33cab",
+    "destination": "agu_james/graphs/mesh7/step4.py",
+    "output_sha256": "de7c26655a67a642d74d4dafdd2b9d73a74b6435db41c4e87a48fbc8a3960c2c",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\self_loop5_unet7.py",
+    "source_sha256": "24ef954b27b083765823b6c5612f1f9c1996192cdda4e81cb5c9557a51fb2715",
+    "destination": "agu_james/graphs/mesh7/step5.py",
+    "output_sha256": "3c82900aac1e64e1b79fa526ce3897188964ed9b8bede4862805df118e7a50f2",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unet7\\pre_process\\pre_norm6_unet7.py",
+    "source_sha256": "7360a313af843e87a9b0140849b3053ae739ee277eaf4390d9189c96b4b6f860",
+    "destination": "agu_james/graphs/mesh7/step6.py",
+    "output_sha256": "5bde751eeeb97bf1c57b6f7867eebac32e9fb29cff63e63d1fbe4ff866964066",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\era5\\download_prs.py",
+    "source_sha256": "7ab62d6ff8c0322d1a62c6a3c2669e984933add5198425fc0d843327ad0efeae",
+    "destination": "agu_james/data/requests/download_prs.py",
+    "output_sha256": "d197f4205a21aa4bf9a41f8ac8bff001edaae7413579d3d2e6baffd8f089f5f4",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\era5\\download_sfc_regular.py",
+    "source_sha256": "3747c0f22fd824238a5525477c2b75dcb74a88d6e66dc363ccee6ea968f461e4",
+    "destination": "agu_james/data/requests/download_sfc_regular.py",
+    "output_sha256": "60ad9d9f7b78735f5a6fa28eb9efa38d5763a0032b9782d21ae2cfa3b2e6b177",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\era5\\download_sfc_average.py",
+    "source_sha256": "0133b416b9da791cc1a08ea686ae35a22ca314c9c30ba8506789fbe304688ee1",
+    "destination": "agu_james/data/requests/download_sfc_average.py",
+    "output_sha256": "448277e3a665c5c7bb3c7727e320a2294451eb5bee450b4a0f11f333f43e2153",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\npz\\fill_nan_nearest.py",
+    "source_sha256": "38b82e8213c4f8df75890aa09f240f038593d6031c9ab223dae001d3cd2aca15",
+    "destination": "agu_james/data/nearest_fill.py",
+    "output_sha256": "ed620f45f71bb5584281fc887f7f0d83efaa8e4ff0ee0ab5d1b01466b4a21572",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "retain only conversion helper; remove original in-place bulk repair/demo utilities",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\npz\\resize_swh.py",
+    "source_sha256": "1799297d89bf740a052835393ae9907044d45bac681ffa84f6a5f83c61ba25e2",
+    "destination": "agu_james/data/wave_interpolation.py",
+    "output_sha256": "c0d6092e336544da55a789b737136406e5ac531fa231cc6d89cd05b03cba5341",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "retain only conversion helper; remove original in-place bulk repair/demo utilities",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\rmse.py",
+    "source_sha256": "e3abe58fc2977498f121209499e0f0de6968d6e429b3d0f485a7c4d8df7fe7aa",
+    "destination": "agu_james/analysis/gnn/rmse.py",
+    "output_sha256": "dd814786b64f6dc5843298b544297366e516700fc6208c41f61a73eddd22d4c6",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\acc_forecast_acitivity.py",
+    "source_sha256": "9488855c312b6f174deba24efc2fe1b6d0b346e59a87d894d649f55591486651",
+    "destination": "agu_james/analysis/gnn/acc_activity.py",
+    "output_sha256": "ccb3137cfd02ad455907dfc47e88c2cbd159cf21a788ea0352e25c66d5f11189",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\forecast_activity_by_step.py",
+    "source_sha256": "b27235e60b8914969fdd53e06dba7a3e362cbe8aa1a6eebd5cbd19e85f5f18c1",
+    "destination": "agu_james/analysis/gnn/target_activity.py",
+    "output_sha256": "127b65c88355f96847e289f089a1270690d1c1fc4cdbfdc2cf6cc61db12062fb",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\spectrum_all_stat.py",
+    "source_sha256": "3a3855997b06f690085929fd520da6bce6cd55d040304720e08087fdb47987ef",
+    "destination": "agu_james/analysis/gnn/energy.py",
+    "output_sha256": "4db8b4521f6b53b8ac06b07353dd6760ebd2d6bb27edddb5cc1f875e186d0e70",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\coherence_spectrum_all_stat.py",
+    "source_sha256": "5e6b9ab2ddf8e6c8fca2805480a4cfc031768bfd77f78e10f1c6f9e745262a5d",
+    "destination": "agu_james/analysis/gnn/coherence.py",
+    "output_sha256": "7d802ccf40083ab38aec043652a6f92eda1bd6d529126b8ab07e9ec5a268c224",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\spectral_threshold_summary.py",
+    "source_sha256": "33461835874b6e2435df434c9627abc3c330ba724012e9d7b8ce25a3a256a326",
+    "destination": "agu_james/analysis/gnn/cutoff.py",
+    "output_sha256": "fed236eb96e04b1354e5a2c714216fdf131f9f3ef38028dcace473d77d0c56cb",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_bst_msl_intensity.py",
+    "source_sha256": "4ec65b46a37cdca0cd933a7e51fcf9494c6e1dc3d4135e40113caf72f90529b3",
+    "destination": "agu_james/analysis/gnn/tc_base.py",
+    "output_sha256": "ecad0a1bb876ca710684773fa72c2d7fd7851957a83303603259b79abec94c31",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tracker_ver_aurora.py",
+    "source_sha256": "7ff03cab820e336c0dc6f6e3f12ea846a35733203df09cc75479ed6bb0bc118f",
+    "destination": "agu_james/analysis/gnn/tc_tracker.py",
+    "output_sha256": "73563361cfd9f5e608e3d82a637b3b1b5d00be33089687e6d0b313fcb9bccd48",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_axisymmetric_metrics_to_csv.py",
+    "source_sha256": "5387b0671eff3b74ea5430176ed034038acb58bcf2296e2f579074c7829f446f",
+    "destination": "agu_james/analysis/gnn/tc_wind.py",
+    "output_sha256": "0bad4a8bbb5b29067ef116947c04f8cb8c2c33c74aaeb7da6635deb838230c74",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_axisymmetric_wcc_to_npz.py",
+    "source_sha256": "07a268802c055d8c647f485309713256e0e551a7351eb1b1b38327f18aae5121",
+    "destination": "agu_james/analysis/gnn/tc_vertical.py",
+    "output_sha256": "ba17eac8aa92012c16b20ab18268ac59f32fce8e2e74de4a09cb3ecab077a8f9",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_phase_core_to_csv.py",
+    "source_sha256": "0679706029e9b647e746f1e796a84a0cc69d14363f5db5fefe6f9aa10a4501a4",
+    "destination": "agu_james/analysis/gnn/tc_phase.py",
+    "output_sha256": "0a344abb74e7907fddd04191d3b6fb51648de7b0422bc564276a0ad9e5ef9d71",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_gwb_700z_to_csv.py",
+    "source_sha256": "0551f917d1c949e345a8f10ee8931ef0a86a73b617a8212f80db736fa1d50612",
+    "destination": "agu_james/analysis/gnn/tc_gwb.py",
+    "output_sha256": "5cbc6cab18cc75c74f2a765fd031185ba9fb4ee202258040606aad00d1742403",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\tc_ike_calculation_to_csv.py",
+    "source_sha256": "b337b556ccf2e1e85e8f97250ff662a96fdd109fd31503c91b6f533053c213ad",
+    "destination": "agu_james/analysis/gnn/tc_ike.py",
+    "output_sha256": "841f2c35f78c0e2c7ac075d8b8d3fc70482e78a069eca79d424d3723bce0f97d",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\output\\download_clim.py",
+    "source_sha256": "200c7e5256f4b57b34ebafc71a57637b06f876414fa00efe2d54257d235d1704",
+    "destination": "agu_james/analysis/gnn/climatology.py",
+    "output_sha256": "c298d73b7d46756522e0861d251c77235a3a27a3e6419d3d9c3236e2fb7a107a",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\subset.py",
+    "source_sha256": "aabda42c1f5404976ae8edb1b0f515c8914e6aecee9cb891624cf5e2784de37d",
+    "destination": "agu_james/analysis/pangu/subset.py",
+    "output_sha256": "1ba9e39560b93fbaa723706acd935e8621effaa2c605f62ec94deace0ac6eb95",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\loss.py",
+    "source_sha256": "e28a5af8b40b4e50728914e35465975dd37d89b5edd19d84182f698fcfc667e5",
+    "destination": "agu_james/analysis/pangu/loss.py",
+    "output_sha256": "026cb46efe16bd450e16ae5ea45e4e7af191a9d15bcf9c711532484aba2befd6",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\tc_tracker_bst_msl.py",
+    "source_sha256": "9464f73d41cbaf9bd2e8b48d1d527363a458e1e3c695da3fffd3813f21b60dc8",
+    "destination": "agu_james/analysis/pangu/tc_tracker_bst_msl.py",
+    "output_sha256": "11ceac85c253a4ea37e675d3d635688b9fcec4f50ab6e53d56158d54a404165f",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\tracker_ver_aurora.py",
+    "source_sha256": "d7e358da477752d64c857294a0974079c309a553d469bef2d1f0594717884b32",
+    "destination": "agu_james/analysis/pangu/tracker_ver_aurora.py",
+    "output_sha256": "df55a74164890172eaaefb0bfcf3f1a2287c1b4da5dc002d29c1cea09a7129ee",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\weight_rmse_prs_multistep.py",
+    "source_sha256": "5fb2da6ac1169c675c2965070fec9d895f00d01e61ad6311ddbb4facc6854be2",
+    "destination": "agu_james/analysis/pangu/weight_rmse_prs_multistep.py",
+    "output_sha256": "275e9abbd939c90f53c499ecc6a3b32047c5f6945a5af5d9f498a4c2d76ac196",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\weight_rmse_sfc_multistep.py",
+    "source_sha256": "06e4c5645e16002f520204abdc351c422883bd05a51f9bdee611e29af2632ed4",
+    "destination": "agu_james/analysis/pangu/weight_rmse_sfc_multistep.py",
+    "output_sha256": "4dd27988b6e26796249250d0d7e705ac76217948467be4577ed02bf9f387bfab",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\acc_metric_prs.py",
+    "source_sha256": "e7513bf70490fe1ee87c28ff41e57bd786f13bf367c412f881c78e33b9686405",
+    "destination": "agu_james/analysis/pangu/acc_metric_prs.py",
+    "output_sha256": "a100aecf0f0d42e56c9723cca578e7bcdcd576b710360626e199e36da5ccfe39",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\acc_metric_sfc.py",
+    "source_sha256": "99b6e61cb678d04603f5634673cc129f1293f2fa415a75efdcfda13ec97c622f",
+    "destination": "agu_james/analysis/pangu/acc_metric_sfc.py",
+    "output_sha256": "fd92e7f7e96995ba8c572660858dcb459723efae7d1f7be6443d35052d752056",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "top-level I/O moved into main()",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\spectrum_multistep_prs.py",
+    "source_sha256": "34380b9d5bcebfaa65ca1aa7a1d27104fd1a8932bcc2e90d6276047e284da716",
+    "destination": "agu_james/analysis/pangu/spectrum_multistep_prs.py",
+    "output_sha256": "e5f24e4bf11dbdd7c6ef9859ac4ec34581e798aa8b3c301b1a39d3201c108828",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\spectrum_multistep_sfc.py",
+    "source_sha256": "1f789987bfa58117b7e06b461130e902bd35877de53ca9b3c22dc38b03142c16",
+    "destination": "agu_james/analysis/pangu/spectrum_multistep_sfc.py",
+    "output_sha256": "e85260174a5fe9c4987dbc2721b66e2866c181d954522cdb6427995588cd12d6",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\axisymmetric_wind_metrics_all.py",
+    "source_sha256": "784299cf727df6a58b6f143bc79425e2c604a630d1890c052b54da0e662427f1",
+    "destination": "agu_james/analysis/pangu/axisymmetric_wind_metrics_all.py",
+    "output_sha256": "40a582e632af081606107b43898699fa5799d28082452ab4be62e64d5a785285",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\axisymmetric_gwb_metrics_all.py",
+    "source_sha256": "2f10d2da14301f877c3ae869337d493273ff1f1978eba5fd957a602e287f4622",
+    "destination": "agu_james/analysis/pangu/axisymmetric_gwb_metrics_all.py",
+    "output_sha256": "1b3e3c01269b44f2b88161c2fac7441789e5caf06e59d3c0e5566d40ff66e8df",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\axisymmetric_b_vt_metrics_all.py",
+    "source_sha256": "6c0226d61c20e163ce8858c544adf40590632abe6a00f05bba57d43293991b55",
+    "destination": "agu_james/analysis/pangu/axisymmetric_b_vt_metrics_all.py",
+    "output_sha256": "5f4593b058e7559481fb447ff5fc3e55ff42e6a6724cba304bbdc7039551c70b",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\validation\\ike_metric_700_all.py",
+    "source_sha256": "301656c1055059665c40a108c909aef599266fff7d580ad5f396dbc0e9ed0d97",
+    "destination": "agu_james/analysis/pangu/ike_metric_700_all.py",
+    "output_sha256": "a5f1fb0a0f0cc87d6f2118d63f7f41e0e3442b80c5760ebf94942a6113aebee3",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\func_inference.py",
+    "source_sha256": "1aa6a566255c1710954de96b066a020de81eeaa8a4b3a4e516edc7643269b307",
+    "destination": "agu_james/validation/pangu_inference.py",
+    "output_sha256": "88aab2211acd571262bf6ed917c0adb91889e5dda7519399b38d54af74586fae",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "pangu_functions_only",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\evaluation_metric\\plot_james_metrics.py",
+    "source_sha256": "140beb95a6d437dc8b605708031fb7e95f1c73b6f939a27d6777b98f4ec5b55f",
+    "destination": "agu_james/plotting/metrics.py",
+    "output_sha256": "41f45a591861e2e4a66dcd704f80c373763c6f3c9a829d4024df03fba32b241f",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\spectrum analysis\\plot_spectral_energy_summary.py",
+    "source_sha256": "4abe528228ed83b8c722e170bc1095e7ac6b82ec0076e257a23df1af1f5c665d",
+    "destination": "agu_james/plotting/energy.py",
+    "output_sha256": "1bf7fe656f42013af87a5d19b1c0cde9a86fb3bdf4ec628dca89bae4f6d912f9",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\spectrum analysis\\coherence_energy_ratio_scatter.py",
+    "source_sha256": "5ccb949df37105c17a182cd8cd94df17700e79195187c99f41318185bca3a581",
+    "destination": "agu_james/plotting/coherence.py",
+    "output_sha256": "351595f8b696b8fc5135c44fc407902428f352bf724fb181e630b3c1918aa487",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\tc_verification\\plot_tc_verification.py",
+    "source_sha256": "f739c9fb69a9cb8ca86dda68a200289eacb108ee5a11b674c83ab4c514555c53",
+    "destination": "agu_james/plotting/tc_verification.py",
+    "output_sha256": "53155ac6e0a6f240ec0f707b12fb819ab61bb0ca338542bb283579f9c4674b58",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\tc_verification\\plot_tc_physics_structure.py",
+    "source_sha256": "69d8f9bc90ba2056d22e4c01332cf8b2403613d6a0617649b9eca63ab13e7df5",
+    "destination": "agu_james/plotting/tc_physics.py",
+    "output_sha256": "113b09295777e6bcfa1130dae374d16b5b4f5f23cf90a7bbf5b51daab2c31ab1",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\tc_verification\\tc_distribution_plots.py",
+    "source_sha256": "d751f3d0319ec449565e284a9299ee931ddc331c46e11e590cb255d35b3d564b",
+    "destination": "agu_james/plotting/tc_distributions.py",
+    "output_sha256": "335884699aa0cb9994b75b02791554427ca049dea6c85b13abc577f015f86f4e",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\case_study and monthly simulation\\plot_krathon_track_intensity.py",
+    "source_sha256": "4340303cb917e07e8a9e22a24bf75b270839ebb944fed92773a32e5f422de74d",
+    "destination": "agu_james/plotting/krathon_track.py",
+    "output_sha256": "697495011b09ff8d715a9f2983fc1acfd3d315a9b227b54876672ef1a40bc6c3",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\case_study and monthly simulation\\plot_krathon_wind850_q700.py",
+    "source_sha256": "968213da2bd015c64dd7a02640a362369fd46cf7475520cc3408d451cef26e9f",
+    "destination": "agu_james/plotting/krathon_fields.py",
+    "output_sha256": "bdada22b406022abb2b2da3a7929e2d2857256ecf5d5899f802302029d4a3aba",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\case_study and monthly simulation\\plot_monthly_spatial_spectrum.py",
+    "source_sha256": "e1048a133ca88e58a63f23cc8a1431ca37116fc3a4b164c632761d728253b8cd",
+    "destination": "agu_james/plotting/monthly.py",
+    "output_sha256": "898052d43f4e6a104fe8a41f6529a16bcf375cf2b52ee83f093394d443b791bc",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\vis_multi_steps\\vis_multi_model_forecast_compare_monthly_all.py",
+    "source_sha256": "9f2fe9e5e7196310c676e0170388813588ecd273604b7e613123225efb5aff43",
+    "destination": "agu_james/plotting/monthly_maps.py",
+    "output_sha256": "853ff291795ef70f7765ec845f09dfc49d3fe74baf6be0071c5bc156095a929a",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\pre_process\\chapter2_vis_composite.py",
+    "source_sha256": "56b2c9ebb71dd0cca10183a818f83d62c5b72dd26460fd020d955fefc5e30c17",
+    "destination": "agu_james/plotting/graph.py",
+    "output_sha256": "2ea73f31dd8e3eebbe8f95074a1d8219905fa22cac012bbcc51ae8b729dfb6c4",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\pre_process\\chapter2_vis.py",
+    "source_sha256": "84f1f08b0fc1c9bdd326fb4158a61ca9ed9fa79b538e06c9cec459788f7dc30d",
+    "destination": "agu_james/plotting/graph_helpers.py",
+    "output_sha256": "a75c257d55c21050eb4d1031debf2a1e5d140d3d1a36fad6b2eb3fb09e9d14a2",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\paper\\paper_with_code\\vis_multi_steps\\vis_muliti_step_ours_save.py",
+    "source_sha256": "69e950bf52a7b580c367954c0f133de4cb6e5ed25b475224e1ee443972f84958",
+    "destination": "agu_james/analysis/export_gnn_maps.py",
+    "output_sha256": "8b6c42631115c813e85ecb05ee18516633595a5f79a16cce987a55de0dd4a5c7",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "C:\\Users\\王子祐\\Documents\\Pangu-Weather-ReadyToGo\\vis_multi_steps\\vis_muliti_step_combined.py",
+    "source_sha256": "1ace7ada32fe1c96d230634c841de811f0ed1605399cc50bd1d5df4988d522d2",
+    "destination": "agu_james/analysis/export_pangu_maps.py",
+    "output_sha256": "657845dfe4d32e24cf316255e9e29e6babbca3c382bc3f8640cab7687733ec0f",
+    "modifications": [
+      "package-qualified imports",
+      "removed debug/demo entry points",
+      "AST formatting; formulas retained",
+      "configurable artifact paths; deferred import-time I/O"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_autoregressive\\next_feature_table_weight_ver3.csv",
+    "source_sha256": "4791e4202bc3a48a4fc06b866162a0ad821de53e5a1cf2faf89343c278edac9e",
+    "destination": "agu_james/config/channels_ar.json",
+    "output_sha256": "3e60488b3bd1ada1a2056f473cb8fbfe111da29fae39e1d4d4503022105ff5f2",
+    "modifications": [
+      "extract fixed channel order/weights as configuration; exclude measured statistics"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_unetG\\next_feature_table_weight.csv",
+    "source_sha256": "c77429940a05f1fc12cf54136e122848b0ca2fa966a14b4e36c2778bda9d4c00",
+    "destination": "agu_james/config/channels_coarse.json",
+    "output_sha256": "d0e1c6fa01ceea5b64173ce66f840b2a0c721e5d5cd98b8beb2d095171f15e25",
+    "modifications": [
+      "extract fixed channel order/weights as configuration; exclude measured statistics"
+    ]
+  }
+]

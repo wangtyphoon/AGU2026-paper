@@ -1,0 +1,277 @@
+# Derived from validation/spectrum_multistep_sfc.py
+# See provenance/sources.json for original hash and modifications.
+"""
+多 step 地表層預報的徑向頻譜分析。
+流程參考 spectrum_multistep_prs.py，通道與資料來源則依 weight_rmse_sfc_multistep.py。
+
+輸入：
+    - ../results/<run>/output_surface_YYYY-MM-DD-HH-MM.npy
+    - ../forecasts/YYY.../input_surface.npy
+    - 需要 ../surface.nc、../lat.npy、../lon.npy
+
+輸出（皆在 validation/ 下）：
+    - overall: {var}_spectral_stats_overall.csv
+    - 每個 lead: {var}_spectral_stats_leadXX.csv（XX=小時）
+    - all_energy_multistep_sfc{hours}.npz：包含 k 及每個 var 的 mean/std（overall 與各 lead）
+"""
+from agu_james import runtime
+import os
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Tuple
+import numpy as np
+import pandas as pd
+from agu_james.analysis.pangu.subset import extract_subset_surface
+channel_map_surface = {'msl': 0, 'u10': 1, 'v10': 2, 't2m': 3}
+LAT_RANGE = (2.25, 45.5)
+LON_RANGE = (104.5, 147.75)
+APPLY_LAT_WEIGHT = False
+AMPLITUDE_SPECTRUM = False
+DETREND_MEAN = False
+DENSITY_NORM = False
+ROOT = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.ROOT', lambda: runtime.artifact_root() / 'jobs/agu_james.analysis.pangu.spectrum_multistep_sfc')
+BASE = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.BASE', lambda: runtime.artifact_root() / 'jobs/agu_james.analysis.pangu.spectrum_multistep_sfc')
+RESULTS_ROOT = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.RESULTS_ROOT', lambda: BASE / 'results')
+ERA5_ROOT = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.ERA5_ROOT', lambda: BASE / 'forecasts')
+SURFACE_NC_PATH = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.SURFACE_NC_PATH', lambda: '../surface.nc')
+reference_path = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.reference_path', lambda: runtime.path('agu_james.analysis.pangu.spectrum_multistep_sfc.prs'))
+WORKERS = 4
+FORECAST_STEP_HOURS = 6
+FORECAST_STEPS = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.FORECAST_STEPS', lambda: 28)
+FORECAST_TOTAL_HOURS = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.FORECAST_TOTAL_HOURS', lambda: FORECAST_STEPS * FORECAST_STEP_HOURS)
+
+def select_bbox_indices(lat2d: np.ndarray, lon2d: np.ndarray, lat_range, lon_range):
+    lat_min, lat_max = (min(lat_range), max(lat_range))
+    lon_min, lon_max = (min(lon_range), max(lon_range))
+    mask = (lat2d >= lat_min) & (lat2d <= lat_max) & (lon2d >= lon_min) & (lon2d <= lon_max)
+    ys, xs = np.where(mask)
+    y0, y1 = (ys.min(), ys.max() + 1)
+    x0, x1 = (xs.min(), xs.max() + 1)
+    return (slice(y0, y1), slice(x0, x1))
+
+def radial_power_spectrum(field2d: np.ndarray, area2d: np.ndarray | None=None, detrend_mean: bool=True, amplitude: bool=True, density_norm: bool=False) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    面積加權幅度/功率徑向譜。
+      1) (可選) 面積加權去均值，乘上 sqrt(A_norm)
+      2) 2D FFT → |F| 或 |F|^2
+      3) 以像素半徑做徑向平均
+    """
+    H, W = field2d.shape
+    if area2d is not None:
+        if area2d.shape != (H, W):
+            raise ValueError(f'area2d 形狀需為 {(H, W)}，目前是 {area2d.shape}')
+        A = area2d.astype(np.float64, copy=False)
+        A = A / np.nanmean(A)
+        mean_w = np.nansum(field2d * A) / np.nansum(A) if detrend_mean else 0.0
+        x = (field2d.astype(np.float64) - mean_w) * np.sqrt(A)
+    else:
+        x = field2d.astype(np.float64, copy=False)
+        if detrend_mean:
+            x = x - np.nanmean(x)
+    F = np.fft.fft2(x)
+    F = np.fft.fftshift(F)
+    if amplitude:
+        P = np.abs(F)
+        if density_norm:
+            P = P / (H * W)
+    else:
+        P = np.abs(F) ** 2
+        if density_norm:
+            P = P / (H * W) ** 2
+    cy, cx = (H // 2, W // 2)
+    y, xg = np.indices((H, W))
+    r = np.sqrt((xg - cx) ** 2 + (y - cy) ** 2).astype(int)
+    kmax = min(cx, cy) + 1
+    spec_sum = np.bincount(r.ravel(), weights=P.ravel(), minlength=kmax)
+    spec_cnt = np.bincount(r.ravel(), minlength=kmax)
+    spec = spec_sum[:kmax] / np.maximum(spec_cnt[:kmax], 1)
+    k = np.arange(kmax)
+    return (k, spec)
+
+def parse_stamp(stamp: str) -> datetime:
+    return datetime.strptime(stamp, '%Y-%m-%d-%H-%M')
+
+def consecutive_6h_steps(files, ascending=True):
+    files_sorted = sorted(files, reverse=not ascending)
+    times = [datetime.strptime(f[:10], '%Y%m%d%H') for f in files_sorted]
+    step_list = [0]
+    for i in range(1, len(times)):
+        delta = times[i] - times[i - 1]
+        target = timedelta(hours=6) if ascending else timedelta(hours=-6)
+        if delta == target:
+            step_list.append(step_list[-1] + 1)
+        else:
+            step_list.append(0)
+    return step_list if ascending else step_list[::-1]
+
+def filename_to_datetime(fn: str) -> datetime:
+    return datetime.strptime(fn[:10], '%Y%m%d%H')
+
+def build_valid_start_set() -> set[str]:
+    all_samples = sorted([f for f in os.listdir(reference_path) if f.endswith('.npz')])
+    asc_steps = consecutive_6h_steps(all_samples, ascending=True)
+    desc_steps = consecutive_6h_steps(all_samples, ascending=False)
+    df = pd.DataFrame({'filename': all_samples, 'asc_steps': asc_steps, 'desc_steps': desc_steps})
+    df['date_time'] = df['filename'].apply(filename_to_datetime)
+    mask2024 = (df['date_time'].dt.year == 2024) & (df['asc_steps'] >= 1) & (df['desc_steps'] >= FORECAST_STEPS)
+    df2024 = df.loc[mask2024].copy()
+    return set((dt.strftime('%Y-%m-%d-%H-%M') for dt in df2024['date_time']))
+
+def surface_to_dict(data: np.ndarray) -> Dict[str, np.ndarray]:
+    """
+    將 surface 輸出轉為 dict 並裁切到目標經緯度範圍。
+    若形狀無法直接判定，回退到 extract_subset_surface。
+    """
+    H_full, W_full = LAT_ALL.shape
+    sub_shape = LAT_SUB.shape
+    if data.ndim == 3:
+        if data.shape[0] == len(channel_map_surface):
+            if data.shape[1:] == sub_shape:
+                return {name: np.asarray(data[ch], dtype=np.float64) for name, ch in channel_map_surface.items()}
+            if data.shape[1:] == (H_full, W_full):
+                return {name: np.asarray(data[ch, ys, xs], dtype=np.float64) for name, ch in channel_map_surface.items()}
+        if data.shape[-1] == len(channel_map_surface):
+            if data.shape[:2] == sub_shape:
+                return {name: np.asarray(data[:, :, ch], dtype=np.float64) for name, ch in channel_map_surface.items()}
+            if data.shape[:2] == (H_full, W_full):
+                return {name: np.asarray(data[ys, xs, ch], dtype=np.float64) for name, ch in channel_map_surface.items()}
+    return extract_subset_surface(data, str(SURFACE_NC_PATH), channel_map_surface, lat_range=LAT_RANGE, lon_range=LON_RANGE)
+
+def compute_stats(spec_list: List[Tuple[np.ndarray, np.ndarray]]) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """將 [(k, spec), ...] 匯總成 (k, mean, std)。"""
+    if not spec_list:
+        raise ValueError('spec_list 為空，無法計算統計量')
+    k = spec_list[0][0]
+    arr = np.stack([sp[1] for sp in spec_list], axis=0)
+    mean = np.mean(arr, axis=0)
+    std = np.std(arr, axis=0)
+    return (k, mean, std)
+
+def add_record(store: Dict, lead: int | None, source: str, var: str, k: np.ndarray, spec: np.ndarray) -> None:
+    """
+    將頻譜結果存入指定分組。
+    store 的層級：lead -> source -> var -> list[(k, spec)]
+    """
+    grp = store.setdefault(lead, {'forecast': {v: [] for v in channel_map_surface}, 'era5': {v: [] for v in channel_map_surface}})
+    grp[source][var].append((k, spec))
+
+def process_run(run_folder: Path, run_start: datetime) -> Dict[int | None, Dict]:
+    run_name = run_folder.name
+    run_specs: Dict[int | None, Dict] = {}
+    for fn in sorted(run_folder.iterdir()):
+        name = fn.name
+        if not (name.startswith('output_surface_') and name.endswith('.npy')):
+            continue
+        dt_str = name[len('output_surface_'):-4]
+        era_path = ERA5_ROOT / dt_str / 'input_surface.npy'
+        if not era_path.exists():
+            print(f'[WARN] 缺少 ERA5 {era_path}, 跳過 {dt_str}')
+            continue
+        fc_data = np.load(fn)
+        er_data = np.load(era_path)
+        fc_sub = surface_to_dict(fc_data)
+        er_sub = surface_to_dict(er_data)
+        lead_hours = int((parse_stamp(dt_str) - run_start).total_seconds() // 3600)
+        for var in channel_map_surface:
+            fc_field = fc_sub[var]
+            er_field = er_sub[var]
+            k_fc, spec_fc = radial_power_spectrum(fc_field, area2d=AREA_SUB, detrend_mean=DETREND_MEAN, amplitude=AMPLITUDE_SPECTRUM, density_norm=DENSITY_NORM)
+            k_er, spec_er = radial_power_spectrum(er_field, area2d=AREA_SUB, detrend_mean=DETREND_MEAN, amplitude=AMPLITUDE_SPECTRUM, density_norm=DENSITY_NORM)
+            add_record(run_specs, None, 'forecast', var, k_fc, spec_fc)
+            add_record(run_specs, None, 'era5', var, k_er, spec_er)
+            add_record(run_specs, lead_hours, 'forecast', var, k_fc, spec_fc)
+            add_record(run_specs, lead_hours, 'era5', var, k_er, spec_er)
+    if not run_specs:
+        print(f'[WARN] {run_name} 未產生任何頻譜資料')
+    return run_specs
+
+def merge_specs(dest: Dict[int | None, Dict], src: Dict[int | None, Dict]) -> None:
+    for lead, group in src.items():
+        dest_grp = dest.setdefault(lead, {'forecast': {v: [] for v in channel_map_surface}, 'era5': {v: [] for v in channel_map_surface}})
+        for source in ('forecast', 'era5'):
+            for var in channel_map_surface:
+                dest_grp[source][var].extend(group[source][var])
+
+def main() -> None:
+    all_specs: Dict[int | None, Dict] = {}
+    valid_starts = build_valid_start_set()
+    if not valid_starts:
+        print('No valid start times found.')
+        return
+    run_inputs: List[Tuple[Path, datetime]] = []
+    for run_folder in sorted(RESULTS_ROOT.iterdir()):
+        if not run_folder.is_dir():
+            continue
+        run_name = run_folder.name
+        start_str = run_name.split('to', 1)[0] if 'to' in run_name else run_name
+        if start_str not in valid_starts:
+            continue
+        try:
+            run_start = parse_stamp(start_str)
+        except ValueError:
+            print(f'[WARN] 無法解析起報時間，跳過 {run_name}')
+            continue
+        run_inputs.append((run_folder, run_start))
+    with ProcessPoolExecutor(max_workers=WORKERS) as executor:
+        future_map = {executor.submit(process_run, run_folder, run_start): run_folder for run_folder, run_start in run_inputs}
+        for future in as_completed(future_map):
+            run_folder = future_map[future]
+            print(f'處理 {run_folder.name} ...')
+            run_specs = future.result()
+            merge_specs(all_specs, run_specs)
+    if not all_specs:
+        print('未找到任何頻譜資料。')
+        return
+    npz_payload: Dict[str, np.ndarray] = {}
+    k_ref: np.ndarray | None = None
+
+    def dump_group(lead_key: int | None, specs: Dict) -> None:
+        nonlocal k_ref
+        suffix = 'overall' if lead_key is None else f'lead{int(lead_key):02d}'
+        for var in channel_map_surface:
+            fc_list = specs['forecast'][var]
+            er_list = specs['era5'][var]
+            if not fc_list or not er_list:
+                continue
+            k, mean_fc, std_fc = compute_stats(fc_list)
+            _, mean_er, std_er = compute_stats(er_list)
+            target_len = min(len(k), len(mean_fc), len(std_fc), len(mean_er), len(std_er))
+            if k_ref is None:
+                k_ref = k[:target_len]
+                npz_payload['k'] = k_ref
+            else:
+                target_len = min(target_len, len(k_ref))
+            k = k_ref[:target_len]
+            mean_fc = mean_fc[:target_len]
+            std_fc = std_fc[:target_len]
+            mean_er = mean_er[:target_len]
+            std_er = std_er[:target_len]
+            df = pd.DataFrame({'k': k, 'era5_mean': mean_er, 'era5_std': std_er, 'pangu_mean': mean_fc, 'pangu_std': std_fc})
+            out_csv = ROOT / f'{var}_spectral_stats_{suffix}.csv'
+            print(f'已輸出 {out_csv.name}')
+            npz_payload[f'era5_mean_{var}_{suffix}'] = mean_er
+            npz_payload[f'era5_std_{var}_{suffix}'] = std_er
+            npz_payload[f'pangu_mean_{var}_{suffix}'] = mean_fc
+            npz_payload[f'pangu_std_{var}_{suffix}'] = std_fc
+    overall_specs = all_specs.get(None)
+    if overall_specs is not None:
+        dump_group(None, overall_specs)
+    else:
+        print('警告：找不到 overall (None) 分組，略過 overall。')
+    lead_keys = sorted((k for k in all_specs.keys() if k is not None))
+    for lead in lead_keys:
+        dump_group(lead, all_specs[lead])
+    npz_path = ROOT / f'all_energy_multistep_sfc{FORECAST_TOTAL_HOURS}.npz'
+    np.savez(npz_path, **npz_payload)
+    print(f'已輸出 {npz_path.name}（包含 overall 及所有 lead 的 mean/std）')
+
+def initialize():
+    global AREA_SUB, LAT_ALL, LAT_SUB, LON_ALL, xs, ys
+    LAT_ALL = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.LAT_ALL', lambda: np.load(BASE / 'lat.npy'))
+    LON_ALL = runtime.setting('agu_james.analysis.pangu.spectrum_multistep_sfc.LON_ALL', lambda: np.load(BASE / 'lon.npy'))
+    if LAT_ALL.ndim == 1 and LON_ALL.ndim == 1:
+        LAT_ALL, LON_ALL = np.meshgrid(LAT_ALL, LON_ALL, indexing='ij')
+    ys, xs = select_bbox_indices(LAT_ALL, LON_ALL, LAT_RANGE, LON_RANGE)
+    LAT_SUB = LAT_ALL[ys, xs].copy()
+    AREA_SUB = np.cos(np.deg2rad(LAT_SUB)) if APPLY_LAT_WEIGHT else None

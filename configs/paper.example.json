@@ -1,0 +1,35 @@
+{
+  "artifact_root": "../artifacts",
+  "paths": {
+    "train": null,
+    "val": null,
+    "test": null,
+    "lat": null,
+    "lon": null,
+    "lsm": null,
+    "sst_mask": null,
+    "swh_mask": null,
+    "best_track": null,
+    "upper_nc": null,
+    "surface_nc": null,
+    "pangu_weights": null,
+    "pangu_root": null,
+    "climatology": null,
+    "mesh6_graph": null,
+    "mesh7_graph": null,
+    "mse_train_spectrum": null,
+    "krathon_ibtracs": null
+  },
+  "training": {
+    "seed": 3407,
+    "hidden_dim": 512,
+    "num_workers": 0,
+    "use_checkpoint": true,
+    "alpha": 1.0,
+    "order": 12,
+    "l_tilde": 87,
+    "l_max": 87
+  },
+  "validation": {"batch_size": 1},
+  "overrides": {}
+}

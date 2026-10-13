@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agu-james-workflow"
+version = "0.1.0"
+description = "Curated workflows for physically consistent typhoon forecasting with spectral loss"
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "scipy", "matplotlib", "tqdm"]
+
+[project.optional-dependencies]
+gnn = ["torch>=2.3", "torch-geometric", "scikit-learn"]
+coarse = ["torch-scatter", "torch-sparse"]
+maps = ["cartopy"]
+data = ["cdsapi", "xarray", "cfgrib", "eccodes", "netCDF4", "gcsfs", "zarr"]
+pangu = ["onnx", "onnxruntime", "netCDF4", "cdsapi"]
+
+[project.scripts]
+agu-james = "agu_james.workflow:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agu_james*"]
+
+[tool.setuptools]
+license-files = ["THIRD_PARTY_NOTICES.md"]
+
+[tool.setuptools.package-data]
+agu_james = ["config/*.json"]
