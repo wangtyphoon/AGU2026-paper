@@ -230,6 +230,7 @@ def statistics(train_root=None):
     if (scales<=0).any():raise ValueError('Nonpositive increment standard deviation')
     pd.DataFrame(dict(feature_idx=range(116),variable=[c['feature'] for c in channels],mean=means,std=scales)).to_csv(stats_root/'target_mean_std.csv',index=False)
     pd.DataFrame(channels).to_csv(stats_root/'next_feature_table_weight_ver3.csv',index=False)
+    pd.DataFrame(channel_config('ar_revised')).to_csv(stats_root/'next_feature_table_weight_ver3_revised.csv',index=False)
     pd.DataFrame(channel_config('coarse')).to_csv(stats_root/'next_feature_table_weight_coarse.csv',index=False)
     physical=[dict(c,mean=stats[c['feature']]['mean'],std=stats[c['feature']]['std']) for c in channels]
     pd.DataFrame(physical).to_csv(stats_root/'next_feature_table_weight.csv',index=False)

@@ -868,14 +868,15 @@
   },
   {
     "source": "D:\\paper\\paper_with_code\\evaluation_metric\\plot_james_metrics.py",
-    "source_sha256": "140beb95a6d437dc8b605708031fb7e95f1c73b6f939a27d6777b98f4ec5b55f",
+    "source_sha256": "9caaad91bef72beb1a8ebb3b18aac614cd8c9f08ddc0824b56694959e60ed9ea",
     "destination": "agu_james/plotting/metrics.py",
-    "output_sha256": "41f45a591861e2e4a66dcd704f80c373763c6f3c9a829d4024df03fba32b241f",
+    "output_sha256": "9b153d7ec03831e2ca7cf7be3cebd7f741540f780ce0f7ff5efeb3add6307dec",
     "modifications": [
       "package-qualified imports",
       "removed debug/demo entry points",
       "AST formatting; formulas retained",
-      "configurable artifact paths; deferred import-time I/O"
+      "configurable artifact paths; deferred import-time I/O",
+      "synchronized variable-specific native units for bias/activity labels; numerical values unchanged (2026-10-19)"
     ]
   },
   {
@@ -1062,6 +1063,15 @@
     "output_sha256": "d0e1c6fa01ceea5b64173ce66f840b2a0c721e5d5cd98b8beb2d095171f15e25",
     "modifications": [
       "extract fixed channel order/weights as configuration; exclude measured statistics"
+    ]
+  },
+  {
+    "source": "D:\\RDL_TC_MODEL\\gnn\\ver_spectrum_v2\\next_feature_table_weight_ver3_revised.csv",
+    "source_sha256": "0a5a7762a3a6ee1e7bd4694da3880426304858b1755118aadfdae5180e8bc77a",
+    "destination": "agu_james/config/channels_ar_revised.json",
+    "output_sha256": "c239f95abf220aec0edf8c940146dcf95815ea3d60ede457fe39531c71627c97",
+    "modifications": [
+      "extract original MSE-v2 fixed channel order/weights; preserve loop-level CSV fallback"
     ]
   }
 ]

@@ -1,0 +1,466 @@
+[
+  {
+    "feature": "1000pv",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "1000q",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "1000t",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "1000u",
+    "weight": 1.8627057
+  },
+  {
+    "feature": "1000v",
+    "weight": 2.4836078
+  },
+  {
+    "feature": "1000z",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "100pv",
+    "weight": 0.12418039
+  },
+  {
+    "feature": "100q",
+    "weight": 0.24836078
+  },
+  {
+    "feature": "100t",
+    "weight": 0.24836078
+  },
+  {
+    "feature": "100u",
+    "weight": 0.37254116
+  },
+  {
+    "feature": "100v",
+    "weight": 0.49672157
+  },
+  {
+    "feature": "100z",
+    "weight": 0.24836078
+  },
+  {
+    "feature": "150cc",
+    "weight": 0.037254117
+  },
+  {
+    "feature": "150pv",
+    "weight": 0.18627058
+  },
+  {
+    "feature": "150q",
+    "weight": 0.37254116
+  },
+  {
+    "feature": "150t",
+    "weight": 0.37254116
+  },
+  {
+    "feature": "150u",
+    "weight": 0.5588117
+  },
+  {
+    "feature": "150v",
+    "weight": 0.7450823
+  },
+  {
+    "feature": "150w",
+    "weight": 0.018627059
+  },
+  {
+    "feature": "150z",
+    "weight": 0.37254116
+  },
+  {
+    "feature": "200cc",
+    "weight": 0.049672153
+  },
+  {
+    "feature": "200pv",
+    "weight": 0.24836078
+  },
+  {
+    "feature": "200q",
+    "weight": 0.49672157
+  },
+  {
+    "feature": "200t",
+    "weight": 0.49672157
+  },
+  {
+    "feature": "200u",
+    "weight": 0.7450823
+  },
+  {
+    "feature": "200v",
+    "weight": 0.99344313
+  },
+  {
+    "feature": "200w",
+    "weight": 0.024836076
+  },
+  {
+    "feature": "200z",
+    "weight": 0.49672157
+  },
+  {
+    "feature": "250cc",
+    "weight": 0.062090196
+  },
+  {
+    "feature": "250pv",
+    "weight": 0.31045097
+  },
+  {
+    "feature": "250q",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "250t",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "250u",
+    "weight": 0.93135285
+  },
+  {
+    "feature": "250v",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "250w",
+    "weight": 0.031045098
+  },
+  {
+    "feature": "250z",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "300cc",
+    "weight": 0.074508235
+  },
+  {
+    "feature": "300pv",
+    "weight": 0.37254116
+  },
+  {
+    "feature": "300q",
+    "weight": 0.7450823
+  },
+  {
+    "feature": "300t",
+    "weight": 0.7450823
+  },
+  {
+    "feature": "300u",
+    "weight": 1.1176234
+  },
+  {
+    "feature": "300v",
+    "weight": 1.4901646
+  },
+  {
+    "feature": "300w",
+    "weight": 0.037254117
+  },
+  {
+    "feature": "300z",
+    "weight": 0.7450823
+  },
+  {
+    "feature": "400cc",
+    "weight": 0.099344306
+  },
+  {
+    "feature": "400pv",
+    "weight": 0.49672157
+  },
+  {
+    "feature": "400q",
+    "weight": 0.99344313
+  },
+  {
+    "feature": "400t",
+    "weight": 0.99344313
+  },
+  {
+    "feature": "400u",
+    "weight": 1.4901646
+  },
+  {
+    "feature": "400v",
+    "weight": 1.9868863
+  },
+  {
+    "feature": "400w",
+    "weight": 0.049672153
+  },
+  {
+    "feature": "400z",
+    "weight": 0.99344313
+  },
+  {
+    "feature": "500cc",
+    "weight": 0.12418039
+  },
+  {
+    "feature": "500pv",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "500q",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "500t",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "500u",
+    "weight": 1.8627057
+  },
+  {
+    "feature": "500v",
+    "weight": 2.4836078
+  },
+  {
+    "feature": "500w",
+    "weight": 0.062090196
+  },
+  {
+    "feature": "500z",
+    "weight": 1.2418039
+  },
+  {
+    "feature": "50pv",
+    "weight": 0.062090196
+  },
+  {
+    "feature": "50q",
+    "weight": 0.12418039
+  },
+  {
+    "feature": "50t",
+    "weight": 0.12418039
+  },
+  {
+    "feature": "50u",
+    "weight": 0.18627058
+  },
+  {
+    "feature": "50v",
+    "weight": 0.24836078
+  },
+  {
+    "feature": "50z",
+    "weight": 0.12418039
+  },
+  {
+    "feature": "600cc",
+    "weight": 0.14901647
+  },
+  {
+    "feature": "600pv",
+    "weight": 0.7450823
+  },
+  {
+    "feature": "600q",
+    "weight": 1.4901646
+  },
+  {
+    "feature": "600t",
+    "weight": 1.4901646
+  },
+  {
+    "feature": "600u",
+    "weight": 2.235247
+  },
+  {
+    "feature": "600v",
+    "weight": 2.9803293
+  },
+  {
+    "feature": "600w",
+    "weight": 0.074508235
+  },
+  {
+    "feature": "600z",
+    "weight": 1.4901646
+  },
+  {
+    "feature": "700cc",
+    "weight": 0.17385253
+  },
+  {
+    "feature": "700pv",
+    "weight": 0.86926264
+  },
+  {
+    "feature": "700q",
+    "weight": 1.7385253
+  },
+  {
+    "feature": "700t",
+    "weight": 1.7385253
+  },
+  {
+    "feature": "700u",
+    "weight": 2.607788
+  },
+  {
+    "feature": "700v",
+    "weight": 3.4770505
+  },
+  {
+    "feature": "700w",
+    "weight": 0.08692627
+  },
+  {
+    "feature": "700z",
+    "weight": 1.7385253
+  },
+  {
+    "feature": "850cc",
+    "weight": 0.21110666
+  },
+  {
+    "feature": "850pv",
+    "weight": 1.0555333
+  },
+  {
+    "feature": "850q",
+    "weight": 2.1110666
+  },
+  {
+    "feature": "850t",
+    "weight": 2.1110666
+  },
+  {
+    "feature": "850u",
+    "weight": 3.1665998
+  },
+  {
+    "feature": "850v",
+    "weight": 4.222133
+  },
+  {
+    "feature": "850w",
+    "weight": 0.10555333
+  },
+  {
+    "feature": "850z",
+    "weight": 2.1110666
+  },
+  {
+    "feature": "925cc",
+    "weight": 0.2297337
+  },
+  {
+    "feature": "925pv",
+    "weight": 1.1486685
+  },
+  {
+    "feature": "925q",
+    "weight": 2.297337
+  },
+  {
+    "feature": "925t",
+    "weight": 2.297337
+  },
+  {
+    "feature": "925u",
+    "weight": 3.4460056
+  },
+  {
+    "feature": "925v",
+    "weight": 4.594674
+  },
+  {
+    "feature": "925w",
+    "weight": 0.11486685
+  },
+  {
+    "feature": "925z",
+    "weight": 2.297337
+  },
+  {
+    "feature": "blh",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "d2m",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "flsr",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "msl",
+    "weight": 2.4836078
+  },
+  {
+    "feature": "sst",
+    "weight": 0.12418039
+  },
+  {
+    "feature": "swh",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "t2m",
+    "weight": 2.4836078
+  },
+  {
+    "feature": "u10",
+    "weight": 2.4836078
+  },
+  {
+    "feature": "v10",
+    "weight": 2.4836078
+  },
+  {
+    "feature": "ewss",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "lgws",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "mgws",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "nsss",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "slhf",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "sshf",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "ssr",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "str",
+    "weight": 0.62090194
+  },
+  {
+    "feature": "tp",
+    "weight": 0.62090194
+  }
+]

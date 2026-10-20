@@ -3,8 +3,8 @@
 """Publication figures for 700q and 850v: relative RMSE, bias, ACC and activity.
 
 Run with the local environment's Python from any working directory. Input CSVs
-remain untouched. Values retain their source scale; source files provide no unit
-metadata. Activity/ERA5 is a ratio of the supplied aggregate activity values,
+remain untouched. Bias and activity retain physical units: kg/kg for 700q
+and m/s for 850v. Activity/ERA5 is a ratio of the supplied aggregate activity values,
 not an average of individual forecast/target ratios. No uncertainty is inferred.
 """
 from __future__ import annotations
@@ -31,6 +31,14 @@ MARKERS = dict(zip((*MODELS, 'ERA5'), ('o', 's', '^', 'D', '')))
 SUFFIXES = {'MSE': ('auto', 'auto'), 'Spectrum MAE': ('spectrum_new', 'spectrum'), 'Spectrum MSE': ('spectrum_ver2', 'spectrum_ver2')}
 METRICS = ('rmse', 'bias', 'acc', 'activity')
 DAY_MARKERS = {1: 'o', 3: 's', 5: '^', 7: 'D'}
+
+FEATURE_UNITS = {"700q": r"$\mathrm{kg\,kg^{-1}}$", "850v": r"$\mathrm{m\,s^{-1}}$"}
+
+
+def metric_label(label: str, feature: str) -> str:
+    """Add native physical units only to bias and absolute activity labels."""
+    return f"{label} ({FEATURE_UNITS[feature]})" if label in ("Bias", "Forecast activity") else label
+
 
 class DataError(ValueError):
     """A source CSV does not satisfy the plotting data contract."""
@@ -136,7 +144,7 @@ def day_axis(ax: plt.Axes, step: int) -> None:
 
 def build_lines(data: pd.DataFrame, step: int) -> plt.Figure:
     fig, axes = plt.subplots(4, 2, figsize=(7.2, 9.0))
-    specs = (('relative_rmse', 'Relative RMSE vs Pangu (%)'), ('bias', 'Bias (source scale)'), ('acc', 'ACC'), ('activity', 'Forecast activity (source scale)'))
+    specs = (('relative_rmse', 'Relative RMSE vs Pangu (%)'), ('bias', 'Bias'), ('acc', 'ACC'), ('activity', 'Forecast activity'))
     for row, (metric, label) in enumerate(specs):
         for col, feature in enumerate(FEATURES):
             ax = axes[row, col]
@@ -153,7 +161,7 @@ def build_lines(data: pd.DataFrame, step: int) -> plt.Figure:
                 scientific_axis(ax)
             ax.grid(axis='y', color='0.9', linewidth=0.6)
             panel_title(ax, row * 2 + col, feature)
-            ax.set_ylabel(label)
+            ax.set_ylabel(metric_label(label, feature))
             day_axis(ax, step)
             if row < 3:
                 ax.set_xlabel('')
@@ -172,7 +180,7 @@ def diverging_norm(values: np.ndarray, center: float) -> TwoSlopeNorm:
 
 def build_heatmap(data: pd.DataFrame, step: int) -> plt.Figure:
     fig, axes = plt.subplots(4, 2, figsize=(7.2, 9.0))
-    specs = (('relative_rmse', 'Relative RMSE (%)'), ('bias', 'Bias (source scale)'), ('acc', 'ACC'), ('activity_ratio', 'Activity / ERA5'))
+    specs = (('relative_rmse', 'Relative RMSE (%)'), ('bias', 'Bias'), ('acc', 'ACC'), ('activity_ratio', 'Activity / ERA5'))
     for row, (metric, label) in enumerate(specs):
         models = MODELS[:-1] if metric == 'relative_rmse' else MODELS
         pooled = data.loc[data.model.isin(models), metric].to_numpy()
@@ -198,7 +206,7 @@ def build_heatmap(data: pd.DataFrame, step: int) -> plt.Figure:
             bar = fig.colorbar(image, ax=ax, pad=0.035, fraction=0.055)
             bar.solids.set_rasterized(False)
             bar.solids.set_edgecolor('face')
-            bar.set_label(label, fontsize=8)
+            bar.set_label(metric_label(label, feature), fontsize=8)
             if metric == 'bias' and feature == '700q':
                 formatter = ScalarFormatter(useMathText=True)
                 formatter.set_powerlimits((0, 0))
@@ -213,7 +221,7 @@ def build_tradeoff(data: pd.DataFrame, step: int) -> plt.Figure:
     days = [day for day in DAY_MARKERS if day * 4 <= step]
     for col, feature in enumerate(FEATURES):
         subset = data[data.variable == feature]
-        for row, (x, y, xlabel, ylabel) in enumerate((('relative_rmse', 'activity_ratio', 'Relative RMSE vs Pangu (%)', 'Activity / ERA5'), ('acc', 'bias', 'ACC', 'Bias (source scale)'))):
+        for row, (x, y, xlabel, ylabel) in enumerate((('relative_rmse', 'activity_ratio', 'Relative RMSE vs Pangu (%)', 'Activity / ERA5'), ('acc', 'bias', 'ACC', 'Bias'))):
             ax = axes[row, col]
             for model in MODELS:
                 values = subset[subset.model == model].sort_values('lead_step')
@@ -230,7 +238,7 @@ def build_tradeoff(data: pd.DataFrame, step: int) -> plt.Figure:
                     scientific_axis(ax, 'y')
             ax.grid(color='0.92', linewidth=0.6)
             ax.set_xlabel(xlabel)
-            ax.set_ylabel(ylabel)
+            ax.set_ylabel(metric_label(ylabel, feature))
             panel_title(ax, row * 2 + col, feature)
     fig.subplots_adjust(left=0.11, right=0.98, bottom=0.2, top=0.94, wspace=0.38, hspace=0.43)
     legend(fig)

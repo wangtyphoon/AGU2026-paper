@@ -99,3 +99,8 @@ and installed real-profile parity checks under
 `artifacts/thermal_wind_native_levels/code_replacement/`.
 See METRIC_DEFINITIONS.md#signed-thermal-wind and the generated completion report for the
 paired numerical changes and exact native-layer specification.
+
+## 2026-10-15 spectral channel-weight correction
+
+Tracing the original entry point through the training loop showed that `channel_weights=None` loads a CSV rather than using uniform weights. Stage 4 now restores mean-one MAE ver3 / MSE ver3_revised weights for training and validation. Two new regression tests passed: branch-specific CSV selection, nonuniform values, path overrides, channel-order rejection and missing-file failure; and all three weighted loss components versus independently evaluated single-channel losses. Existing numerical tests: 7 passed, 5 external-reference tests skipped because their environment paths were not configured. These are local CPU checks, not a new atmospheric training or historical checkpoint validation. Existing Stage 4 checkpoints produced by the uniform-weight trainer used a different objective; resuming them with this correction changes the objective.
+Release-file hashes (139 files) and curated source-output hashes matched. The full source check reported 11 external reference/source hash differences (including the manuscript and earlier analysis scripts); these external baselines were not changed by this correction. The original revised weight CSV was verified separately.

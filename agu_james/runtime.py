@@ -43,6 +43,7 @@ def legacy_path(relative):
         "target_mean_std.csv": "statistics/target_mean_std.csv",
         "next_feature_table_weight.csv": "statistics/next_feature_table_weight.csv",
         "next_feature_table_weight_ver3.csv": "statistics/next_feature_table_weight_ver3.csv",
+        "next_feature_table_weight_ver3_revised.csv": "statistics/next_feature_table_weight_ver3_revised.csv",
     }
     if rel not in aliases:
         raise ValueError(f"Unmapped legacy training asset: {relative}")

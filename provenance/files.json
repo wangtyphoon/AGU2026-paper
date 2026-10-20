@@ -423,7 +423,7 @@
     },
     {
       "file": "agu_james/data/pipeline.py",
-      "sha256": "f5be72dc5afad0d86d67a510f8a3cb6cec7c044ca4c3793e6ca2d961266b7816",
+      "sha256": "6a3b8a949a71771d8abcd61dc6702dca57d6622344ff0ee55df420896be3a297",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -723,11 +723,11 @@
     },
     {
       "file": "agu_james/plotting/metrics.py",
-      "sha256": "41f45a591861e2e4a66dcd704f80c373763c6f3c9a829d4024df03fba32b241f",
+      "sha256": "9b153d7ec03831e2ca7cf7be3cebd7f741540f780ce0f7ff5efeb3add6307dec",
       "sources": [
         {
           "source": "D:\\paper\\paper_with_code\\evaluation_metric\\plot_james_metrics.py",
-          "source_sha256": "140beb95a6d437dc8b605708031fb7e95f1c73b6f939a27d6777b98f4ec5b55f"
+          "source_sha256": "9caaad91bef72beb1a8ebb3b18aac614cd8c9f08ddc0824b56694959e60ed9ea"
         }
       ]
     },
@@ -793,7 +793,7 @@
     },
     {
       "file": "agu_james/runtime.py",
-      "sha256": "43f02ff1db2e2463980ed386bd253f0a79c1ec8443947a79bc13eeeb1add250d",
+      "sha256": "04bdbb21ebfc3ab3c05d94adabf37275a66d0ddb88a7aa6b6903c0a73699e125",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -823,7 +823,7 @@
     },
     {
       "file": "agu_james/training/engine.py",
-      "sha256": "cfba6d01d35e6c00eaf6f0f4a4e85b909ccfc6b26cebbc3271deb2a77ac3edbe",
+      "sha256": "288a5b09afecd8ea11411526b6310ad90195a16c516e69484b038bd164cb525a",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1123,7 +1123,7 @@
     },
     {
       "file": "docs/DATA_SOURCES.md",
-      "sha256": "8bfefb563f58d1d0ba53bc34145ccd00ca93a84ef4c40e16f757f60f72cce7cb",
+      "sha256": "390d392fe0ac88065df784359ed13cf9264c9a1a879e731aa9452e5b9ff8afc9",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1173,7 +1173,7 @@
     },
     {
       "file": "docs/MODIFICATIONS.md",
-      "sha256": "5b6fa3367ffa96452be09bd5a30615f7fe7b3bba8198109861725cb6498842b7",
+      "sha256": "5b3cd407e8c8c8e9da63e3bf9d9ec13a0d4b3d2b3b4e36cd6db271ecba397759",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1193,7 +1193,7 @@
     },
     {
       "file": "docs/VALIDATION.md",
-      "sha256": "b7ef88bb96e691dc20786ffe0ff1021f2054640000600314f23e7106f2a21266",
+      "sha256": "09829f69bfc0295016902a439b273e245829af39bb4f2f61af22b931738e7507",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1203,7 +1203,7 @@
     },
     {
       "file": "docs/WORKFLOW.md",
-      "sha256": "725bdbb9a6eaa76464895cec28d933594233a9931d687d52c67e50d0cdf5d4dc",
+      "sha256": "2fefcfc29b5dd91bdcdced1e5a34b51b36acf71f219b306e1dbfdf8b03630cd3",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1223,7 +1223,7 @@
     },
     {
       "file": "provenance/changes.json",
-      "sha256": "fd372ef4fabf7c11695e49cbd6314ded4f199fb09f4cea07df3b4045646a22bd",
+      "sha256": "d1ab3b9b4c348c6f5d2bcbcc15d38dadf41975a7de157dede43b683059d9cdd7",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1243,7 +1243,7 @@
     },
     {
       "file": "provenance/sources.json",
-      "sha256": "3b43c94c5e3fb79f44e3d022612f1e71586f6815234ec76d2b74ed7356164c73",
+      "sha256": "efad72c7496c036e7f480dbd708253acc5121c10df297f03fce82f061f2d165c",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1390,6 +1390,26 @@
           "source_sha256": null
         }
       ]
+    },
+    {
+      "file": "agu_james/config/channels_ar_revised.json",
+      "sources": [
+        {
+          "source": "D:/RDL_TC_MODEL/gnn/ver_spectrum_v2/next_feature_table_weight_ver3_revised.csv",
+          "source_sha256": "0a5a7762a3a6ee1e7bd4694da3880426304858b1755118aadfdae5180e8bc77a"
+        }
+      ],
+      "sha256": "c239f95abf220aec0edf8c940146dcf95815ea3d60ede457fe39531c71627c97"
+    },
+    {
+      "file": "tests/test_spectral_channel_weights.py",
+      "sources": [
+        {
+          "source": "2026-10-15 authorized spectral channel-weight correction",
+          "source_sha256": null
+        }
+      ],
+      "sha256": "82c40c4a9d824e9c3bc4a291231e7cc0e6771615159528777dd1950703eb08d2"
     }
   ]
 }

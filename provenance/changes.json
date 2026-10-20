@@ -2,6 +2,22 @@
   "status": "local curation; not national HPC reproduction",
   "changes": [
     {
+      "category": "user_setting",
+      "setting": "Spectral MSE composite loss weights",
+      "original": "filtered MSE / spectrum / bias = (1,8,1)",
+      "curated": "filtered MSE / spectrum / bias = (1,5,1); MAE remains (1,1,2)",
+      "source": "2026-10-15 explicit user weight table",
+      "reason": "Apply updated spectrum coefficient to the shared training and validation objective"
+    },
+    {
+      "category": "numerical_correction",
+      "setting": "Stage4 spectral channel weights",
+      "original": "Original loop loads branch-specific CSV when entry point passes None; curated trainer incorrectly forced uniform weights",
+      "curated": "Restore MAE ver3 and MSE ver3_revised mean-one CSV weights, applied to all three loss components",
+      "source": "2026-10-15 user request and original training_spectrum_autoregressive(_v2).py call chain",
+      "reason": "Correct curation mismatch; generate revised weights from frozen original CSV and validate runtime channel order"
+    },
+    {
       "category": "user_correction",
       "setting": "fixed single-head model API",
       "original": "configurable heads/num_heads with inconsistent multi-head dimensions",
@@ -565,6 +581,14 @@
       "curated": "one metric-definition document; active runtime/replay/release tools retained",
       "source": "direct user cleanup request on 2026-10-14",
       "reason": "reduce clutter; backup retired source/documents in artifacts/cleanup/before_cleanup.zip"
+    },
+    {
+      "category": "figure_label_correction",
+      "setting": "Figure 3 bias/activity units and shared heatmap/tradeoff labels",
+      "original": "Bias/Forecast activity (source scale)",
+      "curated": "700q kg kg^-1; 850v m s^-1; no numerical rescaling",
+      "source": "user-approved Figure 3 plan on 2026-10-19; synchronized paper_with_code program and caption templates",
+      "reason": "state actual physical units; exact data and plotted-number checks, six existing tests, visual QA; artifacts/figure3_units/verification.json"
     }
   ]
 }

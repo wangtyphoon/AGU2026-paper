@@ -1,0 +1,179 @@
+
+=== PDF PAGE 18 ===
+manuscript submitted to Journal of Advances in Modeling Earth Systems 
+ 
+to absolute and squared error losses, with the principal difference lying in the gradients they 408 
+impose on spectral errors: the squared formulation assigns substantially higher gradient weights 409 
+to larger errors, thus dominating the optimization direction. Although the Earth is spherical, the 410 
+Fourier transform is employed here as a planar approximation alongside radial wavenumber 411 
+binning under the assumption of statistical isotropy. 412 
+ 413 
+Ultimately, the predictability-filtered MSE objective is designed to preserve predictability while 414 
+mitigating excessive damping of the forecasted energy spectrum. As a result, the spectral error 415 
+loss directly constrains the atmospheric energy distributions, while the spectral bias penalty 416 
+curbs systematic spectral drift, thereby enhancing the physical consistency of the rollouts. 417 
+3 Evaluation 418 
+All evaluation results presented in this study are computed over the 2024 test set, following the 419 
+tropical-cyclone-centered sampling criterion described in Section 2.1. Forecasts are initialized at 420 
+00, 06, 12, and 18 UTC. Three variants of the proposed model are evaluated: the Stage 3 421 
+checkpoint trained solely with the weighted MSE objective, and two Stage 4 variants 422 
+incorporating the Spectrum-MAE and Spectrum-MSE formulations, respectively. 423 
+ 424 
+For external comparison, Pangu-Weather is selected as the deterministic baseline (Bi et al., 425 
+2023). Although more recent deterministic AI weather prediction systems, such as GraphCast 426 
+and Aurora (Bodnar et al., 2025; Lam et al., 2023), have demonstrated improved performance in 427 
+conventional global forecast metrics, including RMSE, Pangu-Weather remains particularly 428 
+suitable for the objectives of this study. It offers lower computational overhead, and previous 429 
+studies have extensively examined its tropical cyclone forecasts, providing a solid reference for 430 
+interpreting results (DeMaria et al., 2025; Liu et al., 2024; Weng & Gori, 2026). Furthermore, 431 
+Pangu-Weather does not employ the multi-step autoregressive curriculum training commonly 432 
+adopted in later systems and is therefore less affected by the progressive accumulation of 433 
+excessive smoothing over extended autoregressive rollouts (Philippé et al., 2026). Its 434 
+comparatively moderate spectral dissipation makes it a suitable baseline for evaluating whether 435 
+the proposed spectrum-aware objectives can effectively retain mesoscale atmospheric energy and 436 
+
+=== PDF PAGE 19 ===
+manuscript submitted to Journal of Advances in Modeling Earth Systems 
+ 
+improve the physical consistency of the forecast fields, rather than merely reducing conventional 437 
+pointwise forecast errors. 438 
+ 439 
+Although the nine-grid-point boundary buffer is excluded from our analysis, prescribed ERA5 440 
+boundary forcing can still influence the interior domain during autoregressive integration. 441 
+Accuracy metrics from the second forecast step onward therefore characterize a boundary-442 
+constrained regional system and should not be interpreted as a comparison with Pangu-Weather 443 
+under identical information constraints. Accordingly, Pangu-Weather serves as an external 444 
+reference, while the effects of spectrum-aware training are assessed primarily through 445 
+comparisons among the three variants of the proposed model under the same lateral boundary 446 
+conditions. 447 
+ 448 
+We first assess how the spectrum-aware objectives affect the trade-off between forecast accuracy 449 
+and atmospheric activity using a set of synoptic-scale evaluation metrics. Forecast accuracy is 450 
+quantified using two conventional measures, the root-mean-square error (RMSE) and anomaly 451 
+correlation coefficient (ACC), which respectively evaluate pointwise forecast errors and the 452 
+spatial correspondence of atmospheric anomalies. Forecast bias and forecast activity serve as 453 
+indirect diagnostics of physical consistency by assessing systematic deviations from the 454 
+reference state and the magnitude of spatial variability, respectively (Bonavita & Geer, 2026). 455 
+Together, these metrics provide a complementary framework for determining whether the 456 
+spectrum-aware objectives improve the representation of atmospheric variability without 457 
+substantially degrading conventional forecast accuracy. The corresponding formulations are 458 
+given in Eqs. (8)–(12).  459 
+ RMSEୡ =  ට ଵ
+ி ∑ ∑ ௐ ೔(௙೔ି௢ ೔)మ೔
+∑ ௐ ೔೔
+ி௙       (8) 460 
+ 𝐵𝑖𝑎𝑠௖ =ଵ
+ி ∑ ∑ ௐ ೔(௙೔ି௢ ೔)೔
+∑ ௐ ೔೔
+ி௙  (9) 461 
+ 𝑓௜ᇱ =  𝑓௜−𝑐𝑙𝑖𝑚௜,  𝑜௜ᇱ =  𝑜௜−𝑐𝑙𝑖𝑚௜ (10) 462 
+ 𝐴𝐶𝐶஼ =ଵ
+ி ∑ ∑ ௐ ೔௙೔ᇲ೔ ௢೔ᇲ
+ට ቀ∑ ௪ ೔௙೔ᇲమ
+೔ ቁቀ∑ ௪ ೔௢೔ᇲమ೔ ቁ
+ி௙  (11) 463 
+
+=== PDF PAGE 20 ===
+manuscript submitted to Journal of Advances in Modeling Earth Systems 
+ 
+ 𝐴𝑐𝑡𝑖𝑣𝑖𝑡𝑦௖ =ඨ ଵ
+ி ∑ ∑ ௪ ೔(௙೔ᇲି௙ ೔ᇲ)మ೔
+∑ ௪ ೔೔
+ி௙  (12) 464 
+Here,𝐹 denotes the number of forecast samples,  𝑖 indexes the spatial grid points, and 𝑤௜ is the 465 
+corresponding spatial weight. 𝑓௜ and 𝑜௜ denote the model forecast and reference value at grid 466 
+point  𝑖, respectively, while 𝑐𝑙𝑖𝑚௜ denotes the corresponding climatological mean. Accordingly, 467 
+𝑓௜ᇱ and 𝑜௜ᇱ represent the forecast and reference anomalies relative to climatology, and 𝑓௜ᇱ denotes 468 
+the spatially weighted mean of the forecast anomaly field. 469 
+ 470 
+To characterize the scale-dependent distribution of forecast variability, we further analyze the 471 
+Fourier power spectra of the forecast and reference fields using isotropic radial binning. These 472 
+diagnostics identify the spatial scales at which forecast variance is attenuated or amplified 473 
+relative to ERA5, complementing forecast activity, which measures overall variability without 474 
+resolving its distribution across scales. They therefore allow us to assess whether mesoscale 475 
+variability is retained throughout the forecast, but do not directly diagnose energy transfer 476 
+between scales.  477 
+ 478 
+For tropical cyclone verification, we adopt a TC tracker similar to that in Aurora (Bodnar et al., 479 
+2025), augmented with an additional weighted-centroid algorithm. The cyclone center is 480 
+primarily identified from the minimum mean sea level pressure (MSLP). Over land, where 481 
+MSLP-based tracking may become less reliable, the 700-hPa geopotential-height field is instead 482 
+used to determine the cyclone center. Linear extrapolation from the preceding track positions is 483 
+incorporated to stabilize center selection and reduce unrealistic jumps between consecutive 484 
+forecast times. Only cases satisfying a minimum tropical cyclone intensity threshold of 35 kt are 485 
+retained for verification. 486 
+ 487 
+To ensure consistent sample composition across models, the evaluation is restricted to cases 488 
+jointly available in all four model configurations, including the external Pangu-Weather baseline. 489 
+In addition, forecast samples with cyclone centers located within 5° of the regional-domain 490 
+boundary are excluded to reduce the direct influence of prescribed lateral boundary information 491 
+
+=== PDF PAGE 21 ===
+manuscript submitted to Journal of Advances in Modeling Earth Systems 
+ 
+on the verification results. To avoid sampling bias due to an insufficient sample size, the analysis 492 
+is restricted to forecast lead times of 72 h or less. 493 
+ 494 
+Track and intensity errors are commonly used as quantitative measures of tropical cyclone 495 
+forecast performance, but they provide only limited information regarding the physical 496 
+consistency and structural realism of the simulated storms. To obtain a more comprehensive 497 
+assessment, this study further evaluates the azimuthally averaged structure, wind–pressure 498 
+relationship, outer-core wind field, gradient-wind balance (Sun et al., 2025; Weng & Gori, 499 
+2026), integrated kinetic energy (Maclay et al., 2008), and warm-core structure (Hart, 2003). In 500 
+addition to examining these individual diagnostics, their joint distributional relationships are also 501 
+analyzed to determine whether the spectrum-aware loss functions improve not only conventional 502 
+forecast performance but also the representation of the three-dimensional dynamical and 503 
+thermodynamic structure of tropical cyclones. The formulations of these diagnostic quantities are 504 
+given in Eqs. (13)–(18) 505 
+ 𝐼𝐾𝐸(௛,ோ) = 1/2𝜌଴ℎ∫ (𝑢௭ଶ +𝑣௭ଶ)𝑑𝐴 
+஺ೃ , ℎ = 1000𝑚,𝑅= 750𝑘𝑚 (13 ) 506 
+ 𝑔డ௭
+డ௥ =௏೒ మ
+௥ +𝑓𝑉௚ (14) 507 
+ ΔZୱ୧୫(R)= Z(R)− Z(0) (15) 508 
+ Δ𝑍ீௐ஻ (𝑅)=ଵ
+௚ ∫ ቀ௏ഇమ
+௥ +𝑓𝑉ఏቁ𝑑𝑟ோ
+଴  (16) 509 
+ 𝐵= ℎ(𝑍଺଴଴ hPa−𝑍ଽଶହ hPa)|ோ −(𝑍଺଴଴ hPa−𝑍ଽଶହ hPa)|௅ (17) 510 
+ డ(௱௓)
+డ௟ ௡ ቚ
+ଽଶହ ୦୔ୟ
+଺଴଴ ୦୔ୟ
+= −|𝑉்௅|, డ(௱௓)
+డ ௟௡ ௣ቚ
+଺଴଴ ୦୔ୟ
+ଷ଴଴ ୦୔ୟ
+= −|𝑉்௎ | (18) 511 
+Specifically, 𝐼𝐾𝐸 denotes integrated kinetic energy, Eq. (14) defines the azimuthally averaged 512 
+gradient-wind balance, ΔZୱ୧୫(R) and  Δ𝑍ீௐ஻ (𝑅) denote the simulated geopotential-height 513 
+difference and its corresponding value inferred from gradient-wind balance. 𝐵 𝑟𝑒𝑝𝑟𝑒𝑠𝑒𝑛𝑡𝑠 the 514 
+cyclone thermal asymmetry parameter, and |𝑉்௅|and |𝑉்௎ | denote the lower- and upper-515 
+tropospheric thermal-wind parameters, respectively. 516 
+
+=== PDF PAGE 22 ===
+manuscript submitted to Journal of Advances in Modeling Earth Systems 
+ 
+4 Synoptic-Scale Metrics 517 
+Among the synoptic-scale atmospheric variables, specific humidity and meridional wind are 518 
+selected as representative variables because they directly characterize the moisture distribution 519 
+and wind field associated with tropical cyclones. To evaluate the model’s practical skill in 520 
+reproducing these aspects of tropical-cyclone structure and environment, the conventional RMSE 521 
+and ACC metrics are supplemented with forecast bias and forecast activity. These 522 
+complementary metrics are used to distinguish intrinsic forecast skill from improvements that 523 
+may arise primarily through calibration. Here, intrinsic skill refers to the model’s ability to 524 
+reproduce the observed atmospheric evolution and variability, whereas calibration denotes 525 
+improvements that can be achieved through procedures such as smoothing, filtering, or 526 
+systematic bias correction (Bonavita & Geer, 2026). 527 
+ 528 
+As shown in Figure 3, after the prescribed lateral boundary conditions begin to influence the 529 
+forecasts, our model exhibits RMSE values approximately 10% lower than those of Pangu-530 
+Weather, indicating comparable or higher pointwise accuracy under the present evaluation 531 
+framework. This advantage initially decreases with forecast lead time and subsequently increases 532 
+again, possibly because the influence of the lateral boundary conditions gradually propagates 533 
+into the interior of the regional domain. Comparing the different training objectives, both 534 
+Spectrum-MAE and Spectrum-MSE generally exhibit higher RMSE than the MSE-trained 535 
+model, whereas their effects on ACC are relatively moderate. For specific humidity, both Pangu-536 
+Weather and the MSE-trained model show pronounced dry biases at longer lead times, 537 
+suggesting that their moisture distributions become progressively less consistent with the 538 
+reanalysis field and limiting the fidelity of their moisture forecasts at longer lead times. 539 

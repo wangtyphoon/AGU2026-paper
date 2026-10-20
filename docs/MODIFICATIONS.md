@@ -40,7 +40,7 @@ This is a **paper-setting implementation variant**. It preserves the source chec
 | Non-Windows Pangu `_normalize_path` returns None | `os.fspath` + `normpath` | Upstream `func_inference.py`; portable string/Path support |
 | Original static ocean masks selected using snapshot-specific NaN counts | Preserve pre-fill training reference; choose maximal missing count; explicit external historical-mask override | `create_weight_mask.py`, `stat_all_variables.py`; avoid statistics over artificial land backgrounds. Generated masks may differ from historical reference |
 | Original source statistics contain optional distribution moments | Only required mean/std/min/max/count plus ordered increment scales | Dataset/loss consumers; exclude unnecessary full-array moment calculations |
-| Original entry-point Stage4 `channel_weights=None` | Uniform Stage4 channel weights | Spectral entries; fixed nonuniform weights remain in Stage1–3 |
+| Original entry-point Stage4 `channel_weights=None` | Retain loop-level CSV fallback and mean-one normalization | MAE: ver3 CSV; MSE: ver3_revised CSV; nonuniform weights apply to filtered MSE, spectrum and bias. Corrected 2026-10-15 after tracing the original call chain |
 | Spectral entry bounds87; helper validation defaults56 | Effective entry bounds87 for train/validation | Actual `TrainingConfig` overrides helper defaults. Alpha1/order12, MAE cap46/MSE cap28 and branch coefficients preserved as local reference settings |
 | True radial cross-spectrum coherence | Formula preserved, tested against source | `val_autoregressive_with_spectrum.py`; no energy-ratio/SNR substitution |
 | Figure2 schematic | Manual draw.io dependency documented | No fabricated code equivalent; original editable asset is external |

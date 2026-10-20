@@ -15,6 +15,20 @@ from agu_james import runtime
 from agu_james.contracts import schedule, accumulation_steps, learning_rate
 from agu_james.data.pipeline import channel_config
 
+def spectral_channel_weights(loss_kind, device):
+    """Retain the original loop's CSV fallback, normalized to mean one."""
+    import torch
+    filename = ('next_feature_table_weight_ver3.csv' if loss_kind == 'mae'
+                else 'next_feature_table_weight_ver3_revised.csv')
+    frame = pd.read_csv(runtime.legacy_path(filename))
+    expected = [c['feature'] for c in channel_config()]
+    if frame['feature'].tolist() != expected:
+        raise ValueError('Spectral channel weight order differs from frozen 116-channel schema')
+    weights = torch.tensor(frame['weight'].values, dtype=torch.float32, device=device)
+    if not torch.isfinite(weights).all() or (weights <= 0).any():
+        raise ValueError('Spectral channel weights must be finite and positive')
+    return weights / weights.mean().clamp_min(1e-12)
+
 def configure_graph(stage):
     config=dict(runtime._CONFIG);paths=dict(config.get('paths',{}))
     mesh='mesh6' if str(stage)=='1' else 'mesh7'
@@ -70,7 +84,7 @@ def loss_for_batch(model,current,future,rollout,scale,channel_weights,spatial_we
                             cutoffs=cutoffs[step-1],spatial_w=spatial_weights,channel_weights=channel_weights,scale=scale,
                             alpha=settings.get('alpha',1.0),order=settings.get('order',12),
                             l_tilde=settings.get('l_tilde',87),l_max=settings.get('l_max',87),
-                            weights=settings.get('loss_weights',(1,1,2) if loss_kind=='mae' else (1,8,1)))
+                            weights=settings.get('loss_weights',(1,1,2) if loss_kind=='mae' else (1,5,1)))
         losses.append(loss);components.append(metrics)
         # Patch only the recent prediction before the NEXT call. Earlier state stays intact.
         if step<rollout:
@@ -139,7 +153,7 @@ def run(stage,rollout=1,loss_kind='mse',micro_batch=1,checkpoint=None,resume=Non
     if not torch.isfinite(scale).all() or (scale<=0).any():raise ValueError('Invalid increment scales')
     channels=channel_config('coarse' if str(stage)=='1' else 'ar')
     weights=torch.tensor([c['weight'] for c in channels],device=device)
-    if str(stage)=='4':weights=torch.ones_like(weights)  # Source spectral entry points pass channel_weights=None.
+    if str(stage)=='4':weights=spectral_channel_weights(loss_kind, device)
     spatial=create_spatial_weights(boundary=9,device=device)
     cutoffs=None
     if str(stage)=='4':
