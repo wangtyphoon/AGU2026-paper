@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23682380.svg)](https://doi.org/10.5281/zenodo.23682380)
 # AGU JAMES research workflows
 
 Software companion to **Physically Consistent Typhoon Intensity Forecasting in
