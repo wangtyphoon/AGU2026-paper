@@ -3,7 +3,7 @@
   "files": [
     {
       "file": ".gitignore",
-      "sha256": "444b4252b52eb013c43db5b020dec2ee79a609212f1f9e13affe7b1b0c84c241",
+      "sha256": "ecdd6defc2164b70b55ae818301fbfd8316fd10148b0fce930bd619149e8bf39",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1102,16 +1102,6 @@
       ]
     },
     {
-      "file": "configs/gwb.local.json",
-      "sha256": "8cd08b1c6510cae6cf600ea212780b6b80031db5afa4b0abc7778bf0d3fb2a43",
-      "sources": [
-        {
-          "source": "newly authored during approved curation; see user plan and changes.json",
-          "source_sha256": null
-        }
-      ]
-    },
-    {
       "file": "configs/paper.example.json",
       "sha256": "4b319e6f89ea055b73392e21d1a814da4c24080360521b4011210bab0357aba3",
       "sources": [
@@ -1159,7 +1149,7 @@
           "source_sha256": null
         }
       ],
-      "sha256": "eb8254f9929aeb4005a652b5924843a713aa936f6883569c7a2bf4b48c12fca4"
+      "sha256": "e41629ac1adf2905381b7d96a4fa79bdc209c649bf8f01c123fae53aed9be2ec"
     },
     {
       "file": "docs/MODEL_ARCHITECTURE.md",
@@ -1173,7 +1163,7 @@
     },
     {
       "file": "docs/MODIFICATIONS.md",
-      "sha256": "5b3cd407e8c8c8e9da63e3bf9d9ec13a0d4b3d2b3b4e36cd6db271ecba397759",
+      "sha256": "9f2338838fb9998aece09acbc8577d7b5964685adcb7d68b0e660960a5cd42b2",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1213,7 +1203,7 @@
     },
     {
       "file": "MANIFEST.in",
-      "sha256": "9325985616db8fe7e333b41e753d018f33983dc6adca5413477694474c6b8e99",
+      "sha256": "784666df4981d39e35b02349a0e04ec7d037a1ace2e604a780fc5b65fb3fb52b",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1223,7 +1213,7 @@
     },
     {
       "file": "provenance/changes.json",
-      "sha256": "d1ab3b9b4c348c6f5d2bcbcc15d38dadf41975a7de157dede43b683059d9cdd7",
+      "sha256": "a436c8b01dc798c5e6ddd38229aac028f92442340a146dc07d7e7477fb12d66e",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1263,7 +1253,7 @@
     },
     {
       "file": "README.md",
-      "sha256": "735c22975abae84f5d850580374bc3c3c156de23cf3dcc2837f74a49a03d4d69",
+      "sha256": "efc0241093fefd0369b935c536d0c8fff4ddf6324338a2c43c1cd290e880478e",
       "sources": [
         {
           "source": "newly authored during approved curation; see user plan and changes.json",
@@ -1410,6 +1400,29 @@
         }
       ],
       "sha256": "82c40c4a9d824e9c3bc4a291231e7cc0e6771615159528777dd1950703eb08d2"
+    },
+    {
+      "file": "configs/gwb.example.json",
+      "sha256": "cf3f88dffaa7f0be6439ef473bf7aa4705514f3bf43229da29f799524ac323b2",
+      "sources": [
+        {
+          "source": "2026-10-27 portable example derived from the local GWB input schema; input locations replaced with placeholders",
+          "source_sha256": null
+        }
+      ]
+    }
+  ],
+  "historical_local_files": [
+    {
+      "file": "configs/gwb.local.json",
+      "sha256": "8cd08b1c6510cae6cf600ea212780b6b80031db5afa4b0abc7778bf0d3fb2a43",
+      "sources": [
+        {
+          "source": "newly authored during approved curation; see user plan and changes.json",
+          "source_sha256": null
+        }
+      ],
+      "tracking": "removed 2026-10-27; local copy preserved; historical checksum, not a distributed file"
     }
   ]
 }

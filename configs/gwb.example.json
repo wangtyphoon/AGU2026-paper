@@ -1,0 +1,53 @@
+{
+  "output": "artifacts/gwb_endpoint_corrected",
+  "models": [
+    {
+      "id": "auto",
+      "label": "MSE",
+      "kind": "gnn",
+      "csv": "INPUT_ROOT/auto/tc_aurora_intensity35_step28_auto.csv",
+      "forecast_root": "INPUT_ROOT/auto/forecast",
+      "target_root": "INPUT_ROOT/auto/target",
+      "lat": "INPUT_ROOT/auto/lat.npy",
+      "lon": "INPUT_ROOT/auto/lon.npy",
+      "features": "INPUT_ROOT/auto/next_feature_table_weight.csv",
+      "relative_path": "ours/tc_aurora_intensity35_step28_auto.csv"
+    },
+    {
+      "id": "mae",
+      "label": "Spectrum MAE",
+      "kind": "gnn",
+      "csv": "INPUT_ROOT/mae/tc_aurora_intensity35_step28_spectrum.csv",
+      "forecast_root": "INPUT_ROOT/mae/forecast",
+      "target_root": "INPUT_ROOT/mae/target",
+      "lat": "INPUT_ROOT/mae/lat.npy",
+      "lon": "INPUT_ROOT/mae/lon.npy",
+      "features": "INPUT_ROOT/mae/next_feature_table_weight.csv",
+      "relative_path": "ours/tc_aurora_intensity35_step28_spectrum.csv"
+    },
+    {
+      "id": "spectral_mse",
+      "label": "Spectrum MSE",
+      "kind": "gnn",
+      "csv": "INPUT_ROOT/spectral_mse/tc_aurora_intensity35_step28_spectrum_ver2.csv",
+      "forecast_root": "INPUT_ROOT/spectral_mse/forecast",
+      "target_root": "INPUT_ROOT/spectral_mse/target",
+      "lat": "INPUT_ROOT/spectral_mse/lat.npy",
+      "lon": "INPUT_ROOT/spectral_mse/lon.npy",
+      "features": "INPUT_ROOT/spectral_mse/next_feature_table_weight.csv",
+      "relative_path": "ours/tc_aurora_intensity35_step28_spectrum_ver2.csv"
+    },
+    {
+      "id": "pangu",
+      "label": "Pangu",
+      "kind": "pangu",
+      "csv": "INPUT_ROOT/pangu/tc_aurora_metrics35_step28.csv",
+      "forecast_root": "INPUT_ROOT/pangu/forecast",
+      "target_root": "INPUT_ROOT/pangu/target",
+      "lat": "INPUT_ROOT/pangu/lat.npy",
+      "lon": "INPUT_ROOT/pangu/lon.npy",
+      "upper_nc": "INPUT_ROOT/pangu/upper.nc",
+      "relative_path": "pangu/tc_aurora_metrics35_step28.csv"
+    }
+  ]
+}

@@ -589,6 +589,14 @@
       "curated": "700q kg kg^-1; 850v m s^-1; no numerical rescaling",
       "source": "user-approved Figure 3 plan on 2026-10-19; synchronized paper_with_code program and caption templates",
       "reason": "state actual physical units; exact data and plotted-number checks, six existing tests, visual QA; artifacts/figure3_units/verification.json"
+    },
+    {
+      "category": "publication_scope",
+      "setting": "Git and source-distribution file selection",
+      "original": "Broad tracking allowed manuscript extracts and a machine-specific GWB configuration",
+      "curated": "Default-deny Git allowlist; retain source, tests, tools, portable examples and necessary review/provenance documents; untrack 18 temporary extracts and one local configuration without deleting local files",
+      "source": "2026-10-27 user-approved public-file cleanup plan",
+      "reason": "Keep local manuscripts, submission notes, archives, generated outputs, caches and local settings out of future snapshots and source distributions; preserve history and provenance; no push or scientific calculation changes"
     }
   ]
 }

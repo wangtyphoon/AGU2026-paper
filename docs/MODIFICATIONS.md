@@ -94,3 +94,18 @@ See METRIC_DEFINITIONS.md#signed-thermal-wind.
 ## Workspace cleanup (2026-10-14)
 
 Four correction/definition documents are consolidated into METRIC_DEFINITIONS.md. Five completed one-time curation/staging/installation utilities are retired. Active workflows, numerical tests, replay/report tools, and research outputs are retained. Original documents, retired tools, and pre-cleanup metadata are recoverable from `artifacts/cleanup/before_cleanup.zip`. Build products and Python caches are regenerable.
+
+## Public file selection (2026-10-27)
+
+Git now defaults to excluding files, with explicit allowances for research
+source, tests, tools, portable examples, necessary documentation, and review
+and provenance records. The source-distribution manifest follows the same
+selection. Eighteen manuscript-extraction files under `tmp/` and
+`configs/gwb.local.json` are removed from tracking while their local bytes are
+preserved. Manuscripts, submission notes, archives, generated outputs, caches,
+and local settings remain excluded. `configs/gwb.example.json` retains the input
+schema with portable placeholder paths; research calculations and APIs are
+unchanged. Existing provenance source paths and historical hashes remain audit
+evidence. Pre-change copies and file hashes are retained locally under
+`artifacts/git_publication_cleanup/20261027/`. This changes future snapshots
+only: Git history is not rewritten and no remote publication is performed.

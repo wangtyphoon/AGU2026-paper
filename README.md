@@ -36,6 +36,32 @@ The coarse and AR models use fixed single-head attention. Model and shared-layer
 
 Ordinary workflows are independent of the original research checkout paths. The four retained tools cover curriculum execution, release checks, and thermal-wind replay/reporting. Obsolete curation and installation utilities are backed up in `artifacts/cleanup/before_cleanup.zip`.
 
+## Public files and local inputs
+
+Git uses a default-deny allowlist for research source, tests, tools, portable
+configuration examples, necessary documentation, and review/provenance records.
+Manuscripts, submission notes, extracted manuscript text, archives, generated
+outputs, caches, and machine-specific configurations remain local. New review
+documents must be added explicitly to both `.gitignore` and `MANIFEST.in`.
+Source paths recorded in provenance are retained as audit evidence.
+
+The thermal-wind replay/report tools read `configs/gwb.local.json`. For a new
+checkout, run the following from the repository root **only if that file does
+not already exist**, then replace every `INPUT_ROOT/...` placeholder with your
+own input paths:
+
+```powershell
+if (-not (Test-Path configs/gwb.local.json)) {
+    Copy-Item configs/gwb.example.json configs/gwb.local.json
+}
+```
+
+Relative paths in this configuration resolve from the working directory; run
+the tools from the repository root. The example documents input structure and
+does not supply the external data or previous artifacts required by replay and
+reporting. Existing local configurations are preserved and ignored by Git and
+source distributions. Removing files from tracking does not erase old commits.
+
 ## Verification and remaining work
 
 Local checks cover syntax/import safety, 116-channel order, calendar splits and complete sequences, nine-cell boundaries, effective batches, optimizer-update schedules, spectral cutoff semantics, retained loss/coherence numerical equivalence, model forward/backward, common-case TC tables, and existing metric/energy inputs. Representative figures were rendered and visually inspected; generated QA data/figures are ignored by Git.

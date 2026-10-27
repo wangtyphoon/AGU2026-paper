@@ -77,8 +77,10 @@ Run the numerical checks:
 
 The completed rerun covered AUTO MSE, Spectrum MAE, Spectrum V2 MSE and Pangu,
 steps 1–28, forecast and target, 100 and 500 km. `configs/gwb.local.json` is
-retained as an input-path record for that completed run, rather than an active
-standalone runner configuration. Outputs live in `artifacts/gwb_endpoint_corrected`:
+retained locally as an input-path record for that completed run and is excluded
+from Git and source distributions. It is also read by the thermal-wind replay
+and report tools; new checkouts can adapt `configs/gwb.example.json` as described
+in the README. Outputs live in `artifacts/gwb_endpoint_corrected`:
 
 - `tracker_multi`: corrected CSVs with original columns and order.
 - Per-model case changes, missing reasons, source audits, and manifests.
