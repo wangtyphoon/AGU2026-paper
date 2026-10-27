@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23682380.svg)](https://doi.org/10.5281/zenodo.23682380)
 # AGU JAMES research workflows
 
 This is a code-only, curated companion to **Physically Consistent Typhoon Intensity Forecasting in a Graph Neural Network Framework through Spectral Loss Training** (manuscript V1). It contains necessary data preparation, graph construction, four-stage training, validation, Pangu comparison, analysis and figure code.
