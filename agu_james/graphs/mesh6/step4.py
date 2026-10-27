@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet7/pre_process/PE+SE3_unet.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import torch
 from torch_geometric.transforms import AddRandomWalkPE, AddLaplacianEigenvectorPE

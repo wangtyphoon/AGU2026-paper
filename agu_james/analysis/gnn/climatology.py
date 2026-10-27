@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/download_clim.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import re

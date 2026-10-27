@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/forecast_activity_by_step.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import glob

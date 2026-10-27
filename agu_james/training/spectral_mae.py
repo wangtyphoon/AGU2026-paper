@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/train_script/spectrum_loss.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import pandas as pd
 import torch

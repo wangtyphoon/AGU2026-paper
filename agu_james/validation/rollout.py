@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/train_script/val_autoregressive.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 from agu_james.logging_utils import logger

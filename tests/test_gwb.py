@@ -11,7 +11,8 @@ class GWBTests(unittest.TestCase):
             self.assertEqual(reason, 'ok')
             self.assertAlmostEqual(value, (omega**2 + f*omega)*R**2/(2*G), places=10)
         q = (omega**2 + f*omega)*r
-        old = np.trapezoid(q[:5], r[:5])/G
+        trapezoid = getattr(np, 'trapezoid', None) or np.trapz
+        old = trapezoid(q[:5], r[:5])/G
         correct = integrate_gwb(r, omega*r, f, 100000.)[0]
         self.assertAlmostEqual(old/correct, 1.25)
 

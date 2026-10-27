@@ -1,5 +1,4 @@
 # Derived from func_inference.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import numpy as np

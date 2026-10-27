@@ -1,5 +1,4 @@
 # Derived from gnn/ver_spectrum_v2/train_script/spectrum_loss_v2.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import pandas as pd
 import torch

@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/tracker_ver_aurora.py
-# See provenance/sources.json for original hash and modifications.
 """Copyright (c) Microsoft Corporation. Licensed under the MIT license."""
 from agu_james import runtime
 import logging

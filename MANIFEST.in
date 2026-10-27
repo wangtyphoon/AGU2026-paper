@@ -1,11 +1,12 @@
-include README.md THIRD_PARTY_NOTICES.md CITATION_DRAFT.md references.bib .gitignore
+include README.md THIRD_PARTY_NOTICES.md references.bib .gitignore
 include configs/*.example.json
-include docs/DATA_SOURCES.md docs/ENVIRONMENTS.md docs/FIGURE_MAP.md
-include docs/METRIC_DEFINITIONS.md docs/MODEL_ARCHITECTURE.md docs/MODIFICATIONS.md
-include docs/OPEN_RESEARCH.md docs/TC_STRUCTURE_TEXT.md docs/VALIDATION.md docs/WORKFLOW.md
-include provenance/changes.json provenance/files.json provenance/reference_sources.json provenance/sources.json
-recursive-include tools *.py
+include docs/WORKFLOW.md docs/ENVIRONMENTS.md docs/DATA_SOURCES.md
+include docs/METRIC_DEFINITIONS.md docs/FIGURE_MAP.md
+include tools/run_curriculum.py
 recursive-include tests *.py
+prune WEIGHTING
+prune plotting_data
+prune provenance
 prune artifacts
 prune qa
 prune tmp
@@ -16,5 +17,5 @@ prune dist
 prune .git
 prune .venv
 prune .vscode
-global-exclude *.pyc *.pyo *.npy *.npz *.pt *.pth *.onnx *.nc *.grib *.grib2 *.csv *.png *.jpg *.jpeg *.svg *.pdf *.doc *.docx *.zip *.tar *.gz *.7z *.log
+global-exclude *.pyc *.pyo *.npy *.npz *.pt *.pth *.onnx *.nc *.grib *.grib2 *.csv *.png *.jpg *.jpeg *.svg *.pdf *.doc *.docx *.zip *.tar *.gz *.7z *.log *.sha256
 global-exclude *.local.* .env .env.* *.bak *.backup *.orig *.rej *~

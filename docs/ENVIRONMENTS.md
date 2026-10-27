@@ -1,30 +1,41 @@
-# Environment and installation notes
+# Environment and installation
 
-Python ≥3.10 is declared. Local numerical checks used Python 3.12.5 in the existing `atm312` environment. Dependencies are capability groups rather than a claim of a locked HPC environment.
+Python >=3.10 is required. Choose dependencies for the task:
+
+| Capability | Install / requirements |
+|---|---|
+| Basic utilities and scalar plots | `python -m pip install -e .` (NumPy, Pandas, SciPy, Matplotlib, tqdm) |
+| All archived figures and GNN inference/training | `python -m pip install -e ".[gnn,maps]"` (PyTorch >=2.3, PyG, scikit-learn, Cartopy) |
+| ERA5 conversion, requests and climatology | Add the `data` extra; configure CDS access separately |
+| Pangu CPU | Install the `pangu` extra |
+| Pangu GPU | Install compatible `onnxruntime-gpu`, ONNX, netCDF4 and cdsapi in place of the CPU runtime |
+
+Select either CPU or GPU ONNX Runtime for Pangu. CUDA/cuDNN compatibility depends
+on the selected runtime and device. External Pangu model files are required for
+real inference. The GAT/SG model modules do not directly require torch-scatter
+or torch-sparse. Cartopy may obtain Natural Earth basemap assets on first use.
 
 ```bash
-python -m pip install -e ".[gnn,maps,data]"
 python -m agu_james.workflow --help
 python -m agu_james.workflow check
+python -m unittest discover -s tests -v
 ```
 
-| Capability | Required dependencies | Local result |
-|---|---|---|
-| Contracts / aggregate plots | NumPy, Pandas, SciPy, Matplotlib, tqdm | Available; comparisons/plots executed |
-| Fine/AR GNN | PyTorch ≥2.3, torch-geometric, scikit-learn | Available; synthetic forward/backward executed |
-| Coarse Stage 1 | PyTorch/PyG; shared GAT/SG child layers | Corrected ver_unet_scale model imports and synthetic forward/backward pass |
-| Maps | Cartopy / projection resources | Cartopy available; map plotting depends on supplied arrays and local Natural Earth cache |
-| ERA5 | cdsapi, xarray, cfgrib, eccodes, netCDF4 | Need CDS credentials/terms and real downloads; no full preparation executed |
-| Climatology | gcsfs, zarr, xarray | Imports available, official input path verified; download not executed |
-| Pangu CPU | ONNX Runtime CPU, NumPy, netCDF4, cdsapi | `pangu` environment imports ONNX inference; real weighted inference not executed |
-| Pangu GPU | Compatible ONNX Runtime GPU/CUDA/cuDNN | Not validated in this task |
+`check` lists missing optional dependencies separately from other import errors;
+it does not download inputs or execute training. Use an environment with
+PyTorch/PyG for the complete numerical tests. Historical-source comparison
+tests skip unless `AGU_RDL_REFERENCE` / `AGU_PAPER_REFERENCE` are configured.
+This is not a lockfile for the historical HPC experiment.
 
-The former `[coarse]` dependency group was removed after correcting the Stage-1 source. The selected coarse and AR closures use the same GAT/SG sublayers and do not directly require torch-scatter or torch-sparse. The installed PyG environment passed imports and synthetic computations.
+## Configuration
 
-For CPU Pangu, use `pip install -e ".[pangu]"`. For GPU, install the base package plus netCDF4/cdsapi and compatible `onnxruntime-gpu`, selecting **one** runtime package. Do not install CPU and GPU ONNX Runtime together. `onnx` is declared for upstream interchange support; the retained inference module directly imports `onnxruntime`. ONNX input/field/level ordering is checked by preparation, but real ONNX operators and providers require the external models.
+Pass `--config PATH` before the subcommand. Copy an example to a `.local.json`
+file and adapt its paths. Relative `paths` entries and `artifact_root` resolve
+beside that JSON file. Command-line checkpoint paths resolve from the working
+directory. Run the documented examples from the repository root.
 
-The existing local environments used for verification were `C:\miniconda\envs\atm312\python.exe` and `C:\miniconda\envs\pangu\python.exe`. These paths are recorded evidence, not runtime requirements. No package installation or modification of either environment was performed. An environment/version inventory is generated in `artifacts/verification/` by `tools/verify_release.py`; it is a local snapshot, not the historical HPC dependency lock.
-
-Maintainer source regeneration needs Python3.10/3.11 because newer `ast.unparse` can emit Python3.12-only f-string quoting. Ordinary packaged code was checked against the Python3.10 grammar and runs in the two local3.11/3.12 environments.
-
-Configuration JSON contains shared paths and a `training` object. Relative `paths` entries resolve beside the configuration file. The `overrides` object is a low-level escape hatch keyed by full module plus constant name; public CLI adapters supply ordinary job settings. Do not copy credentials or author-specific data directories into a public release. New outputs are confined to the selected artifact/output paths; choose a fresh artifact root for a different experiment.
+Use `configs/paper.example.json` for the full pipeline, and the configurations
+inside the extracted Zenodo archives for archived figures or model inference.
+The `training` object contains explicit model/training controls; `overrides`
+provides module-specific advanced settings. Store credentials outside the
+repository. Generated outputs default to the ignored `artifacts/` directory.

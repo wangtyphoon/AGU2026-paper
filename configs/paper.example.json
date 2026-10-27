@@ -1,6 +1,7 @@
 {
   "artifact_root": "../artifacts",
   "paths": {
+    "figure_inputs": null,
     "train": null,
     "val": null,
     "test": null,

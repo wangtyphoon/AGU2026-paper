@@ -1,5 +1,4 @@
 # Derived from spectrum analysis/coherence_energy_ratio_scatter.py
-# See provenance/sources.json for original hash and modifications.
 """Plot energy ratio versus mean magnitude-squared coherence at days 1, 3, and 7.
 
 Run with no arguments to export all channels. Use --channels 700q 850v

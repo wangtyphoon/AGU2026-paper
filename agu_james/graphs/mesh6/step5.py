@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet7/pre_process/self_loop5_unet.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import torch
 import os

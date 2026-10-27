@@ -1,9 +1,9 @@
-# Manuscript V1 figure-to-workflow map
+# Figure-to-workflow map
 
 | Figure | Retained plotting module / CLI | Required upstream inputs |
 |---|---|---|
 | 1 | `plot graph` | Raw mesh7 graph from graph construction, required graph helpers |
-| 2 | Manual draw.io schematic | Original editable `model.drawio` in the author's paper source; no generated-code equivalent or bundled image |
+| 2 | Manual draw.io schematic | Editable `model.drawio` and original PNG in the separate plotting-data bundle; no generated-code equivalent |
 | 3 | `plot metrics --step 28 --style lines` | Four-model RMSE/Bias/ACC/Activity summaries, ERA5 target activity; 700q and 850v |
 | 4 | `plot metrics --step 28 --style tradeoff` | Same aligned summaries; relative RMSE–Activity/ERA5 and ACC–Bias |
 | 5 | `plot energy --period 7d` | Aggregate forecast/ERA5 power for 700q, 850u, 850v; exclude DC and use λ<1000 km |
@@ -17,6 +17,30 @@
 | 13 | `plot monthly` (700q output) | 2024102100 MAE/MSE channel_076 maps at steps 36/72/108, 120-step aggregate energy |
 | 14 | `plot monthly` (850v_850wind output) | Same initialization, 850-hPa speed maps; **850v** component aggregate spectra, not spectra inferred from wind-speed maps |
 
-The extra IKE–R8 / 500-km distribution plotting script, heatmap-only experiments, old single-variable plotting variants, interactive debugging and profiling are not needed for Figure 1–14 and were not selected as publication entry points. IKE calculation remains because it is described in the methodology.
 
-The corrected 174×174 FFT domain uses nominal wavelength 4872/k km (28 km isotropic approximation). Nominal λ<1000 km selects **k=5–87**. Totals now sum mode-count-weighted power with Parseval normalization; they are scalar band mean-square diagnostics, not domain-integrated kinetic energy. Latitude-dependent zonal spacing is not resolved by this nominal mapping. See METRIC_DEFINITIONS.md#spectral-power.
+Download `plotting_data.zip` from the associated Zenodo deposit (DOI **PENDING**)
+and extract it at the repository root. Its `file_index.csv` maps inputs to
+figures. Use software version **0.1.1** and run all commands from the code root:
+
+```bash
+python -m agu_james.workflow --config plotting_data/figures.example.json plot graph
+python -m agu_james.workflow --config plotting_data/figures.example.json plot metrics --step 28 --style lines
+python -m agu_james.workflow --config plotting_data/figures.example.json plot metrics --step 28 --style tradeoff
+python -m agu_james.workflow --config plotting_data/figures.example.json plot energy --period 7d
+python -m agu_james.workflow --config plotting_data/figures.example.json plot coherence --channels 700q 850v
+python -m agu_james.workflow --config plotting_data/figures.example.json plot tc
+python -m agu_james.workflow --config plotting_data/figures.example.json plot physics
+python -m agu_james.workflow --config plotting_data/figures.example.json plot krathon-track
+python -m agu_james.workflow --config plotting_data/figures.example.json plot krathon-fields
+python -m agu_james.workflow --config plotting_data/figures.example.json plot monthly --run-tag 2024102100 --days 9 18 27
+```
+
+Figure 2 is the supplied `plotting_data/inputs/model/model.drawio` schematic
+and PNG; it has no code-generation step. Other outputs go to
+`artifacts/figure_reproduction/figures/`. Add `--output-dir PATH` to choose
+another destination. The graph command produces Figure 1, physics produces
+Figures 8–10, and monthly produces Figures 13–14.
+
+Spectral totals use mode-count-weighted power with Parseval normalization on
+the 174×174 FFT domain, nominal wavelengths 4872/k km, and **k=5–87** for the
+nominal <1000-km band. See [metric definitions](METRIC_DEFINITIONS.md#spectral-power).

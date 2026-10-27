@@ -1,5 +1,4 @@
 # Derived from case_study and monthly simulation/plot_krathon_track_intensity.py
-# See provenance/sources.json for original hash and modifications.
 """Reproduce the Krathon case study from tracker_multi CSVs.
 
 Run with the project interpreter (pandas, matplotlib, numpy, scipy and cartopy):
@@ -31,7 +30,6 @@ VALUES = ['bst_lon', 'bst_lat', 'forecast_center_lon', 'forecast_center_lat', 'f
 CADENCE = pd.Timedelta(hours=12)
 SMOOTHING_SIGMA_HOURS = 12.0
 KNOT_TO_MPS = 0.514444
-IBTRACS_SOURCE = runtime.path('agu_james.plotting.krathon_track.ibtracs.WP.list.v04r01_subset.csv')
 MODEL_COLORS = {'Pangu': '#2878b5', 'Spectrum MAE': '#d97716', 'Spectrum MSE': '#289458', 'MSE': '#8553ad'}
 
 def smooth_segment(part, columns):
@@ -117,24 +115,26 @@ def mark_reference_ends(ax, frame, x, y, transform=None):
         ax.scatter([row[x]], [row[y]], marker=marker, s=size, facecolors='white' if marker == 'o' else 'black', edgecolors='black', linewidths=1.0, zorder=9, **kwargs)
 
 def load_ibtracs(paired, path):
-    """Use a reproducible Krathon subset; never mix wind/pressure agencies."""
+    """Read the USA-only source subset without requiring unused WMO fields."""
     frame = pd.read_csv(path, dtype=str).apply(lambda s: s.str.strip())
+    required = {'NAME', 'SEASON', 'TRACK_TYPE', 'SID', 'ISO_TIME', 'USA_LAT', 'USA_LON', 'USA_WIND', 'USA_PRES'}
+    if missing := required - set(frame.columns):
+        raise ValueError(f'Missing IBTrACS USA columns: {sorted(missing)}')
     frame = frame[frame.NAME.str.upper().eq('KRATHON') & frame.SEASON.eq('2024') & frame.TRACK_TYPE.eq('main')].copy()
     if frame.SID.nunique() != 1:
         raise ValueError('Expected exactly one Krathon 2024 SID in IBTrACS')
     frame['valid_time_utc'] = pd.to_datetime(frame.ISO_TIME, utc=True, errors='raise')
     frame = frame[frame.valid_time_utc.between(paired.valid_time_utc.min(), paired.valid_time_utc.max())]
-    for column in ['LAT', 'LON', 'WMO_WIND', 'WMO_PRES', 'USA_WIND', 'USA_PRES']:
+    for column in ['USA_LAT', 'USA_LON', 'USA_WIND', 'USA_PRES']:
         frame[column] = pd.to_numeric(frame[column], errors='coerce')
         if column.endswith(('WIND', 'PRES')):
             frame.loc[frame[column] <= 0, column] = np.nan
-    for agency in ['WMO', 'USA']:
-        frame[f'{agency}_wind_mps'] = frame[f'{agency}_WIND'] * KNOT_TO_MPS
-    frame = frame.dropna(subset=['LAT', 'LON']).sort_values('valid_time_utc')
+    frame['USA_wind_mps'] = frame['USA_WIND'] * KNOT_TO_MPS
+    frame = frame.dropna(subset=['USA_LAT', 'USA_LON']).sort_values('valid_time_utc')
     if frame.empty or frame.valid_time_utc.duplicated().any():
         raise ValueError('Missing or duplicate IBTrACS positions')
     frame['forecast_td'] = False
-    frame['original_source_csv'] = IBTRACS_SOURCE
+    frame['source_csv'] = str(Path(path).resolve())
     return frame
 
 def comparison_cases(paired, ibtracs):

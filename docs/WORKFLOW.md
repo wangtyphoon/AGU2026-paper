@@ -18,7 +18,7 @@ python -m agu_james.workflow --config config.json prepare climatology
 
 Order: best-track format/duplicate removal → inside-domain dates ±3 days → three ERA5 request groups → valid-time conversion/field alignment → SST/SWH background and nearest-neighbor fill → calendar-year split → six-hour local time features → training-only feature statistics and normalized increment scales → WeatherBench 1990–2017 climatology crop.
 
-Outputs: `data/{train,val,test}/{prs,sfc/regular,sfc/average,time}/YYYYMMDDHH.npz`, `data/{lat,lon}.npy`, training-only pre-fill SST/SWH masks, best-track/selection manifests, `statistics/` and `climatology/`. Statistics are generated rather than bundled. Input archives remain untouched. SST/SWH physical statistics exclude masked background cells; normalized increment scales retain the source all-cell convention. Existing filled NPZs require explicit external `sst_mask`/`swh_mask` paths. Use historical masks and normalization statistics when loading historical checkpoints (see DATA_SOURCES and MODIFICATIONS).
+Outputs: `data/{train,val,test}/{prs,sfc/regular,sfc/average,time}/YYYYMMDDHH.npz`, `data/{lat,lon}.npy`, training-only pre-fill SST/SWH masks, best-track/selection manifests, `statistics/` and `climatology/`. Statistics are generated rather than bundled. Input archives remain untouched. SST/SWH physical statistics exclude masked background cells; normalized increment scales retain the source all-cell convention. Existing filled NPZs require explicit external `sst_mask`/`swh_mask` paths. Use historical masks and normalization statistics when loading historical checkpoints (see DATA_SOURCES.md).
 
 For training, a sequence must include the previous analysis at t−6 h and **all** future frames through t+rollout×6 h in the same split. Calendar boundary sequences are excluded rather than assigned to a different year or filled with another split.
 
@@ -38,7 +38,7 @@ python -m agu_james.workflow --config config.json train --stage 1 --rollout 1 --
 python -m agu_james.workflow --config config.json train --stage 2 --rollout 1 --micro-batch 1 --checkpoint artifacts/training/stage1_mse_step01/last_model.pth
 ```
 
-Stage 1: 150 epochs, effective batch 16, peak LR 1e−3. Stage 2: 30 epochs, effective batch 16, peak LR 1e−4. Stage1 uses the corrected ver_unet_scale model at levels3–6; Stage2–4 use the AR model at levels3–7 with shared child layers. Both single-step stages use MSE and one-epoch warm-up. The transfer copies same-name/same-shape tensors, then initializes level-7 counterparts from level-6 prefixes using the original transfer rules. Keys are recorded in the checkpoint manifest. Stages2–4 select the same AR model class. Synthetic source/curated predictions match exactly for the two level variants.
+Stage 1: 150 epochs, effective batch 16, peak LR 1e−3. Stage 2: 30 epochs, effective batch 16, peak LR 1e−4. Stage1 uses the corrected ver_unet_scale model at levels3–6; Stage2–4 use the AR model at levels3–7 with shared child layers. Both single-step stages use MSE and one-epoch warm-up. The transfer copies same-name/same-shape tensors, then initializes level-7 counterparts from level-6 prefixes using the original transfer rules. Keys are recorded in the checkpoint manifest. Stages2–4 select the same AR model class.
 
 ## 4. Stage 3 curriculum
 
@@ -87,20 +87,21 @@ python -m agu_james.workflow --config config.json train --stage 4 --rollout 1 --
 python -m agu_james.workflow --config config.json train --stage 4 --rollout 1 --loss spectral_mse --checkpoint artifacts/training/stage3_mse_step28/last_model.pth
 ```
 
-Optimizer: AdamW, betas (0.9,0.95), decay 0.1. All stages retain the corrected coarse/AR zero-decay bias/normalization partition. Warm-up is 10% of update budget, followed by cosine decay. Current coefficients (filtered MSE, spectrum, bias) are MAE (1,1,2), MSE (1,5,1). The MSE spectrum coefficient was changed from the original 8 to 5 by user request on 2026-10-15. Stage 4 retains the original training loop fallback: MAE loads `next_feature_table_weight_ver3.csv`, while MSE loads `next_feature_table_weight_ver3_revised.csv`; both divide weights by their mean and apply them to all three loss components. Entry-point `channel_weights=None` triggers CSV loading, not uniform weights. Stage 1–3 use frozen channel-weight configurations. Statistics preparation exports both CSVs from frozen AR and revised-AR configurations. Existing artifact roots must supply the revised CSV before MSE spectral training; configure `paths["statistics/next_feature_table_weight_ver3_revised.csv"]` to use a matching external file. Channel order and finite positive weights are checked before training. Alpha=1, order=12 and spectral bounds=87 follow the local spectral entry points, configurable in `training`; they are not independently established as national HPC settings. Helper-level validation defaults of 56 are not the effective entry-point bounds.
+Optimizer: AdamW, betas (0.9,0.95), decay 0.1. All stages retain the corrected coarse/AR zero-decay bias/normalization partition. Warm-up is 10% of update budget, followed by cosine decay. Current coefficients (filtered MSE, spectrum, bias) are MAE (1,1,2), MSE (1,5,1). Stage 4 retains the original training loop fallback: MAE loads `next_feature_table_weight_ver3.csv`, while MSE loads `next_feature_table_weight_ver3_revised.csv`; both divide weights by their mean and apply them to all three loss components. Entry-point `channel_weights=None` triggers CSV loading, not uniform weights. Stage 1–3 use frozen channel-weight configurations. Statistics preparation exports both CSVs from frozen AR and revised-AR configurations. Existing artifact roots must supply the revised CSV before MSE spectral training; configure `paths["statistics/next_feature_table_weight_ver3_revised.csv"]` to use a matching external file. Channel order and finite positive weights are checked before training. Alpha=1, order=12 and spectral bounds=87 follow the local spectral entry points, configurable in `training`; they are not independently established as national HPC settings.
 
 Effective batch = micro-batch × world size × accumulation. Incomplete effective batches at epoch end are dropped. Optimizer updates, LR and checkpoint history share one counter. The MSE distributed collective loss is retained; real distributed execution is not validated. MAE uses one GPU with accumulation because exact global batch-bias behavior under DDP is not yet established; requesting MAE with `WORLD_SIZE>1` fails clearly.
 
 ## 7. Test forecasts and Pangu
 
 ```bash
-python -m agu_james.workflow --config config.json validate --split test --rollout 28 --checkpoint /external/mse.pth
-python -m agu_james.workflow --config config.json validate --split test --rollout 120 --initial-time 2024102100 --checkpoint /external/mae.pth
+python -m agu_james.workflow --config config.json validate --split test --rollout 28 --checkpoint /external/stage3_weighted_mse_step28.pth
+python -m agu_james.workflow --config config.json validate --split test --rollout 28 --checkpoint /external/stage4_spectral_mse_step28.pth
+python -m agu_james.workflow --config config.json validate --split test --rollout 120 --initial-time 2024102100 --checkpoint /external/stage4_spectral_mae_step28.pth
 python -m agu_james.workflow --config config.json prepare pangu-inputs --initial-times 2024092912 --rollout 28
 python -m agu_james.workflow --config config.json pangu --initial-times 2024092912 --rollout 28 --weights-dir /external/pangu-models
 ```
 
-Repeat GNN validation for three final checkpoints. Default initialization hours are 00/06/12/18 UTC. `--initial-time` filters a complete sequence for Krathon (`2024092912`) or monthly (`2024102100`) experiments. Monthly integration needs separately available continuous 120-step ERA5 sequences; TC-window sampling alone may not contain them. Do not invent missing frames.
+`step28` in checkpoint filenames identifies the training rollout, not a maximum inference horizon. Repeat GNN validation for three final checkpoints. Default initialization hours are 00/06/12/18 UTC. `--initial-time` filters a complete sequence for Krathon (`2024092912`) or monthly (`2024102100`) experiments. Monthly integration needs separately available continuous 120-step ERA5 sequences; TC-window sampling alone may not contain them. Do not invent missing frames.
 
 Pangu preparation downloads global ERA5 analyses for initial and future target times, preserving field/level ordering. Inference evolves full global fields, anchors every 24 hours with the 24-h model, uses the 6-h model between anchors, and saves every 6-h lead before regional cropping. Supply external 6/24-h ONNX weights; their binary files are not in Git.
 
@@ -139,3 +140,35 @@ python -m agu_james.workflow --config config.json plot graph
 ```
 
 For existing aggregate inputs, add `--input-root /external/paper-input-tree --output-dir /new/figures`. Outputs are PNG/PDF and relevant CSV/manifests. `Figure 2` has no code-generation stage: it is the author's manual draw.io model schematic. Figure 13/14 maps are one initialization; spectra are aggregate populations. They must not be relabeled as spectra of that single case.
+
+
+## 10. Model architecture and checkpoint compatibility
+
+Stage 1 uses `agu_james.training.models.coarse.model_unet.HeteroGNN`
+(mesh levels 3–6); Stages 2–4 use
+`agu_james.training.models.ar.model_unet.HeteroGNN` (levels 3–7).
+The encoder, GAT/SG processor, upsampling and decoder share the child modules
+under `agu_james.training.models.shared`. Models have one fixed attention head;
+omit `heads` and `num_heads` from constructors. Single-head parameter names
+and shapes remain compatible with strict state-dictionary loading.
+
+The training factory sets processor depths `[16,12,8,4]`, FFN ratio 1 for
+Stage 1 and `[16,16,12,8,6]`, FFN ratio 2 for Stages 2–4. These explicit
+training settings override constructor defaults. The archived final models
+use hidden dimension 512 and the latter depths/ratio. Use checkpoint metadata
+when loading a model; do not substitute constructor defaults.
+
+The Zenodo `model_weights.zip` supplies the three final inference checkpoints
+and their matching graph/statistics/coordinates. Extract it at the repository
+root to create `WEIGHTING/`. Copy `WEIGHTING/inference.example.json` to
+`WEIGHTING/inference.local.json`, add `paths.test` pointing to the prepared
+meteorological input directory, then run:
+
+```bash
+python -m agu_james.workflow --config WEIGHTING/inference.local.json validate --split test --rollout 28 --checkpoint WEIGHTING/stage3_weighted_mse_step28.pth
+python -m agu_james.workflow --config WEIGHTING/inference.local.json validate --split test --rollout 28 --checkpoint WEIGHTING/stage4_spectral_mae_step28.pth
+python -m agu_james.workflow --config WEIGHTING/inference.local.json validate --split test --rollout 28 --checkpoint WEIGHTING/stage4_spectral_mse_step28.pth
+```
+
+These weights omit optimizer/scheduler/RNG state and cannot resume the original
+training. They do not include weather fields or Pangu ONNX weights.

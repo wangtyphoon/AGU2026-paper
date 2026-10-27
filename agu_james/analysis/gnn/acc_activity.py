@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/acc_forecast_acitivity.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import glob

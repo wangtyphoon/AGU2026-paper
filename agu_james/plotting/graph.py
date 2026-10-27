@@ -1,5 +1,4 @@
 # Derived from pre_process/chapter2_vis_composite.py
-# See provenance/sources.json for original hash and modifications.
 """Create a three-row composite of the chapter 2 graph visualizations."""
 from __future__ import annotations
 from agu_james import runtime

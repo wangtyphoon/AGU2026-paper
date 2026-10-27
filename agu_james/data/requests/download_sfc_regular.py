@@ -1,5 +1,4 @@
 # Derived from era5/download_sfc_regular.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import cdsapi

@@ -1,5 +1,4 @@
 # Derived from vis_multi_steps/vis_multi_model_forecast_compare_monthly_all.py
-# See provenance/sources.json for original hash and modifications.
 from __future__ import annotations
 from agu_james import runtime
 from dataclasses import dataclass

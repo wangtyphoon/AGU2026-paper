@@ -1,5 +1,4 @@
 # Derived from vis_multi_steps/vis_muliti_step_combined.py
-# See provenance/sources.json for original hash and modifications.
 from __future__ import annotations
 from agu_james import runtime
 from datetime import datetime

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "agu-james-workflow"
-version = "0.1.0"
+version = "0.1.1"
 description = "Curated workflows for physically consistent typhoon forecasting with spectral loss"
 requires-python = ">=3.10"
 dependencies = ["numpy", "pandas", "scipy", "matplotlib", "tqdm"]

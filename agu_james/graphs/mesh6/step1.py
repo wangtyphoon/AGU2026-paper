@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet7/pre_process/create_hetero_mesh_poolk.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import numpy as np
 import torch

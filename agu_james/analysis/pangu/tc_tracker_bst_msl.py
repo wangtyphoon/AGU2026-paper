@@ -1,5 +1,4 @@
 # Derived from validation/tc_tracker_bst_msl.py
-# See provenance/sources.json for original hash and modifications.
 from __future__ import annotations
 from agu_james import runtime
 import math

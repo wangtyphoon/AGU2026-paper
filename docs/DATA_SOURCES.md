@@ -1,6 +1,14 @@
-# External inputs and generated data contracts
+# Data sources and input contracts
 
-No assets in this table are bundled with the code. Original paths are provenance references; portable workflows use JSON paths/CLI arguments.
+The [GitHub software](https://github.com/wangtyphoon/AGU2026-paper), version
+**0.1.1**, is paired with one planned Zenodo deposit (DOI **PENDING**):
+
+| Attachment | Contents / extraction |
+|---|---|
+| `model_weights.zip` | Extract at the code root to create `WEIGHTING/`: final MSE, Spectrum-MAE and Spectrum-MSE weights, shared normalized graph, statistics and coordinates |
+| `plotting_data.zip` | Extract at the code root to create `plotting_data/`: existing numerical inputs for Figures 1–14, Figure 2 editable schematic/image, plotting configuration and simple file index |
+
+## External and generated inputs
 
 | Asset | Obtain / generate | Format and downstream consumer |
 |---|---|---|
@@ -9,16 +17,16 @@ No assets in this table are bundled with the code. Original paths are provenance
 | JTWC best tracks | [JTWC best-track portal](https://www.metoc.navy.mil/jtwc/jtwc.html?best-tracks); original historical ATCF snapshot remains author-supplied | BEST records, knots, tenths-of-degree N/S/E/W; deduplicate basin/storm/time, select in-domain dates ±3 days |
 | IBTrACS Krathon | [NCEI v04r01 dataset](https://www.ncei.noaa.gov/products/international-best-track-archive), DOI 10.25921/82ty-9e16 | External original CSV or source-selected Krathon CSV; USA/JTWC agency fields for track/intensity case study |
 | Climatology | [WeatherBench 2 official data guide](https://weatherbench2.readthedocs.io/en/latest/data-guide.html#era5-climatology), exact 1990–2017 six-hourly 1440×721 Zarr | `prepare climatology` → `dayDDD_hourHH.npz` cropped to regional coordinates; ACC/Activity |
-| Pangu parameters | [Official Pangu-Weather downloads](https://github.com/198808xc/Pangu-Weather#downloading-trained-models) | `pangu_weather_6.onnx`, `pangu_weather_24.onnx`; external `pangu_weights` path, checksums/version pending |
+| Pangu parameters | [Official Pangu-Weather downloads](https://github.com/198808xc/Pangu-Weather#downloading-trained-models) | `pangu_weather_6.onnx`, `pangu_weather_24.onnx`; external `pangu_weights` path |
 | Pangu inputs/targets | `prepare pangu-inputs` using global ERA5 | Float32 surface `(4,721,1440)` in msl,u10,v10,t2m order; upper `(5,13,721,1440)` in z,q,t,u,v order, pressure levels 1000→50 hPa; native descending latitude |
 | Regional coordinates | `prepare convert` | `lat.npy`/`lon.npy`, `(192,192)`, lat 47.75→0, lon 102.25→150 at 0.25°; dataset, diagnostics, plots |
 | Land-sea mask / reference metadata | ERA5 single-level `lsm`, external reference surface/upper NetCDF | Set `lsm`, `surface_nc`, `upper_nc`; mask shape matches regional coordinates; TC diagnostics need real coordinate/level metadata |
 | Ocean validity masks | `prepare convert` **before** SST/SWH background filling, training-only maximum missing-cell reference | `data/masks/weight_mask_{sst,swh}.npz`, binary `weight_mask` 192×192 plus reference time/count; physical statistics. Legacy filled NPZ input requires explicit `sst_mask`/`swh_mask` |
 | Physical statistics | `prepare statistics` | Per-variable population mean/std/min/max/count CSVs, training years only; SST/SWH masks exclude background. `next_feature_table_weight.csv` adds physical mean/std to fixed configuration |
 | Increment scales | `prepare statistics` | `target_mean_std.csv`, ordered feature_idx/variable/mean/std; normalized six-hour increments over complete training sequences, source all-cell convention |
-| Graphs | `graph --mesh 6` / `7` | PyG heterogeneous `.pt`, edge/node/encoding/self-loop/normalization assets; not a precomputed data deposit |
+| Graphs | `graph --mesh 6` / `7` | PyG heterogeneous `.pt`, edge/node/encoding/self-loop/normalization assets; normalized mesh7 graph supplied in the inference archive; raw mesh7 geometry in the plotting archive |
 | Cutoffs | Training-set `validate --spectrum-output`, then `calibrate` | One CSV per lead, `channel,feature,k_energy_decay_10pct`; train-only metadata, matching counts/order |
-| GNN weights | Four training stages and two spectral branches | `last_model.pth` contains state, optimizer update count, model stage, loss, paper schedule/settings/history; no archive exists yet |
+| GNN weights | Four training stages and two spectral branches | Training writes full `last_model.pth`; `model_weights.zip` separately supplies the three final inference-only `.pth` files |
 | Evaluation fields | `validate` and `pangu` | GNN forecast/target NPZ per lead; Pangu native-global state → regional saved NPY each 6 hours; input arrays remain global |
 | Analysis products | `analyze` jobs | Physical metric CSV, energy/coherence NPZ, tracking/structure CSV, axisymmetric profile NPZ; original numerical conventions retained |
 | Figure exports | `plot` groups | Generated PNG/vector PDF and figure CSV/manifests; final backing arrays must be separately archived |
@@ -29,6 +37,27 @@ Samples are training years 1979–2023 excluding 1980/1990/2000/2010/2020, valid
 
 SST background is 270 K and SWH background is zero. They are finite model inputs, not observations over land. A newly generated training mask may differ from a historical mask chosen from a fixed missing-count snapshot. For historical checkpoint evaluation, configure external masks and **the matching historical normalization/target scales**; do not silently regenerate its normalization. JSON path keys such as `statistics/prs_variable_stats.csv`, `statistics/sfc_regular_variable_stats.csv`, `statistics/sfc_average_variable_stats.csv`, `statistics/target_mean_std.csv` and `statistics/next_feature_table_weight.csv` override the generated defaults. Statistics require both mask files and fail clearly if they are unavailable.
 
-Current public-source terms and archive status must be checked at deposit. The CDS pages currently list CC-BY terms; record the terms accepted for the actual downloaded snapshot. NOAA requires the IBTrACS dataset and method-paper citations; record the original access date, not this documentation check date. The JTWC portal could not be confirmed reachable through the web tool during curation, and the original snapshot citation/access date remains pending. WeatherBench access documentation was verified, but no remote array download was executed here. Pangu model terms are documented in [third-party notices](../THIRD_PARTY_NOTICES.md).
 
-Each future data deposit should include original filenames/checksums, CDS request JSON, coordinate/variable metadata, missing-value rules, sample dates, split assignment, exclusion reasons, checkpoint/config fingerprint, accepted-count arrays and common-case IDs. The monthly spatial fields are the **single 2024102100 initialization**, whereas monthly power curves use the existing aggregate population. Their populations must remain separately labeled.
+## Sample populations and units
+
+Monthly spatial fields are the **single 2024102100 initialization**; monthly
+power curves use each model's existing aggregate population. Do not relabel
+those curves as the spectrum of the map case. The plotting file index identifies
+the figure associated with each input; calculation and filtering definitions
+are in [METRIC_DEFINITIONS.md](METRIC_DEFINITIONS.md).
+
+## Availability and citations
+
+Data availability: ERA5 pressure-level and single-level data are obtained from
+the Copernicus Climate Data Store (DOIs 10.24381/cds.bd0915c6 and
+10.24381/cds.adbb2d47); JTWC supplies the best-track records; the Krathon USA/JTWC
+subset is from IBTrACS v04r01 (DOI 10.25921/82ty-9e16). The 1990–2017 six-hourly
+climatology is obtained from WeatherBench 2. Model weights and figure inputs
+are prepared as the two attachments above for Zenodo deposition; their DOI
+remains pending until publication.
+
+Software availability: the companion code is maintained at the GitHub URL
+above. Record the matching release/tag for version 0.1.1 in the Zenodo metadata.
+Use [references.bib](../references.bib) for the known dataset and method
+references, including Hersbach et al. (ERA5), Gahtan et al. (IBTrACS v04r01),
+Knapp et al. (IBTrACS method), and Bi et al. (Pangu-Weather).

@@ -1,5 +1,4 @@
 # Derived from validation/subset.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import numpy as np
 from netCDF4 import Dataset

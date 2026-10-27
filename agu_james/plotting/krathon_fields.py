@@ -1,5 +1,4 @@
 # Derived from case_study and monthly simulation/plot_krathon_wind850_q700.py
-# See provenance/sources.json for original hash and modifications.
 """Plot Krathon wind850/q700 around the valid-time best-track centers.
 
 Run from any working directory with a Python providing numpy, matplotlib and

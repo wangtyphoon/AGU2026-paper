@@ -1,10 +1,9 @@
 # Derived from tc_verification/plot_tc_verification.py
-# See provenance/sources.json for original hash and modifications.
 """Paper figure for tropical-cyclone track and S10 intensity verification.
 
 Run from any working directory with the existing plotting environment::
 
-    C:\\miniconda\\envs\\pangu\\python.exe <path-to-this-script>
+    python <path-to-this-script>
 
 Inputs are the four existing step28 CSVs under ../tracker_multi. Outputs are
 tc_verification.png (600 dpi), tc_verification.pdf (vector), and a long-format

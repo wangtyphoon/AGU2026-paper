@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet7/pre_process/edge_feature4_unet7.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import torch
 import numpy as np

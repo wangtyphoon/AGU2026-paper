@@ -1,5 +1,4 @@
 # Derived from validation/axisymmetric_wind_metrics_all.py
-# See provenance/sources.json for original hash and modifications.
 from __future__ import annotations
 from agu_james import runtime
 from dataclasses import dataclass

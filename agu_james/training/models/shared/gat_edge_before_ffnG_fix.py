@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet_scale/layer/gat_edge_before_ffnG_fix.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import typing
 from typing import Optional, Tuple, Union

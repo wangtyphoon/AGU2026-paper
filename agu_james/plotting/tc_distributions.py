@@ -1,5 +1,4 @@
 # Derived from tc_verification/tc_distribution_plots.py
-# See provenance/sources.json for original hash and modifications.
 """Distribution panels with marginal KDEs and compact relationship statistics."""
 from agu_james import runtime
 from dataclasses import dataclass

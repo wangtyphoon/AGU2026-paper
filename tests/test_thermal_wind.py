@@ -1,7 +1,6 @@
 """Numerical and entrypoint checks for the signed native-pressure policy."""
 import ast
-import importlib.machinery
-import importlib.util
+import importlib
 import json
 from pathlib import Path
 import tempfile
@@ -9,59 +8,44 @@ import unittest
 from unittest.mock import patch
 import numpy as np
 import pandas as pd
-from tools.recompute_thermal_wind import OUT, ROOT, LEVELS, numerical_namespace
+ROOT = Path(__file__).resolve().parents[1]
+LEVELS = [925, 850, 700, 600, 500, 400, 300]
 
 def candidate(name):
-    path = OUT/f'code_replacement/{name}.replacement.py.txt'
-    loader = importlib.machinery.SourceFileLoader(name,str(path))
-    spec = importlib.util.spec_from_loader(name,loader)
-    module = importlib.util.module_from_spec(spec)
-    import sys
-    sys.modules[name]=module
-    loader.exec_module(module)
-    return module
+    modules = {'agu_gnn': 'agu_james.analysis.gnn.tc_phase',
+               'agu_pangu': 'agu_james.analysis.pangu.axisymmetric_b_vt_metrics_all'}
+    return importlib.import_module(modules[name])
 
 class ThermalWind(unittest.TestCase):
     def test_analytic_sign_and_cross_implementation(self):
-        entries=json.loads((OUT/'code_replacement/replacement_manifest.json').read_text())
-        for entry in entries:
-            if entry['kind']=='plot': continue
-            ns=numerical_namespace(entry['staged'])
+        for name in ['agu_gnn', 'agu_pangu']:
+            module=candidate(name)
             for slope in (-75.,0.,75.):
-                result=ns['compute_native_vt'](LEVELS,1000+slope*np.log(LEVELS))
+                result=module.compute_native_vt(LEVELS,1000+slope*np.log(LEVELS))
                 self.assertAlmostEqual(result['vt_lower'],slope,places=8)
                 self.assertAlmostEqual(result['vt_upper'],slope,places=8)
 
     def test_missing_layers_without_interpolation(self):
-        ns=numerical_namespace(OUT/'code_replacement/agu_gnn.replacement.py.txt')
-        result=ns['compute_native_vt']([925,600],[300.,200.])
+        module=candidate('agu_gnn')
+        result=module.compute_native_vt([925,600],[300.,200.])
         self.assertEqual(result['lower_valid_levels'],2)
         self.assertEqual(result['upper_valid_levels'],1)
         self.assertTrue(np.isnan(result['vt_upper']))
         self.assertAlmostEqual(result['vt_lower'],100/np.log(925/600))
-        other=ns['compute_native_vt']([925,600,900,550],[300.,200.,1e8,-1e8])
+        other=module.compute_native_vt([925,600,900,550],[300.,200.,1e8,-1e8])
         self.assertEqual(other['vt_lower'],result['vt_lower'])
         self.assertEqual(other['upper_valid_levels'],1)
 
-    def test_auxiliary_functions_unchanged(self):
-        for name in ('agu_gnn','local_gnn','local_spectral_mse'):
-            def functions(suffix):
-                tree=ast.parse((OUT/f'code_replacement/{name}.{suffix}.py.txt').read_text(encoding='utf-8'))
-                return {n.name:ast.dump(n) for n in tree.body if isinstance(n,ast.FunctionDef)}
-            old,new=functions('original'),functions('replacement')
-            for function in old.keys()-{'main'}:
-                self.assertEqual(old[function],new[function],function)
-
     def test_main_no_interpolation_calls(self):
-        for name in ('agu_gnn','local_gnn','local_spectral_mse','agu_pangu','local_pangu'):
-            tree=ast.parse((OUT/f'code_replacement/{name}.replacement.py.txt').read_text(encoding='utf-8'))
+        for name in ('agu_gnn','agu_pangu'):
+            tree=ast.parse(Path(candidate(name).__file__).read_text(encoding='utf-8'))
             for function in [n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name in ('main','compute_vt_indicators','compute_native_vt')]:
                 calls={n.func.id for n in ast.walk(function) if isinstance(n,ast.Call) and isinstance(n.func,ast.Name)}
                 self.assertFalse(calls & {'interpolate_delta_z','interpolate_profile','build_pressure_grid'})
 
     def test_gnn_main_outputs_and_counts(self):
         module=candidate('agu_gnn')
-        scratch=OUT/'test_tmp'; scratch.mkdir(exist_ok=True)
+        scratch=ROOT/'artifacts/verification'; scratch.mkdir(parents=True,exist_ok=True)
         with tempfile.TemporaryDirectory(dir=scratch) as directory:
             base=Path(directory); csv=base/'input.csv'; output=base/'output.csv'
             lat=np.linspace(19,21,3);lon=np.linspace(119,121,3)
@@ -86,7 +70,7 @@ class ThermalWind(unittest.TestCase):
 
     def test_pangu_main_outputs_and_counts(self):
         module=candidate('agu_pangu')
-        scratch=OUT/'test_tmp'; scratch.mkdir(exist_ok=True)
+        scratch=ROOT/'artifacts/verification'; scratch.mkdir(parents=True,exist_ok=True)
         with tempfile.TemporaryDirectory(dir=scratch) as directory:
             base=Path(directory);csv=base/'input.csv';output=base/'output.csv'
             lat=np.linspace(19,21,3);lon=np.linspace(119,121,3)

@@ -1,5 +1,4 @@
 # Derived from validation/acc_metric_prs.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import sys

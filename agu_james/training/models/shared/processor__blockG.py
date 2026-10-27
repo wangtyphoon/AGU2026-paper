@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet_scale/layer/processor__blockG.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import torch
 import torch.nn as nn

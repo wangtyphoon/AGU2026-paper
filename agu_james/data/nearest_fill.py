@@ -1,5 +1,4 @@
 # Derived from npz/fill_nan_nearest.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 import numpy as np

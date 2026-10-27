@@ -1,5 +1,4 @@
 # Derived from npz/resize_swh.py
-# See provenance/sources.json for original hash and modifications.
 """
 Resize 'swh' variable in sfc_regular npz files from 96x96 to 192x192 using bilinear interpolation.
 """

@@ -1,5 +1,4 @@
 # Derived from gnn/ver_unet7/pre_process/pre_norm6_unet7.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import torch
 import os

@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/spectral_threshold_summary.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import math
 import os

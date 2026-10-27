@@ -1,5 +1,4 @@
 # Derived from pre_process/chapter2_vis.py
-# See provenance/sources.json for original hash and modifications.
 from __future__ import annotations
 from agu_james import runtime
 import os

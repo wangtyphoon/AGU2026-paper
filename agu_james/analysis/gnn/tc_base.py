@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/tc_bst_msl_intensity.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import re
 import os

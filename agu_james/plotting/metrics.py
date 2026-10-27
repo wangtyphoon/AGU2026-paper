@@ -1,5 +1,4 @@
 # Derived from evaluation_metric/plot_james_metrics.py
-# See provenance/sources.json for original hash and modifications.
 """Publication figures for 700q and 850v: relative RMSE, bias, ACC and activity.
 
 Run with the local environment's Python from any working directory. Input CSVs

@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/train_script/val_autoregressive_with_spectrum.py
-# See provenance/sources.json for original hash and modifications.
 from agu_james import runtime
 import os
 from typing import Dict, Optional, Sequence, Tuple

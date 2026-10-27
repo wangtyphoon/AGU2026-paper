@@ -1,11 +1,10 @@
 # Derived from tc_verification/plot_tc_physics_structure.py
-# See provenance/sources.json for original hash and modifications.
 """Compact manuscript figures combining tracker_multi and struc_multi.
 
-Run with C:\\miniconda\\envs\\pangu\\python.exe from any working directory.
+Run with python from any working directory.
 No source files are modified. Defaults: scalar verification at 24/48/72 h,
 relationship and omega composites at 72 h, PNG at 600 dpi and vector PDF.
-See README_physics_structure.md for sample selection and diagnostic meanings.
+See docs/METRIC_DEFINITIONS.md for diagnostic meanings.
 """
 from __future__ import annotations
 from agu_james import runtime

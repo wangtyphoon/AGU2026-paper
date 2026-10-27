@@ -1,5 +1,4 @@
 # Derived from gnn/ver_autoregressive/output/tc_ike_calculation_to_csv.py
-# See provenance/sources.json for original hash and modifications.
 from __future__ import annotations
 from agu_james import runtime
 from pathlib import Path

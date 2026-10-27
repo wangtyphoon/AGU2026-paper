@@ -1,7 +1,7 @@
 """Best-track selection, ERA5 conversion and training-only statistics.
 
 All files produced here go to artifact_root. Original inputs are read-only.
-Derived from the bwp/bst/era5/npz workflows; see provenance/changes.json.
+Derived from the bwp/bst/era5/npz research workflows.
 """
 from collections import defaultdict
 from datetime import datetime, timedelta
