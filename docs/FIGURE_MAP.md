@@ -18,7 +18,8 @@
 | 14 | `plot monthly` (850v_850wind output) | Same initialization, 850-hPa speed maps; **850v** component aggregate spectra, not spectra inferred from wind-speed maps |
 
 
-Download `plotting_data.zip` from the associated Zenodo deposit (DOI **PENDING**)
+Download [plotting_data.zip](https://zenodo.org/records/23710090/files/plotting_data.zip?download=1)
+from [Zenodo, DOI 10.5281/zenodo.23710090](https://doi.org/10.5281/zenodo.23710090)
 and extract it at the repository root. Its `file_index.csv` maps inputs to
 figures. Use software version **0.1.1** and run all commands from the code root:
 

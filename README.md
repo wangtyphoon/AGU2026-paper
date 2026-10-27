@@ -1,4 +1,5 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23682380.svg)](https://doi.org/10.5281/zenodo.23682380)
+[![Code DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23682380.svg)](https://doi.org/10.5281/zenodo.23682380)
+[![Weights and data DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23710090.svg)](https://doi.org/10.5281/zenodo.23710090)
 # AGU JAMES research workflows
 
 Software companion to **Physically Consistent Typhoon Intensity Forecasting in
@@ -9,11 +10,13 @@ The release has two parts:
 | Location | Contents |
 |---|---|
 | [GitHub](https://github.com/wangtyphoon/AGU2026-paper) | Python code, installation/configuration, reproduction instructions and numerical tests |
-| Zenodo — DOI **PENDING** | `model_weights.zip` (three final models and shared inference assets) and `plotting_data.zip` (Figure 1–14 inputs) |
+| [Zenodo weights and data — 10.5281/zenodo.23710090](https://doi.org/10.5281/zenodo.23710090) | `model_weights.zip` (three final models and shared inference assets) and `plotting_data.zip` (Figure 1–14 inputs) |
 
-Compatible software version: **0.1.1**. The two archives are prepared locally;
-the Zenodo DOI and matching GitHub release/tag must be filled in after deposit.
-The author-owned license remains pending; third-party terms are retained in
+Compatible software version for the workflows below: **0.1.1**. The
+[code archive](https://doi.org/10.5281/zenodo.23682380) and the weights/data
+archive have separate DOIs. The weights/data record lists **CC BY 4.0**;
+the code is provided to support manuscript review and testing.
+Third-party copyright notices and license terms are retained in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Install and obtain the archived inputs
@@ -25,8 +28,14 @@ python -m pip install -e ".[gnn,maps]"
 python -m agu_james.workflow --help
 ```
 
-Download the required Zenodo attachment(s) and extract them **at the repository
-root**. Each archive already contains its top-level directory:
+Download the required attachment(s) from the
+[Zenodo weights and data record](https://doi.org/10.5281/zenodo.23710090):
+
+- [model_weights.zip](https://zenodo.org/records/23710090/files/model_weights.zip?download=1) — three GNN inference checkpoints and shared inference assets.
+- [plotting_data.zip](https://zenodo.org/records/23710090/files/plotting_data.zip?download=1) — numerical inputs and configuration for Figures 1–14.
+
+Extract them **at the repository root**. Each archive already contains its
+top-level directory:
 
 ```text
 AGU2026-paper/
@@ -95,11 +104,12 @@ are not configured. These checks and direct plotting do not establish full
 historical training reproduction. The MAE bias-expression and validation-border
 differences are explained in the workflow guide.
 
-## Upload contents
+## Release contents
 
-Publish the code, configuration examples, five guides, tests, curriculum tool,
-references and third-party notices to GitHub. Deposit only `model_weights.zip`
-and `plotting_data.zip` in the associated Zenodo record. Set the record's
-related GitHub release and replace the DOI placeholder after publication.
+GitHub contains the code, configuration examples, five guides, tests,
+curriculum tool, source citations and third-party notices. The
+[weights and data record](https://doi.org/10.5281/zenodo.23710090) contains
+`model_weights.zip` and `plotting_data.zip`. Cite that DOI when using the
+weights or figure inputs; use the separate code DOI when citing the software archive.
 Manuscripts, internal audits, checksums, backup archives, caches and generated
 outputs are not part of either upload.

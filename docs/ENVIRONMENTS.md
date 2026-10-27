@@ -35,7 +35,9 @@ beside that JSON file. Command-line checkpoint paths resolve from the working
 directory. Run the documented examples from the repository root.
 
 Use `configs/paper.example.json` for the full pipeline, and the configurations
-inside the extracted Zenodo archives for archived figures or model inference.
+inside the extracted
+[Zenodo weights and data archives](https://doi.org/10.5281/zenodo.23710090)
+for archived figures or model inference (see [download instructions](../README.md#install-and-obtain-the-archived-inputs)).
 The `training` object contains explicit model/training controls; `overrides`
 provides module-specific advanced settings. Store credentials outside the
 repository. Generated outputs default to the ignored `artifacts/` directory.

@@ -158,7 +158,9 @@ training settings override constructor defaults. The archived final models
 use hidden dimension 512 and the latter depths/ratio. Use checkpoint metadata
 when loading a model; do not substitute constructor defaults.
 
-The Zenodo `model_weights.zip` supplies the three final inference checkpoints
+The [Zenodo weights and data record](https://doi.org/10.5281/zenodo.23710090)
+provides [model_weights.zip](https://zenodo.org/records/23710090/files/model_weights.zip?download=1),
+which supplies the three final inference checkpoints
 and their matching graph/statistics/coordinates. Extract it at the repository
 root to create `WEIGHTING/`. Copy `WEIGHTING/inference.example.json` to
 `WEIGHTING/inference.local.json`, add `paths.test` pointing to the prepared

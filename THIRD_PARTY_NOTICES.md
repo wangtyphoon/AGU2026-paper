@@ -1,6 +1,6 @@
-# Third-party attribution and license status
+# Third-party attribution and notices
 
-The license for author-owned code is **PENDING AUTHOR APPROVAL**. There is deliberately no blanket MIT/Apache license for this mixed-source repository. Publication requires reconciling author-owned and third-party terms; this file does not grant new permissions over either.
+The code is provided to support manuscript review and testing. Third-party components retain their respective copyright notices and license terms below.
 
 ## Pangu-Weather and ReadyToGo
 

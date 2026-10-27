@@ -3,7 +3,6 @@
 !/.gitignore
 !/README.md
 !/THIRD_PARTY_NOTICES.md
-!/references.bib
 !/pyproject.toml
 !/MANIFEST.in
 !/agu_james/

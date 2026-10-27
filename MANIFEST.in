@@ -1,4 +1,4 @@
-include README.md THIRD_PARTY_NOTICES.md references.bib .gitignore
+include README.md THIRD_PARTY_NOTICES.md .gitignore
 include configs/*.example.json
 include docs/WORKFLOW.md docs/ENVIRONMENTS.md docs/DATA_SOURCES.md
 include docs/METRIC_DEFINITIONS.md docs/FIGURE_MAP.md
